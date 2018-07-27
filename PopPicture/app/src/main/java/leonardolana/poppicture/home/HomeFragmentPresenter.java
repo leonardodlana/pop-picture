@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.HomeSection;
+import leonardolana.poppicture.data.PersistentSharedKeys;
+import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
 
 /**
  * Created by leonardolana on 7/19/18.
@@ -14,24 +16,24 @@ import leonardolana.poppicture.data.HomeSection;
 public class HomeFragmentPresenter extends BasePresenter {
 
     private HomeFragmentView mView;
+    private PersistentHelperInterface mPersistentHelper;
 
-    public HomeFragmentPresenter(HomeFragmentView view) {
+    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelperInterface persistentHelper) {
         mView = view;
+        mPersistentHelper = persistentHelper;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             mView.setSections(HomeSection.values());
         }
 
         // check if onboarding is necessary
-        if(true) {
-            boolean success = mView.showOnboarding();
-        } else {
-
+        if (mPersistentHelper.getBoolean(PersistentSharedKeys.KEY_NEEDS_TO_SHOW_ONBOARDING, true)) {
+            mView.showOnboarding();
         }
     }
 
@@ -41,8 +43,8 @@ public class HomeFragmentPresenter extends BasePresenter {
     }
 
     void onClickMenu(String menuItemName) {
-        for(HomeSection homeSection : HomeSection.values()) {
-            if(TextUtils.equals(homeSection.getMenu(), menuItemName)) {
+        for (HomeSection homeSection : HomeSection.values()) {
+            if (TextUtils.equals(homeSection.getMenu(), menuItemName)) {
                 // Do something with the click, tracking maybe
                 // and send back to the view
                 mView.onClickSection(homeSection);

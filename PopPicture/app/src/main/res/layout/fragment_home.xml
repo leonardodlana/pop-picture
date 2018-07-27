@@ -40,6 +40,6 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/md_white_1000"
         app:itemTextColor="@color/md_white_1000"
-        app:menu="@menu/menu_home" />
+        app:menu="@menu/menu_fragment_home" />
 
 </RelativeLayout>

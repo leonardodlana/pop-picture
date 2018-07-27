@@ -12,5 +12,6 @@ public interface HomeFragmentView {
 
     void onClickSection(HomeSection homeSection);
 
-    boolean showOnboarding();
+    void showOnboarding();
+
 }

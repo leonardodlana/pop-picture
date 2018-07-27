@@ -17,6 +17,7 @@ import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.PermissionWatcher;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.helpers.PermissionHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelper;
 
 /**
  * Created by leonardolana on 7/26/18.
@@ -24,20 +25,18 @@ import leonardolana.poppicture.helpers.PermissionHelper;
 
 public class OnboardingFragment extends BaseDialogFragment implements OnboardingFragmentView, PermissionWatcher {
 
-    private final OnboardingFragmentPresenter mPresenter;
-
-    public OnboardingFragment() {
-        mPresenter = new OnboardingFragmentPresenter(this);
-        // It's important to call init with the view model,
-        // this way we don't need to handle lifecycle on each fragment
-        init(mPresenter);
-    }
+    private OnboardingFragmentPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
         setCancelable(false);
+
+        mPresenter = new OnboardingFragmentPresenter(this, new PersistentHelper(getContext()));
+        // It's important to call init with the view model,
+        // this way we don't need to handle lifecycle on each fragment
+        init(mPresenter);
     }
 
     @Nullable
@@ -74,12 +73,11 @@ public class OnboardingFragment extends BaseDialogFragment implements Onboarding
 
     @Override
     public void onPermissionGranted(Permission permission) {
-
-        Toast.makeText(getContext(), "Awesome!", Toast.LENGTH_SHORT).show();
+        mPresenter.onPermissionGranted(permission);
     }
 
     @Override
     public void onPermissionDenied(Permission permission) {
-        Toast.makeText(getContext(), "Please trust us!", Toast.LENGTH_SHORT).show();
+        mPresenter.onPermissionDenied(permission);
     }
 }

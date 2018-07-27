@@ -10,11 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.pictures.PicturesRecyclerView;
+import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.impl.LocationHelper;
+import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
 
 /**
  * Created by leonardolana on 7/24/18.
@@ -27,18 +32,21 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     @BindView(R.id.loading)
     ProgressBar mProgressBarLoading;
 
+    @BindView(R.id.pictures_recycler_view)
+    PicturesRecyclerView mPicturesRecyclerView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = new HomeNearbyFragmentPresenter(this, new LocationHelper(getContext()));
+        mPresenter = new HomeNearbyFragmentPresenter(this, new PicturesLoaderHelperMock());
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home_nearby, container, false);
         ButterKnife.bind(this, view);
@@ -46,12 +54,22 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void showLoading() {
+        mProgressBarLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showLoading() {
-        mProgressBarLoading.setVisibility(View.VISIBLE);
+    public void hideLoading() {
+        mProgressBarLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onLoad(List<Picture> pictures) {
+        mPicturesRecyclerView.setData(pictures);
+    }
+
+    @Override
+    public void showLoadError() {
+
     }
 }

@@ -4,10 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.List;
+
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.LocationListener;
 import leonardolana.poppicture.data.Location;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.PicturesLoaderHelperInterface;
 import leonardolana.poppicture.helpers.impl.LocationHelper;
+import leonardolana.poppicture.helpers.impl.PicturesLoaderHelper;
 
 /**
  * Created by leonardolana on 7/24/18.
@@ -16,11 +21,11 @@ import leonardolana.poppicture.helpers.impl.LocationHelper;
 public class HomeNearbyFragmentPresenter extends BasePresenter {
 
     private HomeNearbyFragmentView mView;
-    private LocationHelper mLocationHelper;
+    private final PicturesLoaderHelperInterface mPicturesLoaderHelper;
 
-    public HomeNearbyFragmentPresenter(HomeNearbyFragmentView view, LocationHelper locationHelper) {
+    public HomeNearbyFragmentPresenter(HomeNearbyFragmentView view, PicturesLoaderHelperInterface picturesLoaderHelper) {
         mView = view;
-        mLocationHelper = locationHelper;
+        mPicturesLoaderHelper = picturesLoaderHelper;
     }
 
     @Override
@@ -29,15 +34,16 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
 
         //load pictures
         mView.showLoading();
-        mLocationHelper.updateLocation(new LocationListener() {
+        mPicturesLoaderHelper.loadNearbyPictures(new PicturesLoaderHelperInterface.OnPicturesLoadListener() {
             @Override
-            public void onLocationKnown(Location location) {
-                Log.e("wtf", location.getLatitude() + " " + location.getLongitude());
+            public void onLoad(List<Picture> pictures) {
+                mView.onLoad(pictures);
+                mView.hideLoading();
             }
 
             @Override
-            public void onLocationNotFound() {
-                // Location was not found, we must try again
+            public void onError() {
+                mView.showLoadError();
             }
         });
     }
@@ -51,4 +57,5 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
     public void onDestroy() {
         mView = null;
     }
+
 }

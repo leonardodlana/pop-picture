@@ -19,6 +19,7 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AbstractOnPageChangeListener;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.data.HomeSection;
+import leonardolana.poppicture.helpers.impl.PersistentHelper;
 import leonardolana.poppicture.onboarding.OnboardingFragment;
 
 
@@ -34,13 +35,14 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
 
-    public HomeFragment() {
-        mPresenter = new HomeFragmentPresenter(this);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = new HomeFragmentPresenter(this, new PersistentHelper(getContext()));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -63,6 +65,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
             mPageAdapter.restoreFragments(savedInstanceState);
         }
 
+        mViewPagerContainer.setOffscreenPageLimit(3);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -100,9 +103,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     }
 
     @Override
-    public boolean showOnboarding() {
+    public void showOnboarding() {
         OnboardingFragment onboardingFragment = new OnboardingFragment();
         onboardingFragment.show(getFragmentManager(), "dialog");
-        return false;
     }
 }
