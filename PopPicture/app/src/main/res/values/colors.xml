@@ -7,10 +7,13 @@
     <color name="colorBackground">@color/md_grey_100</color>
     <color name="colorForeground">@color/md_white_1000</color>
     <color name="fabBackgroundColor">@color/md_deep_purple_800</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_half_transparent">#7D000000</color>
 
     <!-- Fonts !-->
     <color name="normal_text">@color/md_black_1000</color>
     <color name="secondary_text">@color/md_grey_500</color>
     <color name="positive_button">@color/colorPrimary</color>
     <color name="negative_button">@color/md_grey_500</color>
+
 </resources>
