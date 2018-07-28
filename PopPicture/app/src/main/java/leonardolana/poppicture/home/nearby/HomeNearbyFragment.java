@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,9 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     @BindView(R.id.pictures_recycler_view)
     PicturesRecyclerView mPicturesRecyclerView;
 
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,18 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.refresh();
+            }
+        });
+    }
+
+    @Override
     public void showLoading() {
         mProgressBarLoading.setVisibility(View.VISIBLE);
     }
@@ -66,6 +82,7 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     @Override
     public void onLoad(List<Picture> pictures) {
         mPicturesRecyclerView.setData(pictures);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

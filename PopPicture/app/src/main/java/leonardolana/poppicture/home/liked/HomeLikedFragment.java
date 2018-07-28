@@ -3,26 +3,88 @@ package leonardolana.poppicture.home.liked;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.pictures.PicturesRecyclerView;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
+import leonardolana.poppicture.home.nearby.HomeNearbyFragmentPresenter;
 
 /**
  * Created by leonardolana on 7/25/18.
  */
 
-public class HomeLikedFragment extends BaseFragment {
+public class HomeLikedFragment extends BaseFragment implements HomeLikedFragmentView {
 
-    @Nullable
+    private HomeLikedFragmentPresenter mPresenter;
+
+    @BindView(R.id.loading)
+    ProgressBar mProgressBarLoading;
+
+    @BindView(R.id.pictures_recycler_view)
+    PicturesRecyclerView mPicturesRecyclerView;
+
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_liked, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mPresenter = new HomeLikedFragmentPresenter(this, new PicturesLoaderHelperMock());
+        // It's important to call init with the view model,
+        // this way we don't need to handle lifecycle on each fragment
+        init(mPresenter);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_home_liked, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.refresh();
+            }
+        });
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBarLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBarLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onLoad(List<Picture> pictures) {
+        mPicturesRecyclerView.setData(pictures);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showLoadError() {
+
+    }
 }

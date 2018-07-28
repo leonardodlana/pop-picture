@@ -25,8 +25,13 @@ public class PicturesLoaderHelperMock implements PicturesLoaderHelperInterface {
     }
 
     @Override
-    public void loadFromLikedPictures(OnPicturesLoadListener listener) {
-
+    public void loadFromLikedPictures(final OnPicturesLoadListener listener) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.onLoad(generateFakeList());
+            }
+        }, 1500);
     }
 
     private List<Picture> generateFakeList() {

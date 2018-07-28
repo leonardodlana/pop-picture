@@ -11,7 +11,7 @@ import android.view.MotionEvent;
  * Created by leonardolana on 7/26/18.
  */
 
-public class NoScrollViewPager extends ViewPager {
+public class NoScrollViewPager extends CustomViewPager {
 
     private boolean mIsScrollEnabled = false;
 
