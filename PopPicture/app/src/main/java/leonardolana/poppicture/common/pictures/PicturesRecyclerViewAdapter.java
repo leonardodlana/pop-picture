@@ -50,6 +50,8 @@ public class PicturesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         PicturesViewHolder holder = (PicturesViewHolder) h;
+        Picture picture = mData.get(position).second;
+
         holder.setImage(R.drawable.place_holder);
     }
 

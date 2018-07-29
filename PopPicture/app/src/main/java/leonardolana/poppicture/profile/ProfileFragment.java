@@ -14,7 +14,7 @@ import leonardolana.poppicture.common.BaseFragment;
  * Created by leonardolana on 7/25/18.
  */
 
-public class ProfileFragment extends BaseFragment {
+public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
     @Nullable
     @Override
