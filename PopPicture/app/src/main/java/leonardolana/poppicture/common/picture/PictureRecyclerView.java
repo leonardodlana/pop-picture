@@ -1,4 +1,4 @@
-package leonardolana.poppicture.common.pictures;
+package leonardolana.poppicture.common.picture;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -14,25 +14,25 @@ import leonardolana.poppicture.data.Picture;
  * Created by leonardolana on 7/27/18.
  */
 
-public class PicturesRecyclerView extends RecyclerView {
+public class PictureRecyclerView extends RecyclerView {
 
     private static final int DEFAULT_SPAN_COUNT = 2;
     private static final int DEFAULT_ORIENTATION = StaggeredGridLayoutManager.VERTICAL;
 
     private StaggeredGridLayoutManager mLayoutManager;
-    private PicturesRecyclerViewAdapter mAdapter;
+    private PictureRecyclerViewAdapter mAdapter;
 
-    public PicturesRecyclerView(Context context) {
+    public PictureRecyclerView(Context context) {
         super(context);
         init();
     }
 
-    public PicturesRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public PictureRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PicturesRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public PictureRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -42,10 +42,13 @@ public class PicturesRecyclerView extends RecyclerView {
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         setLayoutManager(mLayoutManager);
 
-        mAdapter = new PicturesRecyclerViewAdapter();
+        mAdapter = new PictureRecyclerViewAdapter();
         setAdapter(mAdapter);
     }
 
+    public void setColumnCount(int count) {
+        mLayoutManager.setSpanCount(count);
+    }
 
     public void setData(List<Picture> pictureList) {
         mAdapter.setData(pictureList);

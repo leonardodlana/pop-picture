@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/profile_image"
         android:layout_marginTop="24dp"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:src="@drawable/ic_profile"
         android:background="@drawable/circle"
         android:padding="16dp"
@@ -14,6 +16,26 @@
         android:backgroundTint="@color/md_grey_600"
         android:tint="@color/md_white_1000"/>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@color/md_black_1000"
+        android:layout_below="@+id/profile_image"
+        >
 
+        <android.support.design.widget.TextInputEditText
+            android:enabled="false"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:textColor="@color/md_black_1000"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/md_black_1000"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Name"/>
+
+    </android.support.design.widget.TextInputLayout>
 
 </RelativeLayout>

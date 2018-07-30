@@ -13,18 +13,18 @@ import java.lang.ref.WeakReference;
 import leonardolana.poppicture.common.LocationListener;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.helpers.PermissionHelper;
-import leonardolana.poppicture.helpers.api.LocationHelperInterface;
+import leonardolana.poppicture.helpers.api.LocationHelper;
 
 /**
  * Created by leonardolana on 7/26/18.
  */
 
-public class LocationHelper implements LocationHelperInterface {
+public class LocationHelperImpl implements LocationHelper {
 
     private FusedLocationProviderClient mFusedLocationClient;
     private WeakReference<Context> mContextReference;
 
-    public LocationHelper(Context context) {
+    public LocationHelperImpl(Context context) {
         mContextReference = new WeakReference<>(context);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }

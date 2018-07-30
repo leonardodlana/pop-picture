@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * Created by leonardolana on 7/29/18.
  */
 
-public interface CacheHelperInterface {
+public interface CacheHelper {
 
     @Retention(SOURCE)
     @IntDef({LOAD_ERROR_NO_CONNECTION, LOAD_ERROR_INVALID_ITEM, LOAD_ERROR_UNKNOWN})

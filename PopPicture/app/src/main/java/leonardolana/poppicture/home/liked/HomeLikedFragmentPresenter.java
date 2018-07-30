@@ -7,7 +7,7 @@ import java.util.List;
 
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.api.PicturesLoaderHelperInterface;
+import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
 
 /**
  * Created by leonardolana on 7/27/18.
@@ -16,9 +16,9 @@ import leonardolana.poppicture.helpers.api.PicturesLoaderHelperInterface;
 public class HomeLikedFragmentPresenter extends BasePresenter {
 
     private HomeLikedFragmentView mView;
-    private final PicturesLoaderHelperInterface mPicturesLoaderHelper;
+    private final PictureLoaderHelper mPicturesLoaderHelper;
 
-    public HomeLikedFragmentPresenter(HomeLikedFragmentView view, PicturesLoaderHelperInterface picturesLoaderHelper) {
+    public HomeLikedFragmentPresenter(HomeLikedFragmentView view, PictureLoaderHelper picturesLoaderHelper) {
         mView = view;
         mPicturesLoaderHelper = picturesLoaderHelper;
     }
@@ -29,7 +29,7 @@ public class HomeLikedFragmentPresenter extends BasePresenter {
 
         //load pictures
         mView.showLoading();
-        mPicturesLoaderHelper.loadFromLikedPictures(new PicturesLoaderHelperInterface.OnPicturesLoadListener() {
+        mPicturesLoaderHelper.loadFromLikedPictures(new PictureLoaderHelper.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
                 mView.onLoad(pictures);
@@ -54,7 +54,7 @@ public class HomeLikedFragmentPresenter extends BasePresenter {
     }
 
     public void refresh() {
-        mPicturesLoaderHelper.loadFromLikedPictures(new PicturesLoaderHelperInterface.OnPicturesLoadListener() {
+        mPicturesLoaderHelper.loadFromLikedPictures(new PictureLoaderHelper.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
                 mView.onLoad(pictures);

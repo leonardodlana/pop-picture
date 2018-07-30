@@ -15,10 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
-import leonardolana.poppicture.common.pictures.PicturesRecyclerView;
+import leonardolana.poppicture.common.picture.PictureRecyclerView;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
-import leonardolana.poppicture.home.nearby.HomeNearbyFragmentPresenter;
 
 /**
  * Created by leonardolana on 7/25/18.
@@ -32,7 +31,7 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
     ProgressBar mProgressBarLoading;
 
     @BindView(R.id.pictures_recycler_view)
-    PicturesRecyclerView mPicturesRecyclerView;
+    PictureRecyclerView mPicturesRecyclerView;
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;

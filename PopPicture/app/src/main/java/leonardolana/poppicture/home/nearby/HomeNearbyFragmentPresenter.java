@@ -2,17 +2,12 @@ package leonardolana.poppicture.home.nearby;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.List;
 
 import leonardolana.poppicture.common.BasePresenter;
-import leonardolana.poppicture.common.LocationListener;
-import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.api.PicturesLoaderHelperInterface;
-import leonardolana.poppicture.helpers.impl.LocationHelper;
-import leonardolana.poppicture.helpers.impl.PicturesLoaderHelper;
+import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
 
 /**
  * Created by leonardolana on 7/24/18.
@@ -21,9 +16,9 @@ import leonardolana.poppicture.helpers.impl.PicturesLoaderHelper;
 public class HomeNearbyFragmentPresenter extends BasePresenter {
 
     private HomeNearbyFragmentView mView;
-    private final PicturesLoaderHelperInterface mPicturesLoaderHelper;
+    private final PictureLoaderHelper mPicturesLoaderHelper;
 
-    public HomeNearbyFragmentPresenter(HomeNearbyFragmentView view, PicturesLoaderHelperInterface picturesLoaderHelper) {
+    public HomeNearbyFragmentPresenter(HomeNearbyFragmentView view, PictureLoaderHelper picturesLoaderHelper) {
         mView = view;
         mPicturesLoaderHelper = picturesLoaderHelper;
     }
@@ -34,7 +29,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
 
         //load pictures
         mView.showLoading();
-        mPicturesLoaderHelper.loadNearbyPictures(new PicturesLoaderHelperInterface.OnPicturesLoadListener() {
+        mPicturesLoaderHelper.loadNearbyPictures(new PictureLoaderHelper.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
                 mView.onLoad(pictures);
@@ -59,7 +54,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
     }
 
     public void refresh() {
-        mPicturesLoaderHelper.loadNearbyPictures(new PicturesLoaderHelperInterface.OnPicturesLoadListener() {
+        mPicturesLoaderHelper.loadNearbyPictures(new PictureLoaderHelper.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
                 mView.onLoad(pictures);

@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.gms.location.LocationServices;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,7 +14,7 @@ import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.PermissionWatcher;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.helpers.PermissionHelper;
-import leonardolana.poppicture.helpers.impl.PersistentHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 
 /**
  * Created by leonardolana on 7/26/18.
@@ -33,7 +30,7 @@ public class OnboardingFragment extends BaseDialogFragment implements Onboarding
         setStyle(STYLE_NO_TITLE, 0);
         setCancelable(false);
 
-        mPresenter = new OnboardingFragmentPresenter(this, new PersistentHelper(getContext()));
+        mPresenter = new OnboardingFragmentPresenter(this, new PersistentHelperImpl(getContext()));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

@@ -1,4 +1,4 @@
-package leonardolana.poppicture.common.pictures;
+package leonardolana.poppicture.common.picture;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +13,12 @@ import leonardolana.poppicture.R;
  * Created by leonardolana on 7/27/18.
  */
 
-public class PicturesViewHolder extends RecyclerView.ViewHolder {
+public class PictureViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.image)
     ImageView mImageView;
 
-    public PicturesViewHolder(View itemView) {
+    public PictureViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

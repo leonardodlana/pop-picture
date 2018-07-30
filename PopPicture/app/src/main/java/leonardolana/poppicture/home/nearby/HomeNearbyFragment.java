@@ -3,9 +3,7 @@ package leonardolana.poppicture.home.nearby;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
-import leonardolana.poppicture.common.pictures.PicturesRecyclerView;
+import leonardolana.poppicture.common.picture.PictureRecyclerView;
 import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.impl.LocationHelper;
 import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
 
 /**
@@ -34,7 +31,7 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     ProgressBar mProgressBarLoading;
 
     @BindView(R.id.pictures_recycler_view)
-    PicturesRecyclerView mPicturesRecyclerView;
+    PictureRecyclerView mPicturesRecyclerView;
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;

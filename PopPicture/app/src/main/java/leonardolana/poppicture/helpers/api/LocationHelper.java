@@ -6,7 +6,7 @@ import leonardolana.poppicture.common.LocationListener;
  * Created by leonardolana on 7/26/18.
  */
 
-public interface LocationHelperInterface {
+public interface LocationHelper {
 
     public void updateLocation(LocationListener locationListener);
 

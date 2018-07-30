@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.api.PicturesLoaderHelperInterface;
+import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
 
 /**
  * Created by leonardolana on 7/27/18.
  */
 
-public class PicturesLoaderHelperMock implements PicturesLoaderHelperInterface {
+public class PicturesLoaderHelperMock implements PictureLoaderHelper {
     @Override
     public void loadNearbyPictures(final OnPicturesLoadListener listener) {
         new Handler().postDelayed(new Runnable() {

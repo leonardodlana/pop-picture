@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
-import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
 
 /**
  * Created by leonardolana on 7/19/18.
@@ -16,9 +16,9 @@ import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
 public class HomeFragmentPresenter extends BasePresenter {
 
     private HomeFragmentView mView;
-    private PersistentHelperInterface mPersistentHelper;
+    private PersistentHelper mPersistentHelper;
 
-    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelperInterface persistentHelper) {
+    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper) {
         mView = view;
         mPersistentHelper = persistentHelper;
     }

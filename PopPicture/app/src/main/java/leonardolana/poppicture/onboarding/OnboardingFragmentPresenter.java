@@ -3,8 +3,7 @@ package leonardolana.poppicture.onboarding;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.data.PersistentSharedKeys;
-import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
-import leonardolana.poppicture.helpers.impl.PersistentHelper;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
 
 /**
  * Created by leonardolana on 7/26/18.
@@ -13,9 +12,9 @@ import leonardolana.poppicture.helpers.impl.PersistentHelper;
 public class OnboardingFragmentPresenter extends BasePresenter {
 
     private OnboardingFragmentView mView;
-    private PersistentHelperInterface mPersistentHelper;
+    private PersistentHelper mPersistentHelper;
 
-    public OnboardingFragmentPresenter(OnboardingFragmentView view, PersistentHelperInterface persistentHelper) {
+    public OnboardingFragmentPresenter(OnboardingFragmentView view, PersistentHelper persistentHelper) {
         mView = view;
         mPersistentHelper = persistentHelper;
     }

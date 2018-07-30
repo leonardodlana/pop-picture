@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
 
 /**
  * Created by leonardolana on 7/27/18.
@@ -17,11 +17,11 @@ import leonardolana.poppicture.helpers.api.PersistentHelperInterface;
  * to read if becomes huge
  */
 
-public class PersistentHelper implements PersistentHelperInterface {
+public class PersistentHelperImpl implements PersistentHelper {
 
     private final SharedPreferences mSharedPreferences;
 
-    public PersistentHelper(Context context) {
+    public PersistentHelperImpl(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 

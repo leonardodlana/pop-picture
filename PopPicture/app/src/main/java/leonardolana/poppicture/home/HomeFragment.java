@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +13,9 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
-import leonardolana.poppicture.common.AbstractOnPageChangeListener;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.data.HomeSection;
-import leonardolana.poppicture.helpers.impl.PersistentHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.onboarding.OnboardingFragment;
 
 
@@ -38,7 +34,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new HomeFragmentPresenter(this, new PersistentHelper(getContext()));
+        mPresenter = new HomeFragmentPresenter(this, new PersistentHelperImpl(getContext()));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

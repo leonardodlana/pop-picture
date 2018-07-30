@@ -1,4 +1,4 @@
-package leonardolana.poppicture.common.pictures;
+package leonardolana.poppicture.common.picture;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +18,7 @@ import leonardolana.poppicture.data.Picture;
  * Created by leonardolana on 7/27/18.
  */
 
-public class PicturesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_SMALL = 0;
     private static final int VIEW_TYPE_MEDIUM = 1;
@@ -44,12 +44,12 @@ public class PicturesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(layout, parent, false);
-        return new PicturesViewHolder(view);
+        return new PictureViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
-        PicturesViewHolder holder = (PicturesViewHolder) h;
+        PictureViewHolder holder = (PictureViewHolder) h;
         Picture picture = mData.get(position).second;
 
         holder.setImage(R.drawable.place_holder);

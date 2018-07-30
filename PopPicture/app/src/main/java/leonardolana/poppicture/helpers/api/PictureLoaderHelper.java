@@ -8,7 +8,7 @@ import leonardolana.poppicture.data.Picture;
  * Created by leonardolana on 7/27/18.
  */
 
-public interface PicturesLoaderHelperInterface {
+public interface PictureLoaderHelper {
 
     public interface OnPicturesLoadListener {
         void onLoad(List<Picture> pictures);

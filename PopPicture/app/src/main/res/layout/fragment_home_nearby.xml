@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <leonardolana.poppicture.common.pictures.PicturesRecyclerView
+        <leonardolana.poppicture.common.picture.PictureRecyclerView
             android:id="@+id/pictures_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
