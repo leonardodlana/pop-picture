@@ -6,10 +6,10 @@ package leonardolana.poppicture.data;
 
 public class User {
 
-    private int mId;
+    private String mId;
     private String mName;
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 

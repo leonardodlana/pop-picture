@@ -6,7 +6,7 @@ package leonardolana.poppicture.data;
 
 public class Picture {
 
-    private int mUserId;
+    private String mUserId;
     private String mFileName;
     private String mTitle;
     private String mDescription;
@@ -19,7 +19,7 @@ public class Picture {
         //TODO
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return mUserId;
     }
 
