@@ -8,6 +8,7 @@ public class User {
 
     private String mId;
     private String mName;
+    private String mPictureName;
 
     public String getId() {
         return mId;
@@ -15,6 +16,10 @@ public class User {
 
     public String getName() {
         return mName;
+    }
+
+    public String getPictureName() {
+        return mPictureName;
     }
 
 }
