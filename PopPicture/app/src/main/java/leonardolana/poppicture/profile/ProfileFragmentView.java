@@ -20,4 +20,7 @@ package leonardolana.poppicture.profile;
  */
 
 public interface ProfileFragmentView {
+    void setEditEnabled(boolean enabled);
+
+    void launchAuthentication();
 }

@@ -45,7 +45,7 @@ public class OnboardingFragment extends BaseDialogFragment implements Onboarding
         setStyle(STYLE_NO_TITLE, 0);
         setCancelable(false);
 
-        mPresenter = new OnboardingFragmentPresenter(this, new PersistentHelperImpl(getContext()));
+        mPresenter = new OnboardingFragmentPresenter(this, PersistentHelperImpl.getInstance(getContext().getApplicationContext()));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

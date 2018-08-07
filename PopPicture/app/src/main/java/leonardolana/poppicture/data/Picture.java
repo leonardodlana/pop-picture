@@ -1,5 +1,7 @@
 package leonardolana.poppicture.data;
 
+import org.json.JSONObject;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -22,6 +24,7 @@ package leonardolana.poppicture.data;
 public class Picture {
 
     private String mUserId;
+    private int mPictureId;
     private String mFileName;
     private String mTitle;
     private String mDescription;
@@ -31,11 +34,27 @@ public class Picture {
     private double mLongitude;
 
     public Picture() {
-        //TODO
+        // Mock constructor
+    }
+
+    public Picture(String userId, int pictureId, String filename, String title, String description, int likesCount, boolean likedByMe, double latitude, double longitude) {
+        mUserId = userId;
+        mPictureId = pictureId;
+        mFileName = filename;
+        mTitle = title;
+        mDescription = description;
+        mLikesCount = likesCount;
+        mLikedByMe = likedByMe;
+        mLatitude = latitude;
+        mLongitude = longitude;
     }
 
     public String getUserId() {
         return mUserId;
+    }
+
+    public int getId() {
+        return mPictureId;
     }
 
     public String getFileName() {
@@ -64,6 +83,43 @@ public class Picture {
 
     public double getLongitude() {
         return mLongitude;
+    }
+
+    public JSONObject toJSON() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_public_id", getUserId());
+            jsonObject.put("picture_id", getId());
+            jsonObject.put("filename", getFileName());
+            jsonObject.put("title", getTitle());
+            jsonObject.put("description", getDescription());
+            jsonObject.put("likes_count", getLikesCount());
+            jsonObject.put("liked_by_me", mLikedByMe ? 1 : 0);
+            jsonObject.put("latitude", getLatitude());
+            jsonObject.put("longitude", getLongitude());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Picture fromJSON(JSONObject jsonObject) {
+        try {
+            return new Picture(jsonObject.getString("user_public_id"),
+                    jsonObject.getInt("picture_id"),
+                    jsonObject.getString("filename"),
+                    jsonObject.getString("title"),
+                    jsonObject.getString("description"),
+                    jsonObject.getInt("likes_count"),
+                    jsonObject.optInt("liked_by_me", 0) == 0,
+                    jsonObject.getDouble("latitude"),
+                    jsonObject.getDouble("longitude"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

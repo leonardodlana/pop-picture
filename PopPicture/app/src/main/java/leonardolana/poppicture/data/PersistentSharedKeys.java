@@ -1,5 +1,10 @@
 package leonardolana.poppicture.data;
 
+import android.text.TextUtils;
+
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -21,6 +26,14 @@ package leonardolana.poppicture.data;
 
 public class PersistentSharedKeys {
 
-    public static final String KEY_NEEDS_TO_SHOW_ONBOARDING = "needs_to_show_onboarding";
+    private static final String KEY_NEED_TO_SHOW_ONBOARDING = "need_to_show_onboarding";
+
+    public static boolean needToShowOnboarding(PersistentHelper persistentHelper) {
+        return persistentHelper.getBoolean(KEY_NEED_TO_SHOW_ONBOARDING, true);
+    }
+
+    public static void setNeedToShowOnboarding(PersistentHelper persistentHelper, boolean value) {
+        persistentHelper.setBoolean(KEY_NEED_TO_SHOW_ONBOARDING, value);
+    }
 
 }

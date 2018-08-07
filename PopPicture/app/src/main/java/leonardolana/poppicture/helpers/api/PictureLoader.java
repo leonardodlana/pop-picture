@@ -1,5 +1,11 @@
 package leonardolana.poppicture.helpers.api;
 
+import java.util.List;
+
+import leonardolana.poppicture.data.Location;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.server.RequestError;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -19,30 +25,20 @@ package leonardolana.poppicture.helpers.api;
  * limitations under the License.
  */
 
-public interface PersistentHelper {
+public interface PictureLoader {
 
-    public void setString(String key, String value);
+    public interface OnPicturesLoadListener {
+        void onLoad(List<Picture> pictures);
 
-    public String getString(String key, String defaultValue);
+        void onError(RequestError e);
+    }
 
-    public void setInt(String key, int value);
+    void loadNearbyPictures(Location location, OnPicturesLoadListener listener);
 
-    public int getInt(String key, int defaultValue);
+    void loadNearbyPictures(OnPicturesLoadListener listener);
 
-    public void setLong(String key, long value);
+    void loadFromLikedPictures(Location location, OnPicturesLoadListener listener);
 
-    public long getLong(String key, long defaultValue);
-
-    public void setFloat(String key, float value);
-
-    public float getFloat(String key, int defaultValue);
-
-    public void setBoolean(String key, boolean value);
-
-    public boolean getBoolean(String key, boolean defaultValue);
-
-    public void setDouble(String key, double value);
-
-    public double getDouble(String key, double defaultValue);
+    void loadFromLikedPictures(OnPicturesLoadListener listener);
 
 }

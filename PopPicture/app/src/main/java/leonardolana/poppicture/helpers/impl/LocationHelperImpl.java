@@ -14,6 +14,7 @@ import leonardolana.poppicture.common.LocationListener;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.helpers.PermissionHelper;
 import leonardolana.poppicture.helpers.api.LocationHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -38,8 +39,10 @@ public class LocationHelperImpl implements LocationHelper {
 
     private FusedLocationProviderClient mFusedLocationClient;
     private WeakReference<Context> mContextReference;
+    private UserHelper mUserHelper;
 
-    public LocationHelperImpl(Context context) {
+    public LocationHelperImpl(Context context, UserHelper userHelper) {
+        mUserHelper = userHelper;
         mContextReference = new WeakReference<>(context);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
@@ -57,10 +60,11 @@ public class LocationHelperImpl implements LocationHelper {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
+                            leonardolana.poppicture.data.Location lastKnownLocation = new leonardolana.poppicture.data.Location(location.getLatitude(),
+                                    location.getLongitude());
+                            mUserHelper.setLastKnownLocation(lastKnownLocation);
                             if(locationListener != null) {
-                                locationListener.onLocationKnown(
-                                        new leonardolana.poppicture.data.Location(location.getLatitude(),
-                                                location.getLongitude()));
+                                locationListener.onLocationKnown(lastKnownLocation);
                             }
                         } else {
                             if(locationListener != null) {

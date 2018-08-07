@@ -1,8 +1,6 @@
 package leonardolana.poppicture.helpers.api;
 
-import java.util.List;
-
-import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.server.ServerRequest;
 
 /**
  * Created by Leonardo Lana
@@ -22,17 +20,8 @@ import leonardolana.poppicture.data.Picture;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface ServerHelper {
 
-public interface PictureLoaderHelper {
-
-    public interface OnPicturesLoadListener {
-        void onLoad(List<Picture> pictures);
-
-        void onError();
-    }
-
-    void loadNearbyPictures(OnPicturesLoadListener listener);
-
-    void loadFromLikedPictures(OnPicturesLoadListener listener);
+    public void execute(ServerRequest serverRequest);
 
 }

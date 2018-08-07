@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import java.lang.annotation.Retention;
 
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.data.User;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -44,6 +45,6 @@ public interface CacheHelper {
         void onError(@LoadError int error);
     }
 
-    public void loadPicture(Picture picture, @NonNull OnLoadPicture onLoadPicture);
+    public void loadPicture(User user, Picture picture, @NonNull OnLoadPicture onLoadPicture);
 
 }

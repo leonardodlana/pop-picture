@@ -6,14 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
+import leonardolana.poppicture.helpers.api.PictureLoader;
 
 /**
  * Created by leonardolana on 7/27/18.
  */
 
-public class PicturesLoaderHelperMock implements PictureLoaderHelper {
+public class PicturesLoaderHelperMock implements PictureLoader {
+    @Override
+    public void loadNearbyPictures(Location location, OnPicturesLoadListener listener) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     @Override
     public void loadNearbyPictures(final OnPicturesLoadListener listener) {
         new Handler().postDelayed(new Runnable() {
@@ -22,6 +28,11 @@ public class PicturesLoaderHelperMock implements PictureLoaderHelper {
                 listener.onLoad(generateFakeList());
             }
         }, 1500);
+    }
+
+    @Override
+    public void loadFromLikedPictures(Location location, OnPicturesLoadListener listener) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override

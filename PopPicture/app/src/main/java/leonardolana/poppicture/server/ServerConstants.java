@@ -1,8 +1,4 @@
-package leonardolana.poppicture.login.authentication;
-
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.List;
+package leonardolana.poppicture.server;
 
 /**
  * Created by Leonardo Lana
@@ -22,10 +18,8 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class ServerConstants {
 
-public interface LoginAuthenticationView {
+    public static final String URL = "http://192.168.1.102:8080/pop_picture/cmd";
 
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
-
-    void dismiss();
 }

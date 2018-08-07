@@ -52,7 +52,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new HomeFragmentPresenter(this, new PersistentHelperImpl(getContext()));
+        mPresenter = new HomeFragmentPresenter(this, PersistentHelperImpl.getInstance(getContext().getApplicationContext()));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

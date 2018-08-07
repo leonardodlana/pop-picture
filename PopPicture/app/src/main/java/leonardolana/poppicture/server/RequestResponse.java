@@ -1,8 +1,6 @@
-package leonardolana.poppicture.login.authentication;
+package leonardolana.poppicture.server;
 
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.List;
+import com.android.volley.ServerError;
 
 /**
  * Created by Leonardo Lana
@@ -22,10 +20,9 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface RequestResponse {
 
-public interface LoginAuthenticationView {
+    void onRequestSuccess(String data);
+    void onRequestError(RequestError error);
 
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
-
-    void dismiss();
 }

@@ -1,8 +1,10 @@
-package leonardolana.poppicture.login.authentication;
+package leonardolana.poppicture.server;
 
-import com.firebase.ui.auth.AuthUI;
+import com.android.volley.VolleyError;
 
-import java.util.List;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -22,10 +24,11 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class ServerRequestAuthorize extends ServerRequest {
 
-public interface LoginAuthenticationView {
+    public ServerRequestAuthorize(String firebaseId) {
+        super(ServerConstants.URL, "Login.authorize");
+        addParam(KEY_FIREBASE_ID, firebaseId);
+    }
 
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
-
-    void dismiss();
 }

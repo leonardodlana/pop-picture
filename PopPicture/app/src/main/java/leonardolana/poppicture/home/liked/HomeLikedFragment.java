@@ -1,5 +1,6 @@
 package leonardolana.poppicture.home.liked;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +18,17 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.picture.PictureRecyclerView;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.LocationHelper;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.LocationHelperImpl;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.PicturesLoaderHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
+import leonardolana.poppicture.home.nearby.HomeNearbyFragmentPresenter;
 
 /**
  * Created by Leonardo Lana
@@ -55,7 +66,14 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = new HomeLikedFragmentPresenter(this, new PicturesLoaderHelperMock());
+        Context applicationContext = getContext().getApplicationContext();
+
+        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
+        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
+
+        mPresenter = new HomeLikedFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

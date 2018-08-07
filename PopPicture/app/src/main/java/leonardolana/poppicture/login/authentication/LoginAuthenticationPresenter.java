@@ -13,6 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.ServerRequestRegister;
+import leonardolana.poppicture.server.RequestResponse;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -36,10 +41,14 @@ import static android.app.Activity.RESULT_OK;
  */
 public class LoginAuthenticationPresenter extends BasePresenter {
 
+    private ServerHelper mServerHelper;
+    private UserHelper mUserHelper;
     private LoginAuthenticationView mView;
 
-    public LoginAuthenticationPresenter(LoginAuthenticationView view) {
+    public LoginAuthenticationPresenter(LoginAuthenticationView view, UserHelper userHelper, ServerHelper serverHelper) {
         mView = view;
+        mUserHelper = userHelper;
+        mServerHelper = serverHelper;
     }
 
     @Override
@@ -60,17 +69,31 @@ public class LoginAuthenticationPresenter extends BasePresenter {
         mView = null;
     }
 
-    public void onAuthenticationResult(int resultCode, Intent data) {
-        IdpResponse response = IdpResponse.fromResultIntent(data);
+    public void onAuthenticationResult(int resultCode) {
 
         if (resultCode == RESULT_OK) {
             // Successfully signed in
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            mUserHelper.setFirebaseId(user.getUid());
+            mUserHelper.setName(user.getDisplayName());
+            mUserHelper.setEmail(user.getEmail());
+            new ServerRequestRegister(user.getUid(),
+                    user.getEmail(),
+                    user.getDisplayName())
+                    .execute(mServerHelper, mUserHelper, new ServerRequestRegister.ServerRequestRegisterResponse() {
+                        @Override
+                        public void onSuccess() {
+                            mView.dismiss();
+                        }
 
-            // ...
+                        @Override
+                        public void onError(RequestError error) {
+
+                        }
+                    });
         } else {
             // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
+            // sign-in flow using the back button_contained_shape. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
         }

@@ -1,10 +1,13 @@
 package leonardolana.poppicture.helpers.impl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
 
 /**
  * Created by Leonardo Lana
@@ -36,9 +39,21 @@ import leonardolana.poppicture.helpers.api.PersistentHelper;
 
 public class PersistentHelperImpl implements PersistentHelper {
 
+    private static PersistentHelper INSTANCE;
+
+    public static PersistentHelper getInstance(Context context) {
+        if(context instanceof Activity)
+            throw new UnsupportedOperationException("To avoid leaks, use only application context");
+
+        if(INSTANCE == null)
+            INSTANCE = new PersistentHelperImpl(context);
+
+        return INSTANCE;
+    }
+
     private final SharedPreferences mSharedPreferences;
 
-    public PersistentHelperImpl(Context context) {
+    private PersistentHelperImpl(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -90,6 +105,21 @@ public class PersistentHelperImpl implements PersistentHelper {
     @Override
     public boolean getBoolean(String key, boolean defaultValue) {
         return mSharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    @Override
+    public void setDouble(String key, double value) {
+        //Shared pref does not support double
+        setString(key, Double.toString(value));
+    }
+
+    @Override
+    public double getDouble(String key, double defaultValue) {
+        String stringDouble = getString(key, "");
+        if(stringDouble.equals(""))
+            return defaultValue;
+
+        return Double.valueOf(stringDouble);
     }
 
     private void changeValue(String key, Object value) {

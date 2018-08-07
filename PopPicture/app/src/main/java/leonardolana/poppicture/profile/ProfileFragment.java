@@ -1,14 +1,27 @@
 package leonardolana.poppicture.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.UserHelperImpl;
+import leonardolana.poppicture.login.LoginActivity;
 
 /**
  * Created by Leonardo Lana
@@ -31,10 +44,54 @@ import leonardolana.poppicture.common.BaseFragment;
 
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
+    private ProfileFragmentPresenter mPresenter;
+    @BindView(R.id.profile_image)
+    ImageView mProfileImageView;
+
+    @BindView(R.id.profile_name_input_layout)
+    TextInputLayout mProfileNameInputLayout;
+
+    @BindView(R.id.profile_name_input_edit_text)
+    TextInputEditText mProfileNameInputEditText;
+
+    @BindView(R.id.update_profile_button)
+    TextView mUpdateProfileButton;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
+        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        mPresenter = new ProfileFragmentPresenter(this, userHelper);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
+    @OnClick(R.id.update_profile_button)
+    public void onClickUpdate() {
+        mPresenter.onUpdateClick();
+    }
+
+    // View methods
+
+
+    @Override
+    public void setEditEnabled(boolean enabled) {
+        mProfileImageView.setEnabled(enabled);
+        mProfileNameInputLayout.setEnabled(enabled);
+        mProfileNameInputEditText.setEnabled(enabled);
+        mProfileNameInputEditText.setFocusable(enabled);
+    }
+
+    @Override
+    public void launchAuthentication() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
+    }
 }

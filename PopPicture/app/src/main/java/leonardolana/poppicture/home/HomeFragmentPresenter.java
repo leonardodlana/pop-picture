@@ -47,7 +47,7 @@ public class HomeFragmentPresenter extends BasePresenter {
         }
 
         // check if onboarding is necessary
-        if (mPersistentHelper.getBoolean(PersistentSharedKeys.KEY_NEEDS_TO_SHOW_ONBOARDING, true)) {
+        if (PersistentSharedKeys.needToShowOnboarding(mPersistentHelper)) {
             mView.showOnboarding();
         }
     }

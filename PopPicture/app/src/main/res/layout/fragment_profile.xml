@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/profile_image"
-        android:layout_marginTop="24dp"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/ic_profile"
-        android:background="@drawable/circle"
-        android:padding="16dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/circle"
         android:backgroundTint="@color/md_grey_600"
-        android:tint="@color/md_white_1000"/>
+        android:padding="16dp"
+        android:src="@drawable/ic_profile"
+        android:tint="@color/md_white_1000" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/profile_name_input_layout"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@color/md_black_1000"
         android:layout_below="@+id/profile_image"
-        >
+        android:layout_marginTop="16dp"
+        app:hintTextAppearance="@color/md_black_1000">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/profile_name_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:backgroundTint="@color/colorPrimary"
             android:enabled="false"
             android:focusable="false"
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:hint="Name"
             android:textColor="@color/md_black_1000"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/md_black_1000"
-            android:backgroundTint="@color/colorPrimary"
-            android:hint="Name"/>
+            android:textColorHint="@color/md_black_1000" />
 
     </android.support.design.widget.TextInputLayout>
+
+
+    <include
+        android:id="@+id/update_profile_button"
+        layout="@layout/button_full_width_contained"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="UPDATE" />
+
 
 </RelativeLayout>

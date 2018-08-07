@@ -1,6 +1,11 @@
 package leonardolana.poppicture.profile;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.common.UserWatcher;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -22,8 +27,45 @@ import leonardolana.poppicture.common.BasePresenter;
  */
 
 public class ProfileFragmentPresenter extends BasePresenter {
+
+    private UserHelper mUserHelper;
+    private ProfileFragmentView mView;
+    private UserWatcher mUserWatcher;
+    private boolean mUserLoggedIn = false;
+
+    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper) {
+        mView = view;
+        mUserHelper = userHelper;
+        mUserLoggedIn = mUserHelper.isUserLoggedIn();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mView.setEditEnabled(mUserLoggedIn);
+    }
+
     @Override
     public void onDestroy() {
+        mView = null;
+        mUserHelper.removeWatcher(mUserWatcher);
+        mUserHelper = null;
+    }
 
+    public void onUpdateClick() {
+        if (false && mUserLoggedIn) {
+            // Call update
+        } else {
+            // Sign in
+            mUserWatcher = new UserWatcher() {
+                @Override
+                public void onUserLoggedIn() {
+                    mView.setEditEnabled(true);
+                    mUserHelper.removeWatcher(mUserWatcher);
+                }
+            };
+            mUserHelper.addWatcher(mUserWatcher);
+            mView.launchAuthentication();
+        }
     }
 }

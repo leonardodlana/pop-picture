@@ -1,6 +1,15 @@
 package leonardolana.poppicture.helpers.impl;
 
-import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
+import java.util.List;
+
+import leonardolana.poppicture.data.Location;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.PictureLoader;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.ServerRequestLikedPictures;
+import leonardolana.poppicture.server.ServerRequestNearbyPictures;
 
 /**
  * Created by Leonardo Lana
@@ -20,16 +29,53 @@ import leonardolana.poppicture.helpers.api.PictureLoaderHelper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class PicturesLoaderHelperImpl implements PictureLoaderHelper {
+public class PicturesLoaderHelperImpl implements PictureLoader {
+
+    private final ServerHelper mServerHelper;
+    private final UserHelper mUserHelper;
+
+    public PicturesLoaderHelperImpl(ServerHelper serverHelper, UserHelper userHelper) {
+        mServerHelper = serverHelper;
+        mUserHelper = userHelper;
+    }
+
+    @Override
+    public void loadNearbyPictures(Location location, final OnPicturesLoadListener listener) {
+        new ServerRequestNearbyPictures(location).execute(mServerHelper, mUserHelper, new ServerRequestNearbyPictures.ServerRequestNearbyPicturesResponse() {
+            @Override
+            public void onSuccess(List<Picture> pictureList) {
+                listener.onLoad(pictureList);
+            }
+
+            @Override
+            public void onError(RequestError e) {
+                listener.onError(e);
+            }
+        });
+    }
 
     @Override
     public void loadNearbyPictures(OnPicturesLoadListener listener) {
+        loadNearbyPictures(mUserHelper.getLastKnownLocation(), listener);
+    }
 
+    @Override
+    public void loadFromLikedPictures(Location location, final OnPicturesLoadListener listener) {
+        new ServerRequestLikedPictures(location).execute(mServerHelper, mUserHelper, new ServerRequestLikedPictures.ServerRequestLikedPicturesResponse() {
+            @Override
+            public void onSuccess(List<Picture> pictureList) {
+                listener.onLoad(pictureList);
+            }
+
+            @Override
+            public void onError(RequestError e) {
+                listener.onError(e);
+            }
+        });
     }
 
     @Override
     public void loadFromLikedPictures(OnPicturesLoadListener listener) {
-
+        loadFromLikedPictures(mUserHelper.getLastKnownLocation(), listener);
     }
-
 }

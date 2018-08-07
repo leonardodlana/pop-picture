@@ -1,6 +1,12 @@
 package leonardolana.poppicture.login.authentication;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.firebase.ui.auth.AuthUI;
 
@@ -8,6 +14,11 @@ import java.util.List;
 
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
 /**
  * Created by Leonardo Lana
@@ -32,11 +43,21 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
 
     private static final int RC_SIGN_IN = 123;
 
-    private final LoginAuthenticationPresenter mPresenter;
+    private LoginAuthenticationPresenter mPresenter;
 
-    public LoginAuthenticationFragment() {
-        mPresenter = new LoginAuthenticationPresenter(this);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
+        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        mPresenter = new LoginAuthenticationPresenter(this, userHelper, ServerHelperImpl.getInstance(getContext().getApplicationContext()));
         init(mPresenter);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_loading, container, false);
     }
 
     @Override
@@ -44,8 +65,12 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN)
-            mPresenter.onAuthenticationResult(resultCode, data);
+            mPresenter.onAuthenticationResult(resultCode);
     }
+
+    /*
+        View methods
+     */
 
     @Override
     public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers) {
@@ -57,5 +82,10 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
                         .setTheme(R.style.AppTheme)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    public void dismiss() {
+        getActivity().finish();
     }
 }

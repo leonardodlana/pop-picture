@@ -40,7 +40,7 @@ public class OnboardingFragmentPresenter extends BasePresenter {
     }
 
     private void dismiss() {
-        mPersistentHelper.setBoolean(PersistentSharedKeys.KEY_NEEDS_TO_SHOW_ONBOARDING, false);
+        PersistentSharedKeys.setNeedToShowOnboarding(mPersistentHelper, false);
         mView.dismiss();
     }
 

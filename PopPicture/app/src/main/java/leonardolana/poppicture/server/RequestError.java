@@ -1,4 +1,4 @@
-package leonardolana.poppicture.helpers.api;
+package leonardolana.poppicture.server;
 
 /**
  * Created by Leonardo Lana
@@ -18,9 +18,6 @@ package leonardolana.poppicture.helpers.api;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-public interface PictureDownloader {
-
-
-
+public enum RequestError {
+    JSON_PARSE_ERROR
 }
