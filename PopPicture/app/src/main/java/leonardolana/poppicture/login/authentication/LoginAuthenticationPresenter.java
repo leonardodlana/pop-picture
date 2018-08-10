@@ -82,13 +82,14 @@ public class LoginAuthenticationPresenter extends BasePresenter {
                     user.getDisplayName())
                     .execute(mServerHelper, mUserHelper, new ServerRequestRegister.ServerRequestRegisterResponse() {
                         @Override
-                        public void onSuccess() {
+                        public void onSuccess(String publicId) {
+                            mUserHelper.setPublicId(publicId);
                             mView.dismiss();
                         }
 
                         @Override
                         public void onError(RequestError error) {
-
+                            mView.showError();
                         }
                     });
         } else {
@@ -96,6 +97,7 @@ public class LoginAuthenticationPresenter extends BasePresenter {
             // sign-in flow using the back button_contained_shape. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
+            mView.showError();
         }
     }
 }

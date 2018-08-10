@@ -3,8 +3,6 @@
     android:id="@+id/update_profile_button"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/button_min_height"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
     android:gravity="center"
     android:paddingEnd="@dimen/button_padding"
     android:paddingStart="@dimen/button_padding"

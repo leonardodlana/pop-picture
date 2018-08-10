@@ -132,7 +132,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
         public VolleyRequest(String url, JSONObject json, int timeout, boolean shouldUseCache, Response.Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
             super(Method.POST, url, listener, errorListener);
             setShouldCache(shouldUseCache);
-            setRetryPolicy(new DefaultRetryPolicy(timeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            setRetryPolicy(new DefaultRetryPolicy(timeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             mJSON = json;
             setShouldRetryServerErrors(false);
         }
@@ -147,15 +147,6 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
             return "application/json";
         }
 
-        @Override
-        protected Response<String> parseNetworkResponse(NetworkResponse response) {
-            return super.parseNetworkResponse(response);
-        }
-
-        @Override
-        protected VolleyError parseNetworkError(VolleyError volleyError) {
-            return super.parseNetworkError(volleyError);
-        }
     }
 
 }

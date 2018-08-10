@@ -1,8 +1,4 @@
-package leonardolana.poppicture.login.authentication;
-
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.List;
+package leonardolana.poppicture.editor;
 
 /**
  * Created by Leonardo Lana
@@ -22,13 +18,13 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface EditorFragmentView {
 
-public interface LoginAuthenticationView {
-
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
+    void showLoadingErrorDialogAndDismiss();
 
     void dismiss();
 
-    void showError();
+    void showSuccess();
 
+    void showError();
 }

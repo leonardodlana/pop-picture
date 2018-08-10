@@ -1,8 +1,9 @@
-package leonardolana.poppicture.login.authentication;
+package leonardolana.poppicture.helpers.api;
 
-import com.firebase.ui.auth.AuthUI;
+import android.util.Pair;
 
-import java.util.List;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by Leonardo Lana
@@ -22,13 +23,15 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface CloudStorage {
 
-public interface LoginAuthenticationView {
+    interface OnUploadListener {
+        void onCompletion();
+        void onError();
+    }
 
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
+    void upload(OnUploadListener onUploadListener, Pair<String, InputStream>... filesToUpload);
 
-    void dismiss();
-
-    void showError();
+    void download(String path, OutputStream outputStream);
 
 }

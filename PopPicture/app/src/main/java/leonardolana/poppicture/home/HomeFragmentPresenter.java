@@ -8,6 +8,7 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -32,10 +33,12 @@ public class HomeFragmentPresenter extends BasePresenter {
 
     private HomeFragmentView mView;
     private PersistentHelper mPersistentHelper;
+    private UserHelper mUserHelper;
 
-    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper) {
+    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper, UserHelper userHelper) {
         mView = view;
         mPersistentHelper = persistentHelper;
+        mUserHelper = userHelper;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class HomeFragmentPresenter extends BasePresenter {
         mView = null;
     }
 
-    void onClickMenu(String menuItemName) {
+    public void onClickMenu(String menuItemName) {
         for (HomeSection homeSection : HomeSection.values()) {
             if (TextUtils.equals(homeSection.getMenu(), menuItemName)) {
                 // Do something with the click, tracking maybe
@@ -68,4 +71,10 @@ public class HomeFragmentPresenter extends BasePresenter {
         }
     }
 
+    public void onClickFab() {
+        if(mUserHelper.isUserLoggedIn())
+            mView.openFilePicker("image/png,image/gif,image/jpg,image/jpeg,image/bmp");
+        else
+            mView.openProfileAndLogin();
+    }
 }

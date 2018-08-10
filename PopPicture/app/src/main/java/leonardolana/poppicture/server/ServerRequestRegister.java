@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
@@ -29,7 +32,7 @@ import leonardolana.poppicture.helpers.api.UserHelper;
 public class ServerRequestRegister extends ServerRequest implements RequestResponse {
 
     public interface ServerRequestRegisterResponse {
-        void onSuccess();
+        void onSuccess(String publicId);
         void onError(RequestError error);
     }
 
@@ -49,7 +52,14 @@ public class ServerRequestRegister extends ServerRequest implements RequestRespo
 
     @Override
     public void onRequestSuccess(String data) {
-        mCallback.onSuccess();
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String publicId = jsonObject.getString(KEY_USER_PUBLIC_ID);
+            mCallback.onSuccess(publicId);
+        } catch (JSONException e) {
+            onRequestError(RequestError.JSON_PARSE_ERROR);
+        }
+
     }
 
     @Override

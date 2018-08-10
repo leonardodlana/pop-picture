@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_round_dialog"
+    android:minWidth="280dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:text="Title"
+        android:textColor="@color/dialog_title"
+        android:textSize="@dimen/title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id."
+        android:textColor="@color/dialog_description" />
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/button_ok"
+        layout="@layout/button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:text="OK"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/description"
+        android:layout_marginBottom="@dimen/dialog_bottom_margin"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_marginTop="@dimen/dialog_button_top_margin" />
+
+</RelativeLayout>

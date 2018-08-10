@@ -88,4 +88,9 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
     public void dismiss() {
         getActivity().finish();
     }
+
+    @Override
+    public void showError() {
+        getActivity().finish();
+    }
 }

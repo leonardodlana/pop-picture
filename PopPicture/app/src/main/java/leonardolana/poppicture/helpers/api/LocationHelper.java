@@ -23,8 +23,8 @@ import leonardolana.poppicture.common.LocationListener;
 
 public interface LocationHelper {
 
-    public void updateLocation(LocationListener locationListener);
+    void updateLocation(LocationListener locationListener);
 
-    public void destroy();
+    void destroy();
 
 }

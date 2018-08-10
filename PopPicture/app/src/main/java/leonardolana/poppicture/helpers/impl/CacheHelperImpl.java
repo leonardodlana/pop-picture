@@ -1,8 +1,10 @@
-package leonardolana.poppicture.login.authentication;
+package leonardolana.poppicture.helpers.impl;
 
-import com.firebase.ui.auth.AuthUI;
+import android.support.annotation.NonNull;
 
-import java.util.List;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.data.User;
+import leonardolana.poppicture.helpers.api.CacheHelper;
 
 /**
  * Created by Leonardo Lana
@@ -22,13 +24,9 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class CacheHelperImpl extends CacheHelper {
+    @Override
+    public void loadPicture(User user, Picture picture, @NonNull OnLoadPicture onLoadPicture) {
 
-public interface LoginAuthenticationView {
-
-    public void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
-
-    void dismiss();
-
-    void showError();
-
+    }
 }

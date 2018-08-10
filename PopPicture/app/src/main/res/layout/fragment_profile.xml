@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="false"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.AppCompatImageView
@@ -31,8 +32,7 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:enabled="false"
-            android:focusable="false"
+            android:drawableTint="@color/colorPrimary"
             android:hint="Name"
             android:textColor="@color/md_black_1000"
             android:textColorHint="@color/md_black_1000" />
@@ -40,17 +40,23 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <include
+    <leonardolana.poppicture.common.ButtonTextView
         android:id="@+id/update_profile_button"
-        layout="@layout/button_full_width_contained"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_min_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/button_full_width_contained_shape"
+        android:gravity="center"
+        android:elevation="2dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/button_padding"
+        android:paddingStart="@dimen/button_padding"
+        android:textAllCaps="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:textColor="@color/md_white_1000"
+        android:textSize="@dimen/button_text"
         android:text="UPDATE" />
 
 

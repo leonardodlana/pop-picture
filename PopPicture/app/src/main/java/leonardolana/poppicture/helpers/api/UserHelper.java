@@ -23,23 +23,27 @@ import leonardolana.poppicture.data.Location;
  */
 public interface UserHelper {
 
-    public void setName(String name);
+    void setName(String name);
 
-    public String getName();
+    String getName();
 
-    public void setFirebaseId(String firebaseId);
+    void setFirebaseId(String firebaseId);
 
-    public String getFirebaseId();
+    String getFirebaseId();
 
-    public void setEmail(String email);
+    void setEmail(String email);
 
-    public String getEmail();
+    String getEmail();
 
-    public boolean isUserLoggedIn();
+    boolean isUserLoggedIn();
 
     void setLastKnownLocation(Location lastKnownLocation);
 
     Location getLastKnownLocation();
+
+    void setPublicId(String publicId);
+
+    String getPublicId();
 
     /*
         Watcher methods
@@ -56,4 +60,5 @@ public interface UserHelper {
     void removeWatcher(UserWatcher userWatcher);
 
     boolean hasLastKnownLocation();
+
 }

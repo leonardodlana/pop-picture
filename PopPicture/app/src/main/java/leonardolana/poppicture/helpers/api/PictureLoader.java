@@ -27,7 +27,7 @@ import leonardolana.poppicture.server.RequestError;
 
 public interface PictureLoader {
 
-    public interface OnPicturesLoadListener {
+    interface OnPicturesLoadListener {
         void onLoad(List<Picture> pictures);
 
         void onError(RequestError e);

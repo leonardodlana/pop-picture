@@ -22,6 +22,6 @@ import leonardolana.poppicture.server.ServerRequest;
  */
 public interface ServerHelper {
 
-    public void execute(ServerRequest serverRequest);
+    void execute(ServerRequest serverRequest);
 
 }

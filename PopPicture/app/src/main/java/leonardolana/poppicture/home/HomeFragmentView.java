@@ -29,4 +29,7 @@ public interface HomeFragmentView {
 
     void showOnboarding();
 
+    void openFilePicker(String allowedMimeTypes);
+
+    void openProfileAndLogin();
 }

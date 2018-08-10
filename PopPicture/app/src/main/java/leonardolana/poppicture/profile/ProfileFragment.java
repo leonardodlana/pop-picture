@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +64,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         mPresenter = new ProfileFragmentPresenter(this, userHelper);
+        init(mPresenter);
     }
 
     @Nullable
@@ -80,7 +82,6 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     // View methods
 
-
     @Override
     public void setEditEnabled(boolean enabled) {
         mProfileImageView.setEnabled(enabled);
@@ -93,5 +94,10 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     public void launchAuthentication() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showUpdatedFeedback() {
+        Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
 }

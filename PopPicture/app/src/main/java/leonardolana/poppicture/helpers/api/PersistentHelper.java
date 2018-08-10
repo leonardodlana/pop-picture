@@ -21,28 +21,28 @@ package leonardolana.poppicture.helpers.api;
 
 public interface PersistentHelper {
 
-    public void setString(String key, String value);
+    void setString(String key, String value);
 
-    public String getString(String key, String defaultValue);
+    String getString(String key, String defaultValue);
 
-    public void setInt(String key, int value);
+    void setInt(String key, int value);
 
-    public int getInt(String key, int defaultValue);
+    int getInt(String key, int defaultValue);
 
-    public void setLong(String key, long value);
+    void setLong(String key, long value);
 
-    public long getLong(String key, long defaultValue);
+    long getLong(String key, long defaultValue);
 
-    public void setFloat(String key, float value);
+    void setFloat(String key, float value);
 
-    public float getFloat(String key, int defaultValue);
+    float getFloat(String key, int defaultValue);
 
-    public void setBoolean(String key, boolean value);
+    void setBoolean(String key, boolean value);
 
-    public boolean getBoolean(String key, boolean defaultValue);
+    boolean getBoolean(String key, boolean defaultValue);
 
-    public void setDouble(String key, double value);
+    void setDouble(String key, double value);
 
-    public double getDouble(String key, double defaultValue);
+    double getDouble(String key, double defaultValue);
 
 }

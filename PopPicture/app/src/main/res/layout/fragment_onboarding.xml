@@ -3,30 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_camera"
-            android:tint="@color/md_white_1000" />
-
-    </RelativeLayout>
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_camera"
+        android:tint="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
         android:layout_marginTop="16dp"
         android:text="Welcome"
         android:textColor="@color/normal_text"
@@ -56,30 +48,26 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/secondary_text" />
 
-    <TextView
+    <leonardolana.poppicture.common.ButtonTextView
         android:id="@+id/negative_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/button_min_height"
         android:layout_below="@+id/location_access_description"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="24dp"
-        android:padding="6dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_marginTop="16dp"
         android:text="disagree"
         android:textAllCaps="true"
         android:textColor="@color/negative_button" />
 
-    <TextView
+    <leonardolana.poppicture.common.ButtonTextView
         android:id="@+id/positive_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_min_height"
         android:layout_alignTop="@+id/negative_button"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/negative_button"
+        android:layout_marginBottom="@dimen/dialog_bottom_margin"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
         android:layout_toStartOf="@+id/negative_button"
-        android:padding="6dp"
         android:text="agree"
         android:textAllCaps="true"
         android:textColor="@color/positive_button" />

@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * limitations under the License.
  */
 
-public interface CacheHelper {
+public abstract class CacheHelper {
 
     @Retention(SOURCE)
     @IntDef({LOAD_ERROR_NO_CONNECTION, LOAD_ERROR_INVALID_ITEM, LOAD_ERROR_UNKNOWN})
@@ -45,6 +45,6 @@ public interface CacheHelper {
         void onError(@LoadError int error);
     }
 
-    public void loadPicture(User user, Picture picture, @NonNull OnLoadPicture onLoadPicture);
+    public abstract void loadPicture(User user, Picture picture, @NonNull OnLoadPicture onLoadPicture);
 
 }

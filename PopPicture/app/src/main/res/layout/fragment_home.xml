@@ -48,4 +48,16 @@
         app:itemTextColor="@color/md_white_1000"
         app:menu="@menu/menu_fragment_home" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_media_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:layout_above="@id/bottom_navigation"
+        android:src="@drawable/ic_plus"
+        android:tint="@color/md_white_1000"
+        android:layout_margin="16dp" />
+
 </RelativeLayout>

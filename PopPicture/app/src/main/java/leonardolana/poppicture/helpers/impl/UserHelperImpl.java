@@ -53,6 +53,7 @@ public class UserHelperImpl implements UserHelper {
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_LATITUDE = "user_latitude";
     private static final String KEY_USER_LONGITUDE = "user_longitude";
+    private static final String KEY_USER_PUBLIC_ID = "user_public_id";
 
     private final PersistentHelper mPersistentHelper;
 
@@ -119,6 +120,16 @@ public class UserHelperImpl implements UserHelper {
         Location location = getLastKnownLocation();
         return !(location.getLatitude() == 0 &&
                 location.getLongitude() == 0);
+    }
+
+    @Override
+    public void setPublicId(String publicId) {
+        mPersistentHelper.setString(KEY_USER_PUBLIC_ID, publicId);
+    }
+
+    @Override
+    public String getPublicId() {
+        return mPersistentHelper.getString(KEY_USER_PUBLIC_ID, "folder");
     }
 
     /*

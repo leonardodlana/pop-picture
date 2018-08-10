@@ -53,8 +53,9 @@ public class ProfileFragmentPresenter extends BasePresenter {
     }
 
     public void onUpdateClick() {
-        if (false && mUserLoggedIn) {
+        if (mUserLoggedIn) {
             // Call update
+            mView.showUpdatedFeedback();
         } else {
             // Sign in
             mUserWatcher = new UserWatcher() {

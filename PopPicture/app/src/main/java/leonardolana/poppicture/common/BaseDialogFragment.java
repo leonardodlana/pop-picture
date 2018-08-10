@@ -1,10 +1,16 @@
 package leonardolana.poppicture.common;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
+import leonardolana.poppicture.R;
 
 /**
  * Created by Leonardo Lana
@@ -28,22 +34,42 @@ import android.view.View;
 public abstract class BaseDialogFragment extends DialogFragment {
 
     private BasePresenter mPresenter;
+    private boolean mIsFullScreen = false;
+    private boolean mHasTitle = true;
 
     public void init(BasePresenter presenter) {
         mPresenter = presenter;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog;
+        if (mIsFullScreen) {
+            dialog = new AppCompatDialog(getActivity(), R.style.FullScreenDialog);
+        } else
+            dialog = new AppCompatDialog(getActivity(), 0);
+
+        if (mIsFullScreen) {
+            dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
+        }
+        if(!mHasTitle)
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+        return dialog;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(mPresenter != null)
+        if (mPresenter != null)
             mPresenter.onCreate(savedInstanceState);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mPresenter != null)
+        if (mPresenter != null)
             mPresenter.onSaveInstanceState(outState);
 
         super.onSaveInstanceState(outState);
@@ -51,10 +77,18 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
     @Override
     public void onDestroy() {
-        if(mPresenter != null)
+        if (mPresenter != null)
             mPresenter.onDestroy();
 
         super.onDestroy();
+    }
+
+    protected void setHasTitle(boolean hasTitle) {
+        mHasTitle = hasTitle;
+    }
+
+    protected void setFullScreen(boolean isFullScreen) {
+        mIsFullScreen = isFullScreen;
     }
 
 }

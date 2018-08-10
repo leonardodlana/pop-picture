@@ -1,10 +1,10 @@
-package leonardolana.poppicture.home;
+package leonardolana.poppicture.common;
 
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 
 import leonardolana.poppicture.R;
-import leonardolana.poppicture.common.BaseActivity;
 
 /**
  * Created by Leonardo Lana
@@ -24,20 +24,25 @@ import leonardolana.poppicture.common.BaseActivity;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class ButtonTextViewContained extends ButtonTextView {
 
-public class HomeActivity extends BaseActivity {
+    public ButtonTextViewContained(Context context) {
+        super(context);
+    }
+
+    public ButtonTextViewContained(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ButtonTextViewContained(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (savedInstanceState == null) {
-            addFragment(new HomeFragment(), R.id.fragment_container, false);
-        }
+    protected void init() {
+        super.init();
+        setBackground(getResources().getDrawable(R.drawable.button_contained_shape));
     }
+
 
 }

@@ -16,5 +16,7 @@
     <color name="positive_button">@color/colorPrimary</color>
     <color name="negative_button">@color/md_grey_500</color>
     <color name="text_link">@color/md_blue_700</color>
+    <color name="dialog_title">@color/md_black_1000</color>
+    <color name="dialog_description">@color/md_grey_600</color>
 
 </resources>
