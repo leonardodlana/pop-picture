@@ -129,7 +129,7 @@ public class UserHelperImpl implements UserHelper {
 
     @Override
     public String getPublicId() {
-        return mPersistentHelper.getString(KEY_USER_PUBLIC_ID, "folder");
+        return mPersistentHelper.getString(KEY_USER_PUBLIC_ID, "");
     }
 
     /*

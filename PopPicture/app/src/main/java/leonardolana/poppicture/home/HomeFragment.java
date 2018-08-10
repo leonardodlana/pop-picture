@@ -142,7 +142,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
         float fromY, toY;
 
-        int bottomMargin = ((RelativeLayout.LayoutParams) mAddMediaFab.getLayoutParams()).bottomMargin;
+        int bottomMargin = ((ViewGroup.MarginLayoutParams) mAddMediaFab.getLayoutParams()).bottomMargin;
 
         int translationY = (mAddMediaFab.getBottom() - mAddMediaFab.getTop()) + bottomMargin;
 

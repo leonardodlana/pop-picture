@@ -1,4 +1,6 @@
-package leonardolana.poppicture.server;
+package leonardolana.poppicture.helpers.api;
+
+import leonardolana.poppicture.data.User;
 
 /**
  * Created by Leonardo Lana
@@ -18,8 +20,12 @@ package leonardolana.poppicture.server;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ServerConstants {
+public interface UsersDataHelper {
 
-    public static final String URL = "http://192.168.2.37:8080/pop_picture/cmd";
+    User getUser(String publicId);
+
+    void createUser(String publicId);
+
+    void updateUser(String publicId, String name, String profilePicture);
 
 }

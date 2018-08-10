@@ -38,12 +38,4 @@ public class PictureViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void setImage(Bitmap bitmap) {
-        mImageView.setImageBitmap(bitmap);
-    }
-
-    public void setImage(int drawableId) {
-        mImageView.setImageResource(drawableId);
-    }
-
 }

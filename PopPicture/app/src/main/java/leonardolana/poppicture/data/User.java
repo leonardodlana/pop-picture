@@ -23,7 +23,11 @@ public class User {
 
     private String mId;
     private String mName;
-    private String mPictureName;
+    private String mProfilePicture;
+
+    public User(String id) {
+        mId = id;
+    }
 
     public String getId() {
         return mId;
@@ -34,7 +38,7 @@ public class User {
     }
 
     public String getPictureName() {
-        return mPictureName;
+        return mProfilePicture;
     }
 
 }

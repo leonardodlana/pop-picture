@@ -9,6 +9,11 @@ import android.util.AttributeSet;
 import java.util.List;
 
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.CacheHelper;
+import leonardolana.poppicture.helpers.api.UsersDataHelper;
+import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
+import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
+import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
 
 /**
  * Created by Leonardo Lana
@@ -56,7 +61,10 @@ public class PictureRecyclerView extends RecyclerView {
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         setLayoutManager(mLayoutManager);
 
-        mAdapter = new PictureRecyclerViewAdapter();
+        //TODO view should not instance this
+        CacheHelper cacheHelper = new CacheHelperImpl(getContext().getApplicationContext(), new CloudStorageImpl());
+        UsersDataHelper usersDataHelper = new UsersDataHelperImpl();
+        mAdapter = new PictureRecyclerViewAdapter(cacheHelper, usersDataHelper);
         setAdapter(mAdapter);
     }
 

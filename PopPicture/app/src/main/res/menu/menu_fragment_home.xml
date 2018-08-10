@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_nearby"
         android:enabled="true"
-        android:icon="@drawable/ic_radar"
+        android:icon="@drawable/ic_location"
         android:title="Nearby"
         app:showAsAction="ifRoom" />
     <item

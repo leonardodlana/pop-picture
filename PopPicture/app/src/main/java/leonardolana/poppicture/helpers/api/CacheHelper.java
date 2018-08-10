@@ -3,6 +3,7 @@ package leonardolana.poppicture.helpers.api;
 import android.graphics.Bitmap;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
 import java.lang.annotation.Retention;
 
@@ -45,6 +46,7 @@ public abstract class CacheHelper {
         void onError(@LoadError int error);
     }
 
-    public abstract void loadPicture(User user, Picture picture, @NonNull OnLoadPicture onLoadPicture);
+    public abstract void loadPicture(Picture picture, OnLoadPicture onLoadPicture);
+    public abstract void loadPicture(Picture picture, ImageView target);
 
 }

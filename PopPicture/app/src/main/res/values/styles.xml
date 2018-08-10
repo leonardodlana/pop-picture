@@ -24,4 +24,11 @@
         <item name="android:windowMinWidthMinor">100%</item>
     </style>
 
+    <style name="BottomNavigation">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="itemBackground">@drawable/bottom_navigation_colors</item>
+        <item name="itemIconTint">@color/md_white_1000</item>
+        <item name="itemTextColor">@color/md_white_1000</item>
+    </style>
+
 </resources>

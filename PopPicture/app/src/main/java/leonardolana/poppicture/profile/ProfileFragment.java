@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,17 +45,17 @@ import leonardolana.poppicture.login.LoginActivity;
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
     private ProfileFragmentPresenter mPresenter;
-    @BindView(R.id.profile_image)
-    ImageView mProfileImageView;
+    @BindView(R.id.image_profile)
+    ImageView mImageViewProfile;
 
-    @BindView(R.id.profile_name_input_layout)
-    TextInputLayout mProfileNameInputLayout;
+    @BindView(R.id.edit_text_profile_name)
+    EditText mEditTextProfileName;
 
-    @BindView(R.id.profile_name_input_edit_text)
-    TextInputEditText mProfileNameInputEditText;
+    @BindView(R.id.button_profile_update)
+    TextView mButtonProfileUpdate;
 
-    @BindView(R.id.update_profile_button)
-    TextView mUpdateProfileButton;
+    @BindView(R.id.button_sign_in)
+    TextView mButtonSignIn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         return view;
     }
 
-    @OnClick(R.id.update_profile_button)
+    @OnClick(R.id.button_profile_update)
     public void onClickUpdate() {
         mPresenter.onUpdateClick();
     }
@@ -84,10 +83,11 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @Override
     public void setEditEnabled(boolean enabled) {
-        mProfileImageView.setEnabled(enabled);
-        mProfileNameInputLayout.setEnabled(enabled);
-        mProfileNameInputEditText.setEnabled(enabled);
-        mProfileNameInputEditText.setFocusable(enabled);
+        mImageViewProfile.setEnabled(enabled);
+        mEditTextProfileName.setEnabled(enabled);
+        mButtonProfileUpdate.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        mButtonSignIn.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        mButtonSignIn.setVisibility(View.GONE);
     }
 
     @Override

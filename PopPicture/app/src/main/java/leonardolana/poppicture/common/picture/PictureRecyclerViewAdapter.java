@@ -13,6 +13,8 @@ import java.util.Random;
 
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.CacheHelper;
+import leonardolana.poppicture.helpers.api.UsersDataHelper;
 
 /**
  * Created by Leonardo Lana
@@ -39,7 +41,14 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final int VIEW_TYPE_MEDIUM = 1;
     private static final int VIEW_TYPE_BIG = 2;
 
+    private final CacheHelper mCacheHelper;
+    private final UsersDataHelper mUsersDataHelper;
     private final List<Pair<Integer, Picture>> mData = new ArrayList<>();
+
+    public PictureRecyclerViewAdapter(CacheHelper cacheHelper, UsersDataHelper usersDataHelper) {
+        mCacheHelper = cacheHelper;
+        mUsersDataHelper = usersDataHelper;
+    }
 
     @NonNull
     @Override
@@ -66,8 +75,8 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         PictureViewHolder holder = (PictureViewHolder) h;
         Picture picture = mData.get(position).second;
-
-        holder.setImage(R.drawable.place_holder);
+        mCacheHelper.loadPicture(picture, holder.mImageView);
+        holder.mImageView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.md_grey_600));
     }
 
     @Override

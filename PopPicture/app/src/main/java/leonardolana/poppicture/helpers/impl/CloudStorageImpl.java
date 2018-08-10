@@ -1,15 +1,19 @@
 package leonardolana.poppicture.helpers.impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
@@ -57,6 +61,10 @@ public class CloudStorageImpl implements CloudStorage {
             storageRef.putStream(fileToUpload.second).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(!task.isSuccessful()) {
+                        onUploadListener.onError();
+                        return;
+                    }
                     hashSet.remove(fileToUpload.first);
 
                     // Queue is done
@@ -74,8 +82,27 @@ public class CloudStorageImpl implements CloudStorage {
     }
 
     @Override
-    public void download(String path, OutputStream outputStream) {
+    public void download(final OnDownloadListener onDownloadListener, String path, File file) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference(path);
+        storageRef.getMetadata().addOnCompleteListener(new OnCompleteListener<StorageMetadata>() {
+            @Override
+            public void onComplete(@NonNull Task<StorageMetadata> task) {
+                Log.e("","");
+            }
+        });
 
+        storageRef.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                onDownloadListener.onCompletion();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onDownloadListener.onError();
+            }
+        });
     }
 
 }

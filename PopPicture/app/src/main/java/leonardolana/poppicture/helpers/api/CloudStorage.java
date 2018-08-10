@@ -2,6 +2,7 @@ package leonardolana.poppicture.helpers.api;
 
 import android.util.Pair;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -30,8 +31,14 @@ public interface CloudStorage {
         void onError();
     }
 
+    interface OnDownloadListener {
+        void onCompletion();
+        void onError();
+    }
+
     void upload(OnUploadListener onUploadListener, Pair<String, InputStream>... filesToUpload);
 
-    void download(String path, OutputStream outputStream);
+    // TODO allow multiple downloads
+    void download(OnDownloadListener onDownloadListener, String path, File file);
 
 }
