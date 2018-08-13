@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_profile"
+        android:tint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="16dp"
+        android:text="Sign in required"
+        android:textColor="@color/normal_text"
+        android:textSize="@dimen/title" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignRight="@+id/title"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="8dp"
+        android:text="To be able to share pictures you need to sign in"
+        android:textColor="@color/normal_text"
+        android:textSize="@dimen/paragraph_text" />
+
+    <TextView
+        android:id="@+id/location_access_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignRight="@+id/title"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="8dp"
+        android:text="We won't publish anything on your behalf"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/secondary_text" />
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/negative_button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_below="@+id/location_access_description"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_marginTop="16dp"
+        android:text="Maybe later"
+        android:textAllCaps="true"
+        android:textColor="@color/negative_button" />
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/positive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_alignTop="@+id/negative_button"
+        android:layout_marginBottom="@dimen/dialog_bottom_margin"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_toStartOf="@+id/negative_button"
+        android:text="Sign in"
+        android:textAllCaps="true"
+        android:textColor="@color/positive_button" />
+</RelativeLayout>

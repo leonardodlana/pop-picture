@@ -51,7 +51,6 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //load pictures
         mView.showLoading();
 
         if(!mUserHelper.hasLastKnownLocation()) {
@@ -67,6 +66,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
                 }
             });
         } else {
+            mLocationHelper.updateLocation(null);
             loadPictures(mUserHelper.getLastKnownLocation());
         }
     }
@@ -94,6 +94,8 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
         mPicturesLoaderHelper = null;
     }
 
+    // View methods
+
     public void refresh() {
         mPicturesLoaderHelper.loadNearbyPictures(new PictureLoader.OnPicturesLoadListener() {
             @Override
@@ -106,5 +108,10 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
                 mView.showLoadError();
             }
         });
+    }
+
+    public void onPictureClick(Picture picture) {
+        // Although this seems redundant, we can use this for tracking
+        mView.openPicture(picture);
     }
 }

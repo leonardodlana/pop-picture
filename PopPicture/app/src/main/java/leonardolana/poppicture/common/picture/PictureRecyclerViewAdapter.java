@@ -12,8 +12,12 @@ import java.util.List;
 import java.util.Random;
 
 import leonardolana.poppicture.R;
+import leonardolana.poppicture.common.Utils;
+import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.data.User;
 import leonardolana.poppicture.helpers.api.CacheHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.api.UsersDataHelper;
 
 /**
@@ -37,17 +41,24 @@ import leonardolana.poppicture.helpers.api.UsersDataHelper;
 
 public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    public interface OnPictureClickListener {
+        void onClick(Picture picture);
+    }
+
     private static final int VIEW_TYPE_SMALL = 0;
     private static final int VIEW_TYPE_MEDIUM = 1;
     private static final int VIEW_TYPE_BIG = 2;
 
     private final CacheHelper mCacheHelper;
-    private final UsersDataHelper mUsersDataHelper;
+    private final UserHelper mUserHelper;
+    private final Location mUserLocation;
     private final List<Pair<Integer, Picture>> mData = new ArrayList<>();
+    private OnPictureClickListener mListener;
 
-    public PictureRecyclerViewAdapter(CacheHelper cacheHelper, UsersDataHelper usersDataHelper) {
+    public PictureRecyclerViewAdapter(CacheHelper cacheHelper, UserHelper userHelper) {
         mCacheHelper = cacheHelper;
-        mUsersDataHelper = usersDataHelper;
+        mUserHelper = userHelper;
+        mUserLocation = mUserHelper.getLastKnownLocation();
     }
 
     @NonNull
@@ -74,9 +85,21 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         PictureViewHolder holder = (PictureViewHolder) h;
-        Picture picture = mData.get(position).second;
-        mCacheHelper.loadPicture(picture, holder.mImageView);
+        final Picture picture = mData.get(position).second;
+
+        holder.mTextViewDescription.setText(Utils.distanceBetweenCoordinatesInKm(
+                mUserLocation.getLatitude(), mUserLocation.getLongitude(),
+                picture.getLatitude(), picture.getLongitude()));
+
+        mCacheHelper.loadPicture(picture, true, holder.mImageView);
         holder.mImageView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.md_grey_600));
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mListener != null)
+                    mListener.onClick(picture);
+            }
+        });
     }
 
     @Override
@@ -89,6 +112,10 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return mData.size();
     }
 
+    public void setOnPictureClickListener(OnPictureClickListener onPictureClickListener) {
+        mListener = onPictureClickListener;
+    }
+
     public void setData(List<Picture> pictureList) {
         mData.clear();
         designateLayout(pictureList);
@@ -97,7 +124,7 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void designateLayout(List<Picture> pictures) {
         Random rnd = new Random();
-
+        // todo build rules
         for(Picture picture : pictures) {
             mData.add(new Pair<Integer, Picture>(rnd.nextInt(3), picture));
         }

@@ -8,6 +8,7 @@ import com.google.common.hash.Hashing;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
 
 /**
  * Created by Leonardo Lana
@@ -76,11 +77,29 @@ public class Utils {
             return bitmap;
 
         float scale = (float) maxSizeInBytes / (float) allocationByteCount;
-        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale), (int) (bitmap.getHeight() * scale), false);
+        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale), (int) (bitmap.getHeight() * scale), true);
     }
 
     public static String generateSHA256(String string) {
         HashCode hashCode = Hashing.sha256().hashString(string, StandardCharsets.UTF_8);
         return hashCode.toString();
     }
+
+    /**
+     * This method is for short distance only, because only flat point distance
+     * is considered
+     */
+    public static double distanceBetweenCoordinates(double lat1, double long1, double lat2, double long2) {
+        double latDist = Math.pow(lat2 - lat1, 2);
+        double longDist = Math.pow(long2 - long1, 2);
+        double distance = Math.sqrt(latDist + longDist);
+        return Math.abs(distance);
+    }
+
+    public static String distanceBetweenCoordinatesInKm(double lat1, double long1, double lat2, double long2) {
+        double distance = distanceBetweenCoordinates(lat1, long1, lat2, long2);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return decimalFormat.format(distance / 111) + " KM";
+    }
+
 }

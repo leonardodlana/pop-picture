@@ -25,4 +25,6 @@ public interface ProfileFragmentView {
     void launchAuthentication();
 
     void showUpdatedFeedback();
+
+    void showProfileOnboarding();
 }

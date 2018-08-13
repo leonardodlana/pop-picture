@@ -153,7 +153,7 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
             InputStream inputStream = getContext().getContentResolver().openInputStream(mFileURI);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Bitmap thumbnail = Utils.createThumbnail(mSampleBitmap, 500);
+            Bitmap thumbnail = Utils.createThumbnail(mSampleBitmap, 1000);
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] thumbBytes = baos.toByteArray();
 

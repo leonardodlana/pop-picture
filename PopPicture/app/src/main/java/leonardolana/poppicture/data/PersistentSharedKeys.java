@@ -22,11 +22,15 @@ import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * An android-independent class that hold shared keys to be used with a
+ * PersistentHelper
  */
 
 public class PersistentSharedKeys {
 
     private static final String KEY_NEED_TO_SHOW_ONBOARDING = "need_to_show_onboarding";
+    private static final String KEY_NEED_TO_SHOW_PROFILE_ONBOARDING = "need_to_show_profile_onboarding";
 
     public static boolean needToShowOnboarding(PersistentHelper persistentHelper) {
         return persistentHelper.getBoolean(KEY_NEED_TO_SHOW_ONBOARDING, true);
@@ -34,6 +38,14 @@ public class PersistentSharedKeys {
 
     public static void setNeedToShowOnboarding(PersistentHelper persistentHelper, boolean value) {
         persistentHelper.setBoolean(KEY_NEED_TO_SHOW_ONBOARDING, value);
+    }
+
+    public static boolean needToShowProfileOnboarding(PersistentHelper persistentHelper) {
+        return persistentHelper.getBoolean(KEY_NEED_TO_SHOW_PROFILE_ONBOARDING, true);
+    }
+
+    public static void setNeedToShowProfileOnboarding(PersistentHelper persistentHelper, boolean value) {
+        persistentHelper.setBoolean(KEY_NEED_TO_SHOW_PROFILE_ONBOARDING, value);
     }
 
 }

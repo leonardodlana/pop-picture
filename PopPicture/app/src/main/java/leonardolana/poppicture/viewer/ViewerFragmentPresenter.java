@@ -1,14 +1,6 @@
-package leonardolana.poppicture.common.picture;
+package leonardolana.poppicture.viewer;
 
-import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import leonardolana.poppicture.R;
+import leonardolana.poppicture.common.BasePresenter;
 
 /**
  * Created by Leonardo Lana
@@ -28,18 +20,16 @@ import leonardolana.poppicture.R;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class ViewerFragmentPresenter extends BasePresenter {
 
-public class PictureViewHolder extends RecyclerView.ViewHolder {
+    private ViewerFragmentView mView;
 
-    @BindView(R.id.image_view)
-    ImageView mImageView;
-
-    @BindView(R.id.text_description)
-    TextView mTextViewDescription;
-
-    public PictureViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
+    public ViewerFragmentPresenter(ViewerFragmentView view) {
+        mView = view;
     }
 
+    @Override
+    public void onDestroy() {
+        mView = null;
+    }
 }

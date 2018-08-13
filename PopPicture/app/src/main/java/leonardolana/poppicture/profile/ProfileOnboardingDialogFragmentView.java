@@ -1,14 +1,4 @@
-package leonardolana.poppicture.common.picture;
-
-import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import leonardolana.poppicture.R;
+package leonardolana.poppicture.profile;
 
 /**
  * Created by Leonardo Lana
@@ -28,18 +18,9 @@ import leonardolana.poppicture.R;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface ProfileOnboardingDialogFragmentView {
 
-public class PictureViewHolder extends RecyclerView.ViewHolder {
+    void launchAuthentication();
 
-    @BindView(R.id.image_view)
-    ImageView mImageView;
-
-    @BindView(R.id.text_description)
-    TextView mTextViewDescription;
-
-    public PictureViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-    }
-
+    void dismiss();
 }

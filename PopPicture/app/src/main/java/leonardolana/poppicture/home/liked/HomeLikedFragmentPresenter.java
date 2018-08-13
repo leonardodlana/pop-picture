@@ -110,4 +110,8 @@ public class HomeLikedFragmentPresenter extends BasePresenter {
         });
     }
 
+    public void onPictureClick(Picture picture) {
+        // Although this seems redundant, we can use this for tracking
+        mView.openPicture(picture);
+    }
 }

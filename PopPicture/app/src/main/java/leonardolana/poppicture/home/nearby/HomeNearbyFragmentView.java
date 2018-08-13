@@ -31,4 +31,6 @@ public interface HomeNearbyFragmentView {
     void onLoad(List<Picture> pictures);
 
     void showLoadError();
+
+    void openPicture(Picture picture);
 }

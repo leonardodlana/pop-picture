@@ -203,6 +203,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
         if(mViewPagerContainer.getCurrentItem() != itemPosition) {
             mViewPagerContainer.setCurrentItem(itemPosition, true);
+            // We could add the android id to the HomeSection item, but, by doing so, the homesection
+            // would know android classes, which is not the desired outcome
+            mBottomNavigationView.setSelectedItemId(getResources().getIdentifier(homeSection.getMenu(), "id", getContext().getPackageName()));
             setFabVisibility(homeSection != HomeSection.PROFILE);
         }
     }

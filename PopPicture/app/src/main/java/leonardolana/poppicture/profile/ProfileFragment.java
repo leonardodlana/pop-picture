@@ -22,6 +22,7 @@ import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.login.LoginActivity;
+import leonardolana.poppicture.onboarding.OnboardingFragment;
 
 /**
  * Created by Leonardo Lana
@@ -62,7 +63,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         super.onCreate(savedInstanceState);
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        mPresenter = new ProfileFragmentPresenter(this, userHelper);
+        mPresenter = new ProfileFragmentPresenter(this, persistentHelper, userHelper);
         init(mPresenter);
     }
 
@@ -74,7 +75,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         return view;
     }
 
-    @OnClick(R.id.button_profile_update)
+    @OnClick({R.id.button_profile_update, R.id.button_sign_in})
     public void onClickUpdate() {
         mPresenter.onUpdateClick();
     }
@@ -87,7 +88,6 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         mEditTextProfileName.setEnabled(enabled);
         mButtonProfileUpdate.setVisibility(enabled ? View.VISIBLE : View.GONE);
         mButtonSignIn.setVisibility(!enabled ? View.VISIBLE : View.GONE);
-        mButtonSignIn.setVisibility(View.GONE);
     }
 
     @Override
@@ -99,5 +99,11 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @Override
     public void showUpdatedFeedback() {
         Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProfileOnboarding() {
+        ProfileOnboardingDialogFragment onboardingFragment = new ProfileOnboardingDialogFragment();
+        onboardingFragment.show(getFragmentManager(), "dialog");
     }
 }

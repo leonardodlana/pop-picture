@@ -5,12 +5,16 @@ import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.lang.ref.WeakReference;
 
 import leonardolana.poppicture.common.LocationListener;
+import leonardolana.poppicture.common.PermissionWatcher;
 import leonardolana.poppicture.data.Permission;
 import leonardolana.poppicture.helpers.PermissionHelper;
 import leonardolana.poppicture.helpers.api.LocationHelper;
@@ -35,11 +39,19 @@ import leonardolana.poppicture.helpers.api.UserHelper;
  * limitations under the License.
  */
 
-public class LocationHelperImpl implements LocationHelper {
+public class LocationHelperImpl implements LocationHelper, PermissionWatcher {
 
     private FusedLocationProviderClient mFusedLocationClient;
+    /**
+     * Avoid context leaking
+     */
     private WeakReference<Context> mContextReference;
     private UserHelper mUserHelper;
+
+    /**
+     * Avoid holding a reference to a listener
+     */
+    private WeakReference<LocationListener> mListenerReference;
 
     public LocationHelperImpl(Context context, UserHelper userHelper) {
         mUserHelper = userHelper;
@@ -52,32 +64,70 @@ public class LocationHelperImpl implements LocationHelper {
     public void updateLocation(final LocationListener locationListener) {
         Context context = mContextReference.get();
 
-        if (context == null || !PermissionHelper.isPermissionGranted(context, Permission.LOCATION))
+        if (context == null)
             return;
 
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            leonardolana.poppicture.data.Location lastKnownLocation = new leonardolana.poppicture.data.Location(location.getLatitude(),
-                                    location.getLongitude());
-                            mUserHelper.setLastKnownLocation(lastKnownLocation);
-                            if(locationListener != null) {
-                                locationListener.onLocationKnown(lastKnownLocation);
-                            }
-                        } else {
-                            if(locationListener != null) {
-                                locationListener.onLocationNotFound();
-                            }
-                        }
+        if(!PermissionHelper.isPermissionGranted(context, Permission.LOCATION)) {
+            mListenerReference = new WeakReference<>(locationListener);
+            PermissionHelper.addPermissionWatcher(this);
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setNumUpdates(1);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mFusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                mFusedLocationClient.removeLocationUpdates(this);
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                    leonardolana.poppicture.data.Location lastKnownLocation = new leonardolana.poppicture.data.Location(location.getLatitude(),
+                            location.getLongitude());
+                    mUserHelper.setLastKnownLocation(lastKnownLocation);
+                    if(locationListener != null) {
+                        locationListener.onLocationKnown(lastKnownLocation);
                     }
-                });
+                } else {
+                    if(locationListener != null) {
+                        locationListener.onLocationNotFound();
+                    }
+                }
+            }
+        }, null);
     }
 
     @Override
     public void destroy() {
         mFusedLocationClient = null;
         mContextReference = null;
+    }
+
+    @Override
+    public void onPermissionGranted(Permission permission) {
+        if(permission != Permission.LOCATION)
+            return;
+
+        if(mListenerReference != null) {
+            LocationListener locationListener = mListenerReference.get();
+            if(locationListener != null) {
+                updateLocation(locationListener);
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionDenied(Permission permission) {
+        if(permission != Permission.LOCATION)
+            return;
+
+        if(mListenerReference != null) {
+            LocationListener locationListener = mListenerReference.get();
+            if(locationListener != null) {
+                locationListener.onLocationNotFound();
+            }
+        }
     }
 }

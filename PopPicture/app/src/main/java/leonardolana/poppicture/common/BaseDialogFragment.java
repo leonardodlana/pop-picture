@@ -29,6 +29,11 @@ import leonardolana.poppicture.R;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ *
+ * A base dialog fragment that handles the life cycles and has some ui
+ * resources
+ *
  */
 
 public abstract class BaseDialogFragment extends DialogFragment {

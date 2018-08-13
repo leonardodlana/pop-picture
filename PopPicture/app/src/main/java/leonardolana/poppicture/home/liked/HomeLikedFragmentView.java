@@ -33,4 +33,5 @@ public interface HomeLikedFragmentView {
 
     void showLoadError();
 
+    void openPicture(Picture picture);
 }

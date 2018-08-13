@@ -122,4 +122,12 @@ public class Picture {
         return null;
     }
 
+    public static String getPath(Picture picture) {
+        return picture.getUserId() + "/" + picture.getFileName() + ".jpg";
+    }
+
+    public static String getThumbPath(Picture picture) {
+        return picture.getUserId() + "/" + picture.getFileName() + "_thumb.jpg";
+    }
+
 }

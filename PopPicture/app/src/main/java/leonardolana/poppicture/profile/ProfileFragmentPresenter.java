@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.UserWatcher;
+import leonardolana.poppicture.data.PersistentSharedKeys;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
@@ -28,14 +30,16 @@ import leonardolana.poppicture.helpers.api.UserHelper;
 
 public class ProfileFragmentPresenter extends BasePresenter {
 
-    private UserHelper mUserHelper;
     private ProfileFragmentView mView;
-    private UserWatcher mUserWatcher;
+    private UserHelper mUserHelper;
+    private PersistentHelper mPersistentHelper;
     private boolean mUserLoggedIn = false;
+    private UserWatcher mUserWatcher;
 
-    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper) {
+    public ProfileFragmentPresenter(ProfileFragmentView view, PersistentHelper persistentHelper, UserHelper userHelper) {
         mView = view;
         mUserHelper = userHelper;
+        mPersistentHelper = persistentHelper;
         mUserLoggedIn = mUserHelper.isUserLoggedIn();
     }
 
@@ -43,6 +47,9 @@ public class ProfileFragmentPresenter extends BasePresenter {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mView.setEditEnabled(mUserLoggedIn);
+        if(!mUserLoggedIn && PersistentSharedKeys.needToShowProfileOnboarding(mPersistentHelper)) {
+            mView.showProfileOnboarding();
+        }
     }
 
     @Override
@@ -57,7 +64,8 @@ public class ProfileFragmentPresenter extends BasePresenter {
             // Call update
             mView.showUpdatedFeedback();
         } else {
-            // Sign in
+            // Register a watcher to get notified when the user
+            // completed the authentication flow
             mUserWatcher = new UserWatcher() {
                 @Override
                 public void onUserLoggedIn() {
@@ -66,7 +74,12 @@ public class ProfileFragmentPresenter extends BasePresenter {
                 }
             };
             mUserHelper.addWatcher(mUserWatcher);
+
             mView.launchAuthentication();
         }
+    }
+
+    public void onProfileOnboardingDismiss() {
+        PersistentSharedKeys.setNeedToShowProfileOnboarding(mPersistentHelper, false);
     }
 }

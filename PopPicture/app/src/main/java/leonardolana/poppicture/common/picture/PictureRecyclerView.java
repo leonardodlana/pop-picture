@@ -39,7 +39,6 @@ public class PictureRecyclerView extends RecyclerView {
     private static final int DEFAULT_ORIENTATION = StaggeredGridLayoutManager.VERTICAL;
 
     private StaggeredGridLayoutManager mLayoutManager;
-    private PictureRecyclerViewAdapter mAdapter;
 
     public PictureRecyclerView(Context context) {
         super(context);
@@ -60,19 +59,10 @@ public class PictureRecyclerView extends RecyclerView {
         mLayoutManager = new StaggeredGridLayoutManager(DEFAULT_SPAN_COUNT, DEFAULT_ORIENTATION);
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         setLayoutManager(mLayoutManager);
-
-        //TODO view should not instance this
-        CacheHelper cacheHelper = new CacheHelperImpl(getContext().getApplicationContext(), new CloudStorageImpl());
-        UsersDataHelper usersDataHelper = new UsersDataHelperImpl();
-        mAdapter = new PictureRecyclerViewAdapter(cacheHelper, usersDataHelper);
-        setAdapter(mAdapter);
     }
 
     public void setColumnCount(int count) {
         mLayoutManager.setSpanCount(count);
     }
 
-    public void setData(List<Picture> pictureList) {
-        mAdapter.setData(pictureList);
-    }
 }

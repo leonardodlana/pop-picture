@@ -46,7 +46,7 @@ public abstract class CacheHelper {
         void onError(@LoadError int error);
     }
 
-    public abstract void loadPicture(Picture picture, OnLoadPicture onLoadPicture);
-    public abstract void loadPicture(Picture picture, ImageView target);
+    public abstract void loadPicture(Picture picture, boolean thumbnail, OnLoadPicture onLoadPicture);
+    public abstract void loadPicture(Picture picture, boolean thumbnail, ImageView target);
 
 }

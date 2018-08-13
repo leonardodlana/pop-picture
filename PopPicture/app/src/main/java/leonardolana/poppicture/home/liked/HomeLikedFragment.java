@@ -17,11 +17,14 @@ import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.picture.PictureRecyclerView;
+import leonardolana.poppicture.common.picture.PictureRecyclerViewAdapter;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.LocationHelper;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.LocationHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.PicturesLoaderHelperImpl;
@@ -29,6 +32,7 @@ import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
 import leonardolana.poppicture.home.nearby.HomeNearbyFragmentPresenter;
+import leonardolana.poppicture.viewer.ViewerFragment;
 
 /**
  * Created by Leonardo Lana
@@ -52,6 +56,7 @@ import leonardolana.poppicture.home.nearby.HomeNearbyFragmentPresenter;
 public class HomeLikedFragment extends BaseFragment implements HomeLikedFragmentView {
 
     private HomeLikedFragmentPresenter mPresenter;
+    private PictureRecyclerViewAdapter mAdapter;
 
     @BindView(R.id.loading)
     ProgressBar mProgressBarLoading;
@@ -61,6 +66,7 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +79,8 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
 
+        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext);
+        mAdapter = new PictureRecyclerViewAdapter(cacheHelper, userHelper);
         mPresenter = new HomeLikedFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
@@ -90,7 +98,13 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mPicturesRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnPictureClickListener(new PictureRecyclerViewAdapter.OnPictureClickListener() {
+            @Override
+            public void onClick(Picture picture) {
+                mPresenter.onPictureClick(picture);
+            }
+        });
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -111,12 +125,18 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
 
     @Override
     public void onLoad(List<Picture> pictures) {
-        mPicturesRecyclerView.setData(pictures);
+        mAdapter.setData(pictures);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showLoadError() {
 
+    }
+
+    @Override
+    public void openPicture(Picture picture) {
+        ViewerFragment viewerFragment = ViewerFragment.newInstance(picture);
+        viewerFragment.show(getFragmentManager(), "dialog");
     }
 }
