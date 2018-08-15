@@ -102,8 +102,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     }
 
     @Override
-    public void showProfileOnboarding() {
-        ProfileOnboardingDialogFragment onboardingFragment = new ProfileOnboardingDialogFragment();
-        onboardingFragment.show(getFragmentManager(), "dialog");
+    public void setTextName(String name) {
+        mEditTextProfileName.setText(name);
     }
 }

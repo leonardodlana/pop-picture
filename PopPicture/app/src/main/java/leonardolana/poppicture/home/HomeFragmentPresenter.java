@@ -75,6 +75,6 @@ public class HomeFragmentPresenter extends BasePresenter {
         if(mUserHelper.isUserLoggedIn())
             mView.openFilePicker("image/png,image/gif,image/jpg,image/jpeg,image/bmp");
         else
-            mView.openProfileAndLogin();
+            mView.openProfile();
     }
 }

@@ -2,6 +2,8 @@ package leonardolana.poppicture.data;
 
 import org.json.JSONObject;
 
+import java.util.Random;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -112,7 +114,7 @@ public class Picture {
                     jsonObject.getString("title"),
                     jsonObject.getString("description"),
                     jsonObject.getInt("likes_count"),
-                    jsonObject.optInt("liked_by_me", 0) == 0,
+                    jsonObject.optInt("liked_by_me", 0) == 1,
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"));
         } catch (Exception e) {

@@ -1,21 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/md_black_1000">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"
-        android:visibility="visible"
-        android:indeterminateTint="@color/colorPrimary"
-        />
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
 
-</RelativeLayout>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/button_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_close"
+                android:tint="@color/md_grey_900" />
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/button_close"
+                android:layout_toStartOf="@+id/button_delete"
+                android:text="Title"
+                android:textColor="@color/normal_text"
+                android:textSize="@dimen/list_item_title" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_delete_outline"
+                android:tint="@color/md_grey_900"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:minHeight="400dp"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignBottom="@+id/image_view"
+            android:background="@drawable/bottom_navigation_upper_shadow" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/button_like"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignBottom="@+id/image_view"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="6dp"
+            android:src="@drawable/ic_liked"
+            android:tint="@color/picture_not_liked" />
+
+        <TextView
+            android:id="@+id/text_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:background="@drawable/picture_description_background"
+            android:text="3 KM"
+            android:textSize="@dimen/secondary_text"
+            android:layout_alignBottom="@id/image_view"
+            android:layout_alignEnd="@id/image_view"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/md_white_1000"/>
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_view"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at porttitor mi. Quisque quis dui sed arcu vehicula eleifend non nec ante. Suspendisse ac tellus condimentum, interdum justo ut, malesuada mauris. Nulla a ullamcorper erat. Etiam id commodo mi, scelerisque gravida ante. Nulla vitae orci purus. Ut commodo viverra ex in pretium."
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/secondary_text" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignBottom="@id/image_view"
+            android:layout_alignTop="@id/image_view"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+</ScrollView>

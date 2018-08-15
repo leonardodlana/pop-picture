@@ -6,7 +6,7 @@
     android:minWidth="280dp">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dialog_horizontal_margin"
@@ -18,10 +18,10 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/text_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/text_title"
         android:layout_marginEnd="@dimen/dialog_horizontal_margin"
         android:layout_marginStart="@dimen/dialog_horizontal_margin"
         android:layout_marginTop="@dimen/dialog_top_margin"
@@ -29,14 +29,27 @@
         android:textColor="@color/dialog_description" />
 
     <leonardolana.poppicture.common.ButtonTextView
-        android:id="@+id/button_ok"
+        android:id="@+id/button_negative"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/button_min_height"
-        android:text="OK"
+        android:layout_below="@+id/text_description"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/description"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_marginTop="16dp"
+        android:text="disagree"
+        android:textAllCaps="true"
+        android:textColor="@color/negative_button" />
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/button_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_alignTop="@+id/button_negative"
         android:layout_marginBottom="@dimen/dialog_bottom_margin"
         android:layout_marginEnd="@dimen/dialog_button_right_margin"
-        android:layout_marginTop="@dimen/dialog_button_top_margin" />
+        android:layout_toStartOf="@+id/button_negative"
+        android:text="agree"
+        android:textAllCaps="true"
+        android:textColor="@color/positive_button" />
 
 </RelativeLayout>

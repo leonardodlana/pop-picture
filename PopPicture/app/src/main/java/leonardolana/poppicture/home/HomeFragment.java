@@ -23,12 +23,14 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.data.HomeSection;
+import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.editor.EditorFragment;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.onboarding.OnboardingFragment;
+import leonardolana.poppicture.profile.ProfileOnboardingDialogFragment;
 
 /**
  * Created by Leonardo Lana
@@ -227,7 +229,12 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     }
 
     @Override
-    public void openProfileAndLogin() {
+    public void openProfile() {
+        if(PersistentSharedKeys.needToShowProfileOnboarding(PersistentHelperImpl.getInstance(getContext().getApplicationContext()))) {
+            ProfileOnboardingDialogFragment onboardingFragment = new ProfileOnboardingDialogFragment();
+            onboardingFragment.show(getFragmentManager(), "dialog");
+        }
+
         onClickSection(HomeSection.PROFILE);
     }
 }

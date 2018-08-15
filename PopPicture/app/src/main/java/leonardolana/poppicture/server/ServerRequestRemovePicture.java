@@ -1,6 +1,9 @@
-package leonardolana.poppicture.home;
+package leonardolana.poppicture.server;
 
-import leonardolana.poppicture.data.HomeSection;
+import android.support.annotation.NonNull;
+
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -20,16 +23,15 @@ import leonardolana.poppicture.data.HomeSection;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class ServerRequestRemovePicture extends ServerRequest {
 
-public interface HomeFragmentView {
+    public ServerRequestRemovePicture(int pictureId) {
+        super(ServerConstants.URL, "Picture.remove");
+        addParam(KEY_PICTURE_ID, pictureId);
+    }
 
-    void setSections(HomeSection[] homeSections);
-
-    void onClickSection(HomeSection homeSection);
-
-    void showOnboarding();
-
-    void openFilePicker(String allowedMimeTypes);
-
-    void openProfile();
+    @Override
+    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+        super.execute(serverHelper, userHelper, callback);
+    }
 }

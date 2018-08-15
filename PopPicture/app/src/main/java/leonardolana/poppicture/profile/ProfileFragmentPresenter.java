@@ -41,14 +41,27 @@ public class ProfileFragmentPresenter extends BasePresenter {
         mUserHelper = userHelper;
         mPersistentHelper = persistentHelper;
         mUserLoggedIn = mUserHelper.isUserLoggedIn();
+        if(!mUserLoggedIn) {
+            // Register a watcher to get notified when the user
+            // completed the authentication flow
+            mUserWatcher = new UserWatcher() {
+                @Override
+                public void onUserLoggedIn() {
+                    mView.setEditEnabled(true);
+                    mView.setTextName(mUserHelper.getName());
+                    mUserHelper.removeWatcher(mUserWatcher);
+                }
+            };
+            mUserHelper.addWatcher(mUserWatcher);
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mView.setEditEnabled(mUserLoggedIn);
-        if(!mUserLoggedIn && PersistentSharedKeys.needToShowProfileOnboarding(mPersistentHelper)) {
-            mView.showProfileOnboarding();
+        if(mUserLoggedIn) {
+            mView.setTextName(mUserHelper.getName());
         }
     }
 
@@ -64,17 +77,6 @@ public class ProfileFragmentPresenter extends BasePresenter {
             // Call update
             mView.showUpdatedFeedback();
         } else {
-            // Register a watcher to get notified when the user
-            // completed the authentication flow
-            mUserWatcher = new UserWatcher() {
-                @Override
-                public void onUserLoggedIn() {
-                    mView.setEditEnabled(true);
-                    mUserHelper.removeWatcher(mUserWatcher);
-                }
-            };
-            mUserHelper.addWatcher(mUserWatcher);
-
             mView.launchAuthentication();
         }
     }

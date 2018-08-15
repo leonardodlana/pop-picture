@@ -19,4 +19,5 @@ package leonardolana.poppicture.viewer;
  * limitations under the License.
  */
 public interface ViewerFragmentView {
+    void dismiss();
 }

@@ -73,17 +73,17 @@ public class LoginAuthenticationPresenter extends BasePresenter {
 
         if (resultCode == RESULT_OK) {
             // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            mUserHelper.setFirebaseId(user.getUid());
-            mUserHelper.setName(user.getDisplayName());
-            mUserHelper.setEmail(user.getEmail());
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             new ServerRequestRegister(user.getUid(),
                     user.getEmail(),
                     user.getDisplayName())
                     .execute(mServerHelper, mUserHelper, new ServerRequestRegister.ServerRequestRegisterResponse() {
                         @Override
                         public void onSuccess(String publicId) {
+                            mUserHelper.setName(user.getDisplayName());
+                            mUserHelper.setEmail(user.getEmail());
                             mUserHelper.setPublicId(publicId);
+                            mUserHelper.setFirebaseId(user.getUid());
                             mView.dismiss();
                         }
 

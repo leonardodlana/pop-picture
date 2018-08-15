@@ -1,5 +1,6 @@
 package leonardolana.poppicture.common.picture;
 
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
@@ -87,9 +88,12 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         PictureViewHolder holder = (PictureViewHolder) h;
         final Picture picture = mData.get(position).second;
 
-        holder.mTextViewDescription.setText(Utils.distanceBetweenCoordinatesInKm(
+        holder.mTextDistance.setText(Utils.distanceBetweenCoordinatesInKm(
                 mUserLocation.getLatitude(), mUserLocation.getLongitude(),
                 picture.getLatitude(), picture.getLongitude()));
+
+        holder.mTextLike.setText(String.valueOf(picture.getLikesCount()));
+        holder.setImageLikeTint(picture.isLiked());
 
         mCacheHelper.loadPicture(picture, true, holder.mImageView);
         holder.mImageView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.md_grey_600));

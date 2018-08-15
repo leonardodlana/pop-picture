@@ -26,5 +26,5 @@ public interface ProfileFragmentView {
 
     void showUpdatedFeedback();
 
-    void showProfileOnboarding();
+    void setTextName(String name);
 }

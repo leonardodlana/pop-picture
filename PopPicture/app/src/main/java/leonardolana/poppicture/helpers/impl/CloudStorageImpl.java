@@ -75,10 +75,10 @@ public class CloudStorageImpl implements CloudStorage {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    //todo
                 }
             });
         }
-
     }
 
     @Override
@@ -105,4 +105,39 @@ public class CloudStorageImpl implements CloudStorage {
         });
     }
 
+    @Override
+    public void delete(final OnDeleteListener onDeleteListener, String... paths) {
+        if(paths == null || paths.length == 0)
+            throw new InvalidParameterException("files to delete must be > 0");
+
+        final Set<String> hashSet = new HashSet<>();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef;
+
+        for(final String path : paths) {
+            hashSet.add(path);
+            storageRef = storage.getReference(path);
+            storageRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(!task.isSuccessful()) {
+                        onDeleteListener.onError();
+                        return;
+                    }
+                    hashSet.remove(path);
+
+                    // Queue is done
+                    if(hashSet.size() == 0) {
+                        onDeleteListener.onCompletion();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //todo
+                }
+            });
+        }
+    }
 }

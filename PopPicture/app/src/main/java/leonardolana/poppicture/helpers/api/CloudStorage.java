@@ -36,9 +36,16 @@ public interface CloudStorage {
         void onError();
     }
 
+    interface OnDeleteListener {
+        void onCompletion();
+        void onError();
+    }
+
     void upload(OnUploadListener onUploadListener, Pair<String, InputStream>... filesToUpload);
 
     // TODO allow multiple downloads
     void download(OnDownloadListener onDownloadListener, String path, File file);
+
+    void delete(OnDeleteListener onDeleteListener, String... path);
 
 }

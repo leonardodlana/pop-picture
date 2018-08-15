@@ -1,6 +1,13 @@
 package leonardolana.poppicture.viewer;
 
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.CloudStorage;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.RequestResponse;
+import leonardolana.poppicture.server.ServerRequestRemovePicture;
 
 /**
  * Created by Leonardo Lana
@@ -23,13 +30,55 @@ import leonardolana.poppicture.common.BasePresenter;
 public class ViewerFragmentPresenter extends BasePresenter {
 
     private ViewerFragmentView mView;
+    private Picture mPicture;
+    private ServerHelper mServerHelper;
+    private UserHelper mUserHelper;
+    private CloudStorage mCloudStorage;
 
-    public ViewerFragmentPresenter(ViewerFragmentView view) {
+    public ViewerFragmentPresenter(ViewerFragmentView view, Picture picture, ServerHelper serverHelper,
+                                   UserHelper userHelper, CloudStorage cloudStorage) {
         mView = view;
+        mPicture = picture;
+        mServerHelper = serverHelper;
+        mUserHelper = userHelper;
+        mCloudStorage = cloudStorage;
+    }
+
+    public void onCloseClick() {
+        mView.dismiss();
+    }
+
+    public void onDeleteClick() {
+        mCloudStorage.delete(new CloudStorage.OnDeleteListener() {
+            @Override
+            public void onCompletion() {
+                new ServerRequestRemovePicture(mPicture.getId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
+                    @Override
+                    public void onRequestSuccess(String data) {
+                        mView.dismiss();
+                    }
+
+                    @Override
+                    public void onRequestError(RequestError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        }, Picture.getPath(mPicture), Picture.getThumbPath(mPicture));
     }
 
     @Override
     public void onDestroy() {
         mView = null;
+        mPicture = null;
+        mServerHelper = null;
+        mUserHelper = null;
+        mCloudStorage = null;
     }
+
 }

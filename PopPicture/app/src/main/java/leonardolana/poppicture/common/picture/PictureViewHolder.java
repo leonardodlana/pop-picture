@@ -1,6 +1,8 @@
 package leonardolana.poppicture.common.picture;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,15 +33,27 @@ import leonardolana.poppicture.R;
 
 public class PictureViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.image_view)
-    ImageView mImageView;
+    @BindView(R.id.image)
+    AppCompatImageView mImageView;
 
-    @BindView(R.id.text_description)
-    TextView mTextViewDescription;
+    @BindView(R.id.text_distance)
+    TextView mTextDistance;
+
+    @BindView(R.id.image_like)
+    AppCompatImageView mImageLike;
+
+    @BindView(R.id.text_like)
+    TextView mTextLike;
 
     public PictureViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
+    public void setImageLikeTint(boolean liked) {
+        if(liked)
+            mImageLike.setImageTintList(ColorStateList.valueOf(mImageLike.getResources().getColor(R.color.picture_liked)));
+        else
+            mImageLike.setImageTintList(ColorStateList.valueOf(mImageLike.getResources().getColor(R.color.picture_not_liked)));
+    }
 }
