@@ -176,6 +176,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         dialog.show(getFragmentManager(), "dialog");
     }
 
+    @OnClick(R.id.button_like)
+    public void onButtonLikeClick() {
+        mPresenter.onLikeClick();
+    }
+
     private void setPicture(Picture picture) {
         mPicture = picture;
     }

@@ -72,6 +72,10 @@ public class ViewerFragmentPresenter extends BasePresenter {
         }, Picture.getPath(mPicture), Picture.getThumbPath(mPicture));
     }
 
+    public void onLikeClick() {
+
+    }
+
     @Override
     public void onDestroy() {
         mView = null;
@@ -80,5 +84,6 @@ public class ViewerFragmentPresenter extends BasePresenter {
         mUserHelper = null;
         mCloudStorage = null;
     }
+
 
 }
