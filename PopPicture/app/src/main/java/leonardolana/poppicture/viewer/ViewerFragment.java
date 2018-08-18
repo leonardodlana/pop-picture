@@ -22,6 +22,8 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.ConfirmationDialog;
+import leonardolana.poppicture.common.Utils;
+import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.CloudStorage;
@@ -86,6 +88,9 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
     @BindView(R.id.text_description)
     TextView mTextDescription;
 
+    @BindView(R.id.text_distance)
+    TextView mTextDistance;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +152,12 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
             mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_liked)));
         else
             mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_not_liked)));
+
+        Location userLocation = mUserHelper.getLastKnownLocation();
+
+        mTextDistance.setText(Utils.distanceBetweenCoordinatesInKm(
+                userLocation.getLatitude(), userLocation.getLongitude(),
+                mPicture.getLatitude(), mPicture.getLongitude()));
     }
 
     @OnClick(R.id.button_close)

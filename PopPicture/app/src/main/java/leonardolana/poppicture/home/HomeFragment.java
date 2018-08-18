@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +24,7 @@ import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.editor.EditorFragment;
+import leonardolana.poppicture.editor.EditorPictureFragment;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;

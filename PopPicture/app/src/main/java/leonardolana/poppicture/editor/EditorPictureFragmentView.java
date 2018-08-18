@@ -18,5 +18,11 @@ package leonardolana.poppicture.editor;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EditorFragmentView {
+public interface EditorPictureFragmentView {
+
+    void showLoadingErrorDialogAndDismiss();
+
+    void showSuccess();
+
+    void showError();
 }

@@ -69,6 +69,7 @@ public class HomeLikedFragmentPresenter extends BasePresenter {
                 }
             });
         } else {
+            mLocationHelper.updateLocation(null);
             loadPictures(mUserHelper.getLastKnownLocation());
         }
     }
@@ -92,6 +93,7 @@ public class HomeLikedFragmentPresenter extends BasePresenter {
     public void onDestroy() {
         mView = null;
         mUserHelper = null;
+        mLocationHelper.destroy();
         mLocationHelper = null;
         mPicturesLoaderHelper = null;
     }

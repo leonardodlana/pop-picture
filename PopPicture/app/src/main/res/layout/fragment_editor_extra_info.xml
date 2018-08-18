@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_round_dialog">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:text="Almost there..."
+        android:textColor="@color/dialog_title"
+        android:textSize="@dimen/title"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="@dimen/dialog_top_margin"
+        android:layout_below="@+id/text_title"
+        android:id="@+id/edit_title"
+        android:lines="1"
+        android:maxLength="100"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:tint="@color/md_grey_900"
+        android:textSize="@dimen/list_item_title"/>
+
+    <EditText
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_below="@+id/edit_title"
+        android:id="@+id/edit_description"
+        android:lines="3"
+        android:maxLength="500"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:tint="@color/md_grey_900"
+        android:textSize="@dimen/list_item_title"/>
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/button_negative"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_alignTop="@+id/button_positive"
+        android:layout_marginBottom="@dimen/dialog_bottom_margin"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_toStartOf="@+id/button_positive"
+        android:text="CANCEL"
+        android:textAllCaps="true"
+        android:textColor="@color/negative_button" />
+
+    <leonardolana.poppicture.common.ButtonTextView
+        android:id="@+id/button_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_min_height"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/edit_description"
+        android:layout_marginEnd="@dimen/dialog_button_right_margin"
+        android:layout_marginTop="16dp"
+        android:text="SHARE"
+        android:textAllCaps="true"
+        android:textColor="@color/positive_button" />
+
+</RelativeLayout>

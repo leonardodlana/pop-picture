@@ -1,22 +1,6 @@
 package leonardolana.poppicture.editor;
 
-import android.util.Log;
-import android.util.Pair;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import leonardolana.poppicture.common.BasePresenter;
-import leonardolana.poppicture.common.Utils;
-import leonardolana.poppicture.data.Location;
-import leonardolana.poppicture.helpers.api.CloudStorage;
-import leonardolana.poppicture.helpers.api.ServerHelper;
-import leonardolana.poppicture.helpers.api.UserHelper;
-import leonardolana.poppicture.server.RequestError;
-import leonardolana.poppicture.server.RequestResponse;
-import leonardolana.poppicture.server.ServerRequestAddPicture;
 
 /**
  * Created by Leonardo Lana
@@ -39,62 +23,13 @@ import leonardolana.poppicture.server.ServerRequestAddPicture;
 public class EditorFragmentPresenter extends BasePresenter {
 
     private EditorFragmentView mView;
-    private UserHelper mUserHelper;
-    private ServerHelper mServerHelper;
-    private CloudStorage mCloudStorage;
 
-    public EditorFragmentPresenter(EditorFragmentView view, UserHelper userHelper, ServerHelper serverHelper, CloudStorage cloudStorage) {
+    public EditorFragmentPresenter(EditorFragmentView view) {
         mView = view;
-        mUserHelper = userHelper;
-        mServerHelper = serverHelper;
-        mCloudStorage = cloudStorage;
     }
 
     @Override
     public void onDestroy() {
         mView = null;
-    }
-
-    void onErrorLoadingFile() {
-        mView.showLoadingErrorDialogAndDismiss();
-    }
-
-    public void onClickShare(InputStream originalInputStream, InputStream thumbnailInputStream) {
-        final String randomName = Utils.generateSHA256(Utils.randomName() + System.currentTimeMillis());
-        String path = mUserHelper.getPublicId() + "/" + randomName + ".jpg";
-        String thumbPath = mUserHelper.getPublicId() + "/" + randomName + "_thumb.jpg";
-
-        @SuppressWarnings("unchecked")
-        Pair<String, InputStream>[] filesToUpload = new Pair[2];
-        filesToUpload[0] = new Pair<>(path, originalInputStream);
-        filesToUpload[1] = new Pair<>(thumbPath, thumbnailInputStream);
-
-        mCloudStorage.upload(new CloudStorage.OnUploadListener() {
-            @Override
-            public void onCompletion() {
-                Location location = mUserHelper.getLastKnownLocation();
-                new ServerRequestAddPicture(randomName, "title", "description",
-                        location.getLatitude(), location.getLongitude()).execute(mServerHelper, mUserHelper, new RequestResponse() {
-                    @Override
-                    public void onRequestSuccess(String data) {
-                        mView.showSuccess();
-                    }
-
-                    @Override
-                    public void onRequestError(RequestError error) {
-                        mView.showError();
-                    }
-                });
-            }
-
-            @Override
-            public void onError() {
-                mView.showError();
-            }
-        }, filesToUpload);
-    }
-
-    public void onClickClose() {
-        mView.dismiss();
     }
 }

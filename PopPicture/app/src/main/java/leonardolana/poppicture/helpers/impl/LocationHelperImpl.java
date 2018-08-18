@@ -9,7 +9,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.lang.ref.WeakReference;
 
@@ -52,6 +51,7 @@ public class LocationHelperImpl implements LocationHelper, PermissionWatcher {
      * Avoid holding a reference to a listener
      */
     private WeakReference<LocationListener> mListenerReference;
+    private LocationCallback mLocationCallback;
 
     public LocationHelperImpl(Context context, UserHelper userHelper) {
         mUserHelper = userHelper;
@@ -74,29 +74,34 @@ public class LocationHelperImpl implements LocationHelper, PermissionWatcher {
         }
 
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setNumUpdates(1);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(300000);
+        locationRequest.setFastestInterval(60000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        mFusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+        mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                mFusedLocationClient.removeLocationUpdates(this);
+
+                if(locationListener != null)
+                    mFusedLocationClient.removeLocationUpdates(this);
+
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
                     leonardolana.poppicture.data.Location lastKnownLocation = new leonardolana.poppicture.data.Location(location.getLatitude(),
                             location.getLongitude());
                     mUserHelper.setLastKnownLocation(lastKnownLocation);
-                    if(locationListener != null) {
+                    if (locationListener != null) {
                         locationListener.onLocationKnown(lastKnownLocation);
                     }
                 } else {
-                    if(locationListener != null) {
+                    if (locationListener != null) {
                         locationListener.onLocationNotFound();
                     }
                 }
             }
-        }, null);
+        };
+        mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, null);
     }
 
     @Override
