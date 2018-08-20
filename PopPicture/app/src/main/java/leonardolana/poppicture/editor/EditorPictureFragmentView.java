@@ -22,7 +22,4 @@ public interface EditorPictureFragmentView {
 
     void showLoadingErrorDialogAndDismiss();
 
-    void showSuccess();
-
-    void showError();
 }

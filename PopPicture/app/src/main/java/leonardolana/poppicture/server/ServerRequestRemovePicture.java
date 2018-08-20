@@ -25,7 +25,7 @@ import leonardolana.poppicture.helpers.api.UserHelper;
  */
 public class ServerRequestRemovePicture extends ServerRequest {
 
-    public ServerRequestRemovePicture(int pictureId) {
+    public ServerRequestRemovePicture(long pictureId) {
         super(ServerConstants.URL, "Picture.remove");
         addParam(KEY_PICTURE_ID, pictureId);
     }

@@ -1,4 +1,4 @@
-package leonardolana.poppicture.editor;
+package leonardolana.poppicture.common;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,13 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
-import leonardolana.poppicture.common.BaseFragment;
-import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
 
 /**
  * Created by Leonardo Lana
@@ -32,44 +27,19 @@ import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class EditorExtraInfoFragment extends BaseFragment implements EditorExtraInfoFragmentView,EditorExtraInfoContract {
-
-    private EditorExtraInfoFragmentPresenter mPresenter;
-
-    @BindView(R.id.edit_title)
-    EditText mEditTitle;
-
-    @BindView(R.id.edit_description)
-    EditText mEditDescription;
+public class LoadingDialog extends BaseDialogFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorExtraInfoFragmentPresenter(this);
-        init(mPresenter);
+        setFullScreen(true);
+        setHasTitle(false);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_editor_extra_info, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.dialog_loading, container, false);
     }
 
-
-    @Override
-    public boolean areFieldsValid() {
-        return mPresenter.validateFields(getTitle(), getDescription());
-    }
-
-    @Override
-    public String getTitle() {
-        return mEditTitle.getText().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return mEditDescription.getText().toString();
-    }
 }

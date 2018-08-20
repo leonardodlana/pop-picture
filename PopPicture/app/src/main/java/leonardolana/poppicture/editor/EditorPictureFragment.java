@@ -22,6 +22,7 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.Utils;
+import leonardolana.poppicture.editor.contract.EditorPictureContract;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.ServerHelper;
@@ -49,7 +50,7 @@ import leonardolana.poppicture.helpers.impl.UserHelperImpl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class EditorPictureFragment extends BaseFragment implements EditorPictureFragmentView {
+public class EditorPictureFragment extends BaseFragment implements EditorPictureFragmentView, EditorPictureContract {
 
     public static EditorPictureFragment newInstance(Uri fileURI) {
         EditorPictureFragment editorFragment = new EditorPictureFragment();
@@ -64,22 +65,10 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     @BindView(R.id.image_view)
     ImageView mImageView;
 
-    @BindView(R.id.button_next)
-    TextView mButtonShare;
-
-    @BindView(R.id.button_close)
-    ImageView mButtonClose;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context applicationContext = getContext().getApplicationContext();
-        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
-        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
-        CloudStorage cloudStorage = new CloudStorageImpl();
-
-        mPresenter = new EditorPictureFragmentPresenter(this, userHelper, serverHelper, cloudStorage);
+        mPresenter = new EditorPictureFragmentPresenter(this);
         init(mPresenter);
     }
 
@@ -136,30 +125,6 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
         }
     }
 
-    @OnClick(R.id.button_next)
-    public void onClickShare() {
-//        EditorExtraInfoFragment fragment = EditorExtraInfoFragment.newInstance(mFileURI);
-//        fragment.show(getFragmentManager(), "dialog");
-//        try {
-//            //TODO maybe abstract the bitmap and add this rule to the presenter
-//            InputStream inputStream = getContext().getContentResolver().openInputStream(mFileURI);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            Bitmap thumbnail = Utils.createThumbnail(mSampleBitmap, 1000);
-//            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//            byte[] thumbBytes = baos.toByteArray();
-//
-//            mPresenter.onClickShare(inputStream, new ByteArrayInputStream(thumbBytes));
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    @OnClick(R.id.button_close)
-    public void onClickClose() {
-        mPresenter.onClickClose();
-    }
-
     /*
         View methods
      */
@@ -177,21 +142,12 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
         dialog.show(getFragmentManager(), "dialog");
     }
 
-    @Override
-    public void showSuccess() {
-//        dismiss();
-    }
+    /*
+        Contract methods
+     */
 
     @Override
-    public void showError() {
-        AlertDialog dialog = AlertDialog.newInstance("Error sharing the file", "Sorry, we couldn't share your file, please try again.");
-        dialog.setCancelable(false);
-        dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-//                dismiss();
-            }
-        });
-        dialog.show(getFragmentManager(), "dialog");
+    public Bitmap getSampleBitmap() {
+        return mSampleBitmap;
     }
 }

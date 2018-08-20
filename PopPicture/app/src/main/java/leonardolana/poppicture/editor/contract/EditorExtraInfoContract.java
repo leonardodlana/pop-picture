@@ -1,4 +1,4 @@
-package leonardolana.poppicture.editor;
+package leonardolana.poppicture.editor.contract;
 
 /**
  * Created by Leonardo Lana
@@ -18,14 +18,12 @@ package leonardolana.poppicture.editor;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EditorFragmentView {
-    void showError();
+public interface EditorExtraInfoContract {
 
-    void showSuccess();
+    boolean areFieldsValid();
 
-    void dismiss();
+    String getTitle();
 
-    void showLoading();
+    String getDescription();
 
-    void hideLoading();
 }

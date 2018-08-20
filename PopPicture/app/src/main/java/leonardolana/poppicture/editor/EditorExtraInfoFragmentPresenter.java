@@ -1,18 +1,6 @@
 package leonardolana.poppicture.editor;
 
-import android.util.Pair;
-
-import java.io.InputStream;
-
 import leonardolana.poppicture.common.BasePresenter;
-import leonardolana.poppicture.common.Utils;
-import leonardolana.poppicture.data.Location;
-import leonardolana.poppicture.helpers.api.CloudStorage;
-import leonardolana.poppicture.helpers.api.ServerHelper;
-import leonardolana.poppicture.helpers.api.UserHelper;
-import leonardolana.poppicture.server.RequestError;
-import leonardolana.poppicture.server.RequestResponse;
-import leonardolana.poppicture.server.ServerRequestAddPicture;
 
 /**
  * Created by Leonardo Lana
@@ -32,13 +20,12 @@ import leonardolana.poppicture.server.ServerRequestAddPicture;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class EditorPictureFragmentPresenter extends BasePresenter {
+public class EditorExtraInfoFragmentPresenter extends BasePresenter {
 
-    private EditorPictureFragmentView mView;
+    private EditorExtraInfoFragmentView mView;
 
-    public EditorPictureFragmentPresenter(EditorPictureFragmentView view) {
+    public EditorExtraInfoFragmentPresenter(EditorExtraInfoFragmentView view) {
         mView = view;
-
     }
 
     @Override
@@ -46,8 +33,9 @@ public class EditorPictureFragmentPresenter extends BasePresenter {
         mView = null;
     }
 
-    void onErrorLoadingFile() {
-        mView.showLoadingErrorDialogAndDismiss();
+    public boolean validateFields(String title, String description) {
+        //todo validation
+        return (title != null && title.length() > 0) &&
+                (description != null && description.length() > 0);
     }
-
 }

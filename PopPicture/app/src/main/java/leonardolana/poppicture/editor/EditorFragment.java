@@ -1,5 +1,7 @@
 package leonardolana.poppicture.editor;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,14 +11,32 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import leonardolana.poppicture.R;
+import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.GenericFragmentPagerAdapter;
-import leonardolana.poppicture.home.HomeFragmentPagerAdapter;
-import leonardolana.poppicture.home.HomeFragmentPresenter;
+import leonardolana.poppicture.common.LoadingDialog;
+import leonardolana.poppicture.common.Utils;
+import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
+import leonardolana.poppicture.editor.contract.EditorPictureContract;
+import leonardolana.poppicture.helpers.api.CloudStorage;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
 /**
  * Created by Leonardo Lana
@@ -38,6 +58,9 @@ import leonardolana.poppicture.home.HomeFragmentPresenter;
  */
 public class EditorFragment extends BaseDialogFragment implements EditorFragmentView {
 
+    private static final int ITEM_EDITOR_PICTURE = 0;
+    private static final int ITEM_EDITOR_INFO = 1;
+
     public static EditorFragment newInstance(Uri fileURI) {
         EditorFragment editorFragment = new EditorFragment();
         editorFragment.setFileURI(fileURI);
@@ -47,26 +70,47 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
     private Uri mFileUri;
     private EditorFragmentPresenter mPresenter;
     private GenericFragmentPagerAdapter mPageAdapter;
+    private EditorPictureContract mEditorPictureContract;
+    private EditorExtraInfoContract mEditorExtraFieldContract;
+    private LoadingDialog mLoadingDialog;
 
     @BindView(R.id.pager_fragments)
     ViewPager mPagerFragments;
 
+    @BindView(R.id.button_next)
+    TextView mButtonNext;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorFragmentPresenter(this);
+
+        Context applicationContext = getContext().getApplicationContext();
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
+        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+        CloudStorage cloudStorage = new CloudStorageImpl();
+        mPresenter = new EditorFragmentPresenter(this, userHelper, serverHelper, cloudStorage);
         init(mPresenter);
 
         setFullScreen(true);
         setHasTitle(false);
 
         if (savedInstanceState == null) {
-            Fragment fragments[] = {EditorPictureFragment.newInstance(mFileUri),
-                    new EditorExtraInfoFragment()};
+            EditorPictureFragment editorPictureFragment = EditorPictureFragment.newInstance(mFileUri);
+            mEditorPictureContract = editorPictureFragment;
+
+            EditorExtraInfoFragment editorExtraInfoFragment = new EditorExtraInfoFragment();
+            mEditorExtraFieldContract = editorExtraInfoFragment;
+
+            Fragment fragments[] = {editorPictureFragment,
+                    editorExtraInfoFragment};
             mPageAdapter = new GenericFragmentPagerAdapter(getChildFragmentManager(), fragments);
         } else {
+            //todo contract
             mPageAdapter = new GenericFragmentPagerAdapter(getChildFragmentManager());
         }
+
+        mLoadingDialog = new LoadingDialog();
     }
 
     @Nullable
@@ -81,6 +125,25 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPagerFragments.setAdapter(mPageAdapter);
+        mPagerFragments.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == ITEM_EDITOR_PICTURE)
+                    mButtonNext.setText("next");
+                else
+                    mButtonNext.setText("share");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -93,6 +156,68 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         mPageAdapter.restoreFragments(savedInstanceState);
         super.onViewStateRestored(savedInstanceState);
+    }
+
+    @OnClick(R.id.button_next)
+    public void onClickNext() {
+        if (mPagerFragments.getCurrentItem() == ITEM_EDITOR_PICTURE) {
+            mPagerFragments.setCurrentItem(ITEM_EDITOR_INFO, true);
+        } else {
+            // validate page info
+            if(mEditorExtraFieldContract.areFieldsValid()) {
+                try {
+                    InputStream inputStream = getContext().getContentResolver().openInputStream(mFileUri);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    Bitmap thumbnail = Utils.createThumbnail(mEditorPictureContract.getSampleBitmap(), 1000);
+                    thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] thumbBytes = baos.toByteArray();
+
+                    mPresenter.onClickShare(inputStream, new ByteArrayInputStream(thumbBytes),
+                            mEditorExtraFieldContract.getTitle(), mEditorExtraFieldContract.getDescription());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //todo feedback
+            }
+        }
+        //        EditorExtraInfoFragment fragment = EditorExtraInfoFragment.newInstance(mFileURI);
+//        fragment.show(getFragmentManager(), "dialog");
+
+    }
+
+    @OnClick(R.id.button_close)
+    public void onClickClose() {
+        mPresenter.onClickClose();
+    }
+
+    @Override
+    public void showSuccess() {
+//        dismiss();
+    }
+
+    @Override
+    public void showError() {
+        AlertDialog dialog = AlertDialog.newInstance("Error sharing the file", "Sorry, we couldn't share your file, please try again.");
+        dialog.setCancelable(false);
+        dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+//                dismiss();
+            }
+        });
+        dialog.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void showLoading() {
+        mLoadingDialog.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void hideLoading() {
+        mLoadingDialog.dismiss();
     }
 
     private void setFileURI(Uri fileURI) {

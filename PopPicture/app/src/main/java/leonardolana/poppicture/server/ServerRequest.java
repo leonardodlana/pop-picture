@@ -53,6 +53,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
     public static final String KEY_PICTURE_ID = "picture_id";
     public static final String KEY_NAME = "name";
     public static final String KEY_PICTURE_NAME = "picture_name";
+    public static final String KEY_LIKED = "liked";
 
     private JSONObject mParams = new JSONObject();
     private final String mURL;
@@ -144,7 +145,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
 
         @Override
         public String getBodyContentType() {
-            return "application/json";
+            return "application/json; charset=utf-8";
         }
 
     }

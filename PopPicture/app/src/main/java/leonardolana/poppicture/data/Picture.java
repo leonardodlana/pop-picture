@@ -96,7 +96,7 @@ public class Picture {
             jsonObject.put("title", getTitle());
             jsonObject.put("description", getDescription());
             jsonObject.put("likes_count", getLikesCount());
-            jsonObject.put("liked_by_me", mLikedByMe ? 1 : 0);
+            jsonObject.put("liked", mLikedByMe ? 1 : 0);
             jsonObject.put("latitude", getLatitude());
             jsonObject.put("longitude", getLongitude());
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class Picture {
                     jsonObject.getString("title"),
                     jsonObject.getString("description"),
                     jsonObject.getInt("likes_count"),
-                    jsonObject.optInt("liked_by_me", 0) == 1,
+                    jsonObject.optInt("liked", 0) == 1,
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"));
         } catch (Exception e) {
