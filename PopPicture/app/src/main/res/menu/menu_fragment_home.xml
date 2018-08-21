@@ -8,10 +8,10 @@
         android:title="Nearby"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_liked"
+        android:id="@+id/action_whatshot"
         android:enabled="true"
-        android:icon="@drawable/ic_liked"
-        android:title="Liked"
+        android:icon="@drawable/ic_whatshot"
+        android:title="Hot"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"

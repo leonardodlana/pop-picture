@@ -7,6 +7,8 @@ import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
 import leonardolana.poppicture.server.RequestResponse;
+import leonardolana.poppicture.server.ServerRequestAddLike;
+import leonardolana.poppicture.server.ServerRequestRemoveLike;
 import leonardolana.poppicture.server.ServerRequestRemovePicture;
 
 /**
@@ -49,31 +51,52 @@ public class ViewerFragmentPresenter extends BasePresenter {
     }
 
     public void onDeleteClick() {
+        mView.showLoading();
         mCloudStorage.delete(new CloudStorage.OnDeleteListener() {
             @Override
             public void onCompletion() {
                 new ServerRequestRemovePicture(mPicture.getId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
                     @Override
                     public void onRequestSuccess(String data) {
+                        mView.hideLoading();
                         mView.dismiss();
                     }
 
                     @Override
                     public void onRequestError(RequestError error) {
-
+                        mView.hideLoading();
+                        mView.showDeleteError();
                     }
                 });
             }
 
             @Override
             public void onError() {
-
+                mView.hideLoading();
+                mView.showDeleteError();
             }
         }, Picture.getPath(mPicture), Picture.getThumbPath(mPicture));
     }
 
     public void onLikeClick() {
+        RequestResponse requestResponse = new RequestResponse() {
+            @Override
+            public void onRequestSuccess(String data) {
+                mPicture.setLiked(!mPicture.isLiked());
+                mView.refreshLike();
+            }
 
+            @Override
+            public void onRequestError(RequestError error) {
+
+            }
+        };
+
+        if(mPicture.isLiked()) {
+            new ServerRequestRemoveLike(mPicture.getId()).execute(mServerHelper, mUserHelper, requestResponse);
+        } else {
+            new ServerRequestAddLike(mPicture.getId()).execute(mServerHelper, mUserHelper, requestResponse);
+        }
     }
 
     @Override

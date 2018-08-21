@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:indeterminate="true"
-        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTint="@color/md_white_1000"
         />
 
 </android.support.constraint.ConstraintLayout>

@@ -148,10 +148,8 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         mTextTitle.setText(mPicture.getTitle());
         mTextDescription.setText(mPicture.getDescription());
-        if (mPicture.isLiked())
-            mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_liked)));
-        else
-            mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_not_liked)));
+
+        refreshLike();
 
         Location userLocation = mUserHelper.getLastKnownLocation();
 
@@ -196,4 +194,28 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         mPicture = picture;
     }
 
+    /*
+        View methods
+     */
+
+    @Override
+    public void refreshLike() {
+        if (mPicture.isLiked())
+            mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_liked)));
+        else
+            mButtonLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.picture_not_liked)));
+    }
+
+    @Override
+    public void showDeleteError() {
+        AlertDialog dialog = AlertDialog.newInstance("Error deleting the file", "Sorry, we couldn't delete your file, please try again.");
+        dialog.setCancelable(false);
+        dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+//                dismiss();
+            }
+        });
+        dialog.show(getFragmentManager(), "dialog");
+    }
 }

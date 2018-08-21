@@ -5,6 +5,15 @@ import android.support.v7.widget.Toolbar;
 
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseActivity;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.UserHelperImpl;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.RequestResponse;
+import leonardolana.poppicture.server.ServerRequestAuthorize;
 
 /**
  * Created by Leonardo Lana

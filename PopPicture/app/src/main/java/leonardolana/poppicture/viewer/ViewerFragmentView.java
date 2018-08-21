@@ -20,4 +20,12 @@ package leonardolana.poppicture.viewer;
  */
 public interface ViewerFragmentView {
     void dismiss();
+
+    void refreshLike();
+
+    void showLoading();
+
+    void hideLoading();
+
+    void showDeleteError();
 }

@@ -1,6 +1,7 @@
 package leonardolana.poppicture.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,8 +27,10 @@ import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.editor.EditorFragment;
 import leonardolana.poppicture.editor.EditorPictureFragment;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.onboarding.OnboardingFragment;
 import leonardolana.poppicture.profile.ProfileOnboardingDialogFragment;
@@ -70,10 +73,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
-        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        Context applicationContext = getContext().getApplicationContext();
 
-        mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper);
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
+        UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
+        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+
+        mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper, serverHelper);
         // It's important to call init with the view model,
         // this way we don't need to handle lifecycle on each fragment
         init(mPresenter);

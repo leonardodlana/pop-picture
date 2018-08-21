@@ -41,9 +41,16 @@ public abstract class BaseDialogFragment extends DialogFragment {
     private BasePresenter mPresenter;
     private boolean mIsFullScreen = false;
     private boolean mHasTitle = true;
+    private LoadingDialog mLoadingDialog;
 
     public void init(BasePresenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mLoadingDialog = new LoadingDialog();
     }
 
     @NonNull
@@ -96,4 +103,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
         mIsFullScreen = isFullScreen;
     }
 
+    public void showLoading() {
+        mLoadingDialog.show(getFragmentManager(), "dialog");
+    }
+
+    public void hideLoading() {
+        mLoadingDialog.dismiss();
+    }
 }

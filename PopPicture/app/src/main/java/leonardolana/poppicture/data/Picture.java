@@ -26,7 +26,7 @@ import java.util.Random;
 public class Picture {
 
     private String mUserId;
-    private int mPictureId;
+    private long mPictureId;
     private String mFileName;
     private String mTitle;
     private String mDescription;
@@ -39,7 +39,7 @@ public class Picture {
         // Mock constructor
     }
 
-    public Picture(String userId, int pictureId, String filename, String title, String description, int likesCount, boolean likedByMe, double latitude, double longitude) {
+    public Picture(String userId, long pictureId, String filename, String title, String description, int likesCount, boolean likedByMe, double latitude, double longitude) {
         mUserId = userId;
         mPictureId = pictureId;
         mFileName = filename;
@@ -55,7 +55,7 @@ public class Picture {
         return mUserId;
     }
 
-    public int getId() {
+    public long getId() {
         return mPictureId;
     }
 
@@ -77,6 +77,10 @@ public class Picture {
 
     public boolean isLiked() {
         return mLikedByMe;
+    }
+
+    public void setLiked(boolean liked) {
+        mLikedByMe = liked;
     }
 
     public double getLatitude() {
@@ -109,7 +113,7 @@ public class Picture {
     public static Picture fromJSON(JSONObject jsonObject) {
         try {
             return new Picture(jsonObject.getString("user_public_id"),
-                    jsonObject.getInt("picture_id"),
+                    jsonObject.getLong("picture_id"),
                     jsonObject.getString("filename"),
                     jsonObject.getString("title"),
                     jsonObject.getString("description"),

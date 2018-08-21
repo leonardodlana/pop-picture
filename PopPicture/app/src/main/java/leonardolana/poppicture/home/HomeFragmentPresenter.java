@@ -8,7 +8,11 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.RequestResponse;
+import leonardolana.poppicture.server.ServerRequestAuthorize;
 
 /**
  * Created by Leonardo Lana
@@ -34,16 +38,34 @@ public class HomeFragmentPresenter extends BasePresenter {
     private HomeFragmentView mView;
     private PersistentHelper mPersistentHelper;
     private UserHelper mUserHelper;
+    private ServerHelper mServerHelper;
 
-    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper, UserHelper userHelper) {
+    public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper,
+                                 UserHelper userHelper, ServerHelper serverHelper) {
         mView = view;
         mPersistentHelper = persistentHelper;
         mUserHelper = userHelper;
+        mServerHelper = serverHelper;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //TODO do this on server request internally
+        if(mUserHelper.isUserLoggedIn()) {
+            new ServerRequestAuthorize(mUserHelper.getFirebaseId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
+                @Override
+                public void onRequestSuccess(String data) {
+
+                }
+
+                @Override
+                public void onRequestError(RequestError error) {
+
+                }
+            });
+        }
 
         if (savedInstanceState == null) {
             mView.setSections(HomeSection.values());

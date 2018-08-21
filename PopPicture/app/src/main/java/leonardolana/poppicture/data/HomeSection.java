@@ -26,7 +26,7 @@ package leonardolana.poppicture.data;
 public enum HomeSection {
 
     NEARBY("leonardolana.poppicture.home.nearby.HomeNearbyFragment", "action_nearby"),
-    LIKED("leonardolana.poppicture.home.liked.HomeLikedFragment", "action_liked"),
+    LIKED("leonardolana.poppicture.home.liked.HomeLikedFragment", "action_whatshot"),
     PROFILE("leonardolana.poppicture.profile.ProfileFragment", "action_profile");
 
     private final String mName;

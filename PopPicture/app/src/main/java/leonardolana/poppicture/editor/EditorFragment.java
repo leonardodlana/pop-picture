@@ -72,7 +72,6 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
     private GenericFragmentPagerAdapter mPageAdapter;
     private EditorPictureContract mEditorPictureContract;
     private EditorExtraInfoContract mEditorExtraFieldContract;
-    private LoadingDialog mLoadingDialog;
 
     @BindView(R.id.pager_fragments)
     ViewPager mPagerFragments;
@@ -109,8 +108,6 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
             //todo contract
             mPageAdapter = new GenericFragmentPagerAdapter(getChildFragmentManager());
         }
-
-        mLoadingDialog = new LoadingDialog();
     }
 
     @Nullable
@@ -208,16 +205,6 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
             }
         });
         dialog.show(getFragmentManager(), "dialog");
-    }
-
-    @Override
-    public void showLoading() {
-        mLoadingDialog.show(getFragmentManager(), "dialog");
-    }
-
-    @Override
-    public void hideLoading() {
-        mLoadingDialog.dismiss();
     }
 
     private void setFileURI(Uri fileURI) {

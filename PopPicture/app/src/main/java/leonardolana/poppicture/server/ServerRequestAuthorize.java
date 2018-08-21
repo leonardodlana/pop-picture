@@ -1,5 +1,7 @@
 package leonardolana.poppicture.server;
 
+import android.support.annotation.NonNull;
+
 import com.android.volley.VolleyError;
 
 import leonardolana.poppicture.helpers.api.PersistentHelper;
@@ -31,4 +33,8 @@ public class ServerRequestAuthorize extends ServerRequest {
         addParam(KEY_FIREBASE_ID, firebaseId);
     }
 
+    @Override
+    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+        super.execute(serverHelper, userHelper, callback);
+    }
 }
