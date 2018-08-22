@@ -95,7 +95,7 @@ public class HomeFragmentPresenter extends BasePresenter {
 
     public void onClickFab() {
         if(mUserHelper.isUserLoggedIn())
-            mView.openFilePicker("image/png,image/gif,image/jpg,image/jpeg,image/bmp");
+            mView.openFilePicker("image/*");
         else
             mView.openProfile();
     }

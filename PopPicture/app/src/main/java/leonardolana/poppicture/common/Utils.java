@@ -30,6 +30,8 @@ import java.text.DecimalFormat;
  */
 public class Utils {
 
+    public static final int ONE_DEGREE_IN_KM = 111;
+
     public static String randomName() {
         SecureRandom secureRandom = new SecureRandom();
         return new BigInteger(128, secureRandom).toString(32);
@@ -96,10 +98,9 @@ public class Utils {
         return Math.abs(distance);
     }
 
-    public static String distanceBetweenCoordinatesInKm(double lat1, double long1, double lat2, double long2) {
+    public static float distanceBetweenCoordinatesInKm(double lat1, double long1, double lat2, double long2) {
         double distance = distanceBetweenCoordinates(lat1, long1, lat2, long2);
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        return decimalFormat.format(distance * 111) + " KM";
+        return (float) (distance * ONE_DEGREE_IN_KM);
     }
 
 }

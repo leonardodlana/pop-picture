@@ -228,7 +228,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     public void openFilePicker(String allowedMimeTypes) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType(allowedMimeTypes);
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, allowedMimeTypes);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
         startActivityForResult(intent, REQUEST_CODE_FILE_PICKER);

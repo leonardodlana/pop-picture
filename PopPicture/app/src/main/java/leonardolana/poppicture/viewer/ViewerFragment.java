@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +72,7 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
     private ViewerFragmentPresenter mPresenter;
     private Picture mPicture;
+    private DecimalFormat mDecimalFormat;
 
     @BindView(R.id.image_view)
     ImageView mImageView;
@@ -78,6 +82,9 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
     @BindView(R.id.button_delete)
     AppCompatImageView mButtonDelete;
+
+    @BindView(R.id.button_report)
+    AppCompatImageView mButtonReport;
 
     @BindView(R.id.button_like)
     AppCompatImageView mButtonLike;
@@ -107,6 +114,8 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         mPresenter = new ViewerFragmentPresenter(this, mPicture, serverHelper, mUserHelper, cloudStorage);
         init(mPresenter);
+
+        mDecimalFormat = new DecimalFormat("#.##");
     }
 
     @Nullable
@@ -143,19 +152,19 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
             }
         });
 
-        if (TextUtils.equals(mPicture.getUserId(), mUserHelper.getPublicId()))
+        if (TextUtils.equals(mPicture.getUserId(), mUserHelper.getPublicId())) {
             mButtonDelete.setVisibility(View.VISIBLE);
+        } else {
+            mButtonReport.setVisibility(View.VISIBLE);
+        }
 
         mTextTitle.setText(mPicture.getTitle());
         mTextDescription.setText(mPicture.getDescription());
 
         refreshLike();
 
-        Location userLocation = mUserHelper.getLastKnownLocation();
-
-        mTextDistance.setText(Utils.distanceBetweenCoordinatesInKm(
-                userLocation.getLatitude(), userLocation.getLongitude(),
-                mPicture.getLatitude(), mPicture.getLongitude()));
+        //todo create string
+        mTextDistance.setText(mDecimalFormat.format(mPicture.getDistanceInKM()) + " KM");
     }
 
     @OnClick(R.id.button_close)
@@ -183,6 +192,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         });
 
         dialog.show(getFragmentManager(), "dialog");
+    }
+
+    @OnClick(R.id.button_report)
+    public void onButtonReportClick() {
+        Toast.makeText(getContext(), "TODO report", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.button_like)

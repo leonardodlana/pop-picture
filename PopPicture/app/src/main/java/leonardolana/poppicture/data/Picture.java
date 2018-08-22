@@ -34,6 +34,7 @@ public class Picture {
     private boolean mLikedByMe;
     private double mLatitude;
     private double mLongitude;
+    private float mDistanceInKM;
 
     public Picture() {
         // Mock constructor
@@ -89,6 +90,15 @@ public class Picture {
 
     public double getLongitude() {
         return mLongitude;
+    }
+
+
+    public float getDistanceInKM() {
+        return mDistanceInKM;
+    }
+
+    public void setDistanceInKM(float distanceInKM) {
+        mDistanceInKM = distanceInKM;
     }
 
     public JSONObject toJSON() {

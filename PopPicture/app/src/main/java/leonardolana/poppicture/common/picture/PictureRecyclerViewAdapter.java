@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -53,6 +54,7 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private final CacheHelper mCacheHelper;
     private final UserHelper mUserHelper;
     private final Location mUserLocation;
+    private final DecimalFormat mDecimalFormat;
     private final List<Pair<Integer, Picture>> mData = new ArrayList<>();
     private OnPictureClickListener mListener;
 
@@ -60,6 +62,7 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         mCacheHelper = cacheHelper;
         mUserHelper = userHelper;
         mUserLocation = mUserHelper.getLastKnownLocation();
+        mDecimalFormat = new DecimalFormat("#.##");
     }
 
     @NonNull
@@ -88,9 +91,8 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         PictureViewHolder holder = (PictureViewHolder) h;
         final Picture picture = mData.get(position).second;
 
-        holder.mTextDistance.setText(Utils.distanceBetweenCoordinatesInKm(
-                mUserLocation.getLatitude(), mUserLocation.getLongitude(),
-                picture.getLatitude(), picture.getLongitude()));
+        //todo create string
+        holder.mTextDistance.setText(mDecimalFormat.format(picture.getDistanceInKM()) + " KM");
 
         holder.mTextLike.setText(String.valueOf(picture.getLikesCount()));
         holder.setImageLikeTint(picture.isLiked());

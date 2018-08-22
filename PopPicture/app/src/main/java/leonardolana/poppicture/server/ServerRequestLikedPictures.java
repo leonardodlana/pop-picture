@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.api.ServerHelper;
@@ -37,10 +38,12 @@ public class ServerRequestLikedPictures extends ServerRequest implements Request
         void onError(RequestError e);
     }
 
+    private final Location mLocation;
     private ServerRequestLikedPicturesResponse mCallback;
 
     public ServerRequestLikedPictures(Location location) {
         super(ServerConstants.URL, "Picture.findLiked");
+        mLocation = location;
         addParam(KEY_LATITUDE, location.getLatitude());
         addParam(KEY_LONGITUDE, location.getLongitude());
     }
@@ -63,11 +66,18 @@ public class ServerRequestLikedPictures extends ServerRequest implements Request
             JSONArray jsonArray = new JSONArray(data);
             JSONObject jsonObject;
             Picture picture;
+            float distanceInKM;
             for (int i = 0; i < jsonArray.length(); i++) {
                 jsonObject = jsonArray.getJSONObject(i);
                 picture = Picture.fromJSON(jsonObject);
-                if (picture != null)
+                if (picture != null) {
+                    //TODO in background, sqrt is heavy work
+                    distanceInKM = Utils.distanceBetweenCoordinatesInKm(
+                            mLocation.getLatitude(), mLocation.getLongitude(),
+                            picture.getLatitude(), picture.getLongitude());
+                    picture.setDistanceInKM(distanceInKM);
                     pictureList.add(picture);
+                }
             }
 
             if (mCallback != null)

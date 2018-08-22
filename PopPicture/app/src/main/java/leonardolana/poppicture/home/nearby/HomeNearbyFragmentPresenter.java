@@ -3,6 +3,8 @@ package leonardolana.poppicture.home.nearby;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import leonardolana.poppicture.common.BasePresenter;
@@ -75,6 +77,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
         mPicturesLoaderHelper.loadNearbyPictures(location, new PictureLoader.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
+                sort(pictures);
                 mView.onLoad(pictures);
                 mView.hideLoading();
             }
@@ -82,6 +85,15 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
             @Override
             public void onError(RequestError e) {
                 mView.showLoadError();
+            }
+        });
+    }
+
+    private void sort(List<Picture> pictures) {
+        Collections.sort(pictures, new Comparator<Picture>() {
+            @Override
+            public int compare(Picture p1, Picture p2) {
+                return Float.compare(p2.getDistanceInKM(), p1.getDistanceInKM());
             }
         });
     }
@@ -100,6 +112,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
         mPicturesLoaderHelper.loadNearbyPictures(new PictureLoader.OnPicturesLoadListener() {
             @Override
             public void onLoad(List<Picture> pictures) {
+                sort(pictures);
                 mView.onLoad(pictures);
             }
 
