@@ -6,15 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
-import java.util.List;
-
-import leonardolana.poppicture.data.Picture;
-import leonardolana.poppicture.helpers.api.CacheHelper;
-import leonardolana.poppicture.helpers.api.UsersDataHelper;
-import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
-import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
-import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
-
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana

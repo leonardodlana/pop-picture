@@ -22,10 +22,11 @@ import leonardolana.poppicture.data.User;
  */
 public interface UsersDataHelper {
 
-    User getUser(String publicId);
+    interface GetUserResponse {
+        void onSuccess(User user);
+        void onError();
+    }
 
-    void createUser(String publicId);
-
-    void updateUser(String publicId, String name, String profilePicture);
+    void getUser(String publicId, GetUserResponse callback);
 
 }

@@ -24,17 +24,12 @@ import leonardolana.poppicture.helpers.api.LocationHelper;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
-import leonardolana.poppicture.helpers.api.UsersDataHelper;
 import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
-import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.LocationHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.PicturesLoaderHelperImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
-import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
-import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
-import leonardolana.poppicture.onboarding.OnboardingFragment;
 import leonardolana.poppicture.viewer.ViewerFragment;
 
 /**

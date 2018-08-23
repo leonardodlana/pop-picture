@@ -28,16 +28,19 @@ import leonardolana.poppicture.common.ConfirmationDialog;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.data.User;
 import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.helpers.api.UsersDataHelper;
 import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
+import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
 
 /**
  * Created by Leonardo Lana
@@ -66,9 +69,9 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         return viewerFragment;
     }
 
-    private PersistentHelper mPersistentHelper;
     private UserHelper mUserHelper;
     private CacheHelper mCacheHelper;
+    private UsersDataHelper mUsersDataHelper;
 
     private ViewerFragmentPresenter mPresenter;
     private Picture mPicture;
@@ -89,6 +92,9 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
     @BindView(R.id.button_like)
     AppCompatImageView mButtonLike;
 
+    @BindView(R.id.text_user_name)
+    TextView mTextUserName;
+
     @BindView(R.id.text_title)
     TextView mTextTitle;
 
@@ -106,10 +112,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         Context applicationContext = getContext().getApplicationContext();
 
-        mPersistentHelper = PersistentHelperImpl.getInstance(applicationContext);
-        mUserHelper = UserHelperImpl.getInstance(mPersistentHelper);
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
+        mUserHelper = UserHelperImpl.getInstance(persistentHelper);
         mCacheHelper = CacheHelperImpl.getInstance(applicationContext);
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+        mUsersDataHelper = UsersDataHelperImpl.getInstance(serverHelper, mUserHelper);
         CloudStorage cloudStorage = new CloudStorageImpl();
 
         mPresenter = new ViewerFragmentPresenter(this, mPicture, serverHelper, mUserHelper, cloudStorage);
@@ -152,10 +159,13 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
             }
         });
 
-        if (TextUtils.equals(mPicture.getUserId(), mUserHelper.getPublicId())) {
-            mButtonDelete.setVisibility(View.VISIBLE);
-        } else {
-            mButtonReport.setVisibility(View.VISIBLE);
+        if (mUserHelper.isUserLoggedIn()) {
+            mButtonLike.setVisibility(View.VISIBLE);
+            if (TextUtils.equals(mPicture.getUserId(), mUserHelper.getPublicId())) {
+                mButtonDelete.setVisibility(View.VISIBLE);
+            } else {
+                mButtonReport.setVisibility(View.VISIBLE);
+            }
         }
 
         mTextTitle.setText(mPicture.getTitle());
@@ -165,6 +175,21 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         //todo create string
         mTextDistance.setText(mDecimalFormat.format(mPicture.getDistanceInKM()) + " KM");
+
+        mUsersDataHelper.getUser(mPicture.getUserId(), new UsersDataHelper.GetUserResponse() {
+            @Override
+            public void onSuccess(User user) {
+                if(isDetached())
+                    return;
+
+                mTextUserName.setText(user.getName());
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     @OnClick(R.id.button_close)

@@ -21,23 +21,25 @@ package leonardolana.poppicture.data;
 
 public class User {
 
-    private String mId;
+    private String mPublicId;
     private String mName;
     private String mProfilePicture;
 
-    public User(String id) {
-        mId = id;
+    public User(String publicId, String userName, String profilePictureName) {
+        mPublicId = publicId;
+        mName = userName;
+        mProfilePicture = profilePictureName;
     }
 
-    public String getId() {
-        return mId;
+    public String getPublicId() {
+        return mPublicId;
     }
 
     public String getName() {
         return mName;
     }
 
-    public String getPictureName() {
+    public String getProfilePictureName() {
         return mProfilePicture;
     }
 

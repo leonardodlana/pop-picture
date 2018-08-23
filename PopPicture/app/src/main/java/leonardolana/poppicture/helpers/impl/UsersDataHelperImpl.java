@@ -1,10 +1,18 @@
 package leonardolana.poppicture.helpers.impl;
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import leonardolana.poppicture.data.User;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.api.UsersDataHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.ServerRequestGetUser;
 
 /**
  * Created by Leonardo Lana
@@ -26,24 +34,45 @@ import leonardolana.poppicture.helpers.api.UsersDataHelper;
  */
 public class UsersDataHelperImpl implements UsersDataHelper {
 
-    private Map<String,User> mUsersData = new HashMap<>();
+    private static UsersDataHelperImpl INSTANCE;
 
-    @Override
-    public User getUser(String publicId) {
-        return mUsersData.get(publicId);
+    public static UsersDataHelperImpl getInstance(ServerHelper serverHelper, UserHelper userHelper) {
+        if (INSTANCE == null)
+            INSTANCE = new UsersDataHelperImpl(serverHelper, userHelper);
+
+        return INSTANCE;
+    }
+
+    private Map<String, User> mUsersData = new HashMap<>();
+    private ServerHelper mServerHelper;
+    private UserHelper mUserHelper;
+
+    private UsersDataHelperImpl(ServerHelper serverHelper, UserHelper userHelper) {
+        mServerHelper = serverHelper;
+        mUserHelper = userHelper;
     }
 
     @Override
-    public void createUser(String publicId) {
-        if(mUsersData.containsKey(publicId))
+    public void getUser(String publicId, @NonNull final GetUserResponse callback) {
+        if (mUsersData.containsKey(publicId)) {
+            callback.onSuccess(mUsersData.get(publicId));
             return;
+        }
 
-        User user = new User(publicId);
-        mUsersData.put(publicId, user);
+        new ServerRequestGetUser(publicId).execute(mServerHelper, mUserHelper, new ServerRequestGetUser.ServerRequestGerUserResponse() {
+            @Override
+            public void onSuccess(String publicId, String userName, String profilePictureName) {
+                User user = new User(publicId, userName, profilePictureName);
+                mUsersData.put(publicId, user);
+                callback.onSuccess(user);
+            }
+
+            @Override
+            public void onError(RequestError e) {
+                callback.onError();
+            }
+        });
     }
 
-    @Override
-    public void updateUser(String publicId, String name, String profilePicture) {
 
-    }
 }
