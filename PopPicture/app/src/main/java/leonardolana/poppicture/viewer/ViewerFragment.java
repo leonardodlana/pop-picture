@@ -24,9 +24,8 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseDialogFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.ConfirmationDialog;
-import leonardolana.poppicture.common.Utils;
-import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.data.User;
 import leonardolana.poppicture.helpers.api.CacheHelper;
@@ -62,6 +61,8 @@ import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
  */
 
 public class ViewerFragment extends BaseDialogFragment implements ViewerFragmentView {
+
+    //TODO improve image view visualization
 
     public static ViewerFragment newInstance(Picture picture) {
         ViewerFragment viewerFragment = new ViewerFragment();
@@ -120,9 +121,12 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         CloudStorage cloudStorage = new CloudStorageImpl();
 
         mPresenter = new ViewerFragmentPresenter(this, mPicture, serverHelper, mUserHelper, cloudStorage);
-        init(mPresenter);
-
         mDecimalFormat = new DecimalFormat("#.##");
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable
@@ -147,7 +151,8 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
             @Override
             public void onError(@CacheHelper.LoadError int error) {
                 // todo handle each error
-                AlertDialog dialog = AlertDialog.newInstance("Error loading the file", "Sorry, we couldn't load your file, please try again.");
+                AlertDialog dialog = AlertDialog.newInstance(getString(R.string.error_loading),
+                        getString(R.string.error_loading_description));
                 dialog.setCancelable(false);
                 dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
                     @Override
@@ -173,13 +178,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         refreshLike();
 
-        //todo create string
-        mTextDistance.setText(mDecimalFormat.format(mPicture.getDistanceInKM()) + " KM");
-
+        mTextDistance.setText(String.format(getString(R.string.distance_with_km), mDecimalFormat.format(mPicture.getDistanceInKM())));
         mUsersDataHelper.getUser(mPicture.getUserId(), new UsersDataHelper.GetUserResponse() {
             @Override
             public void onSuccess(User user) {
-                if(isDetached())
+                if (isDetached())
                     return;
 
                 mTextUserName.setText(user.getName());
@@ -200,9 +203,9 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
     @OnClick(R.id.button_delete)
     public void onButtonDeleteClick() {
         // Confirm dialog then call presenter
-        ConfirmationDialog dialog = ConfirmationDialog.newInstance("Are you sure?",
-                "Deleting will erase permanently for you and others",
-                "DELETE", "CANCEL");
+        ConfirmationDialog dialog = ConfirmationDialog.newInstance(getString(R.string.confirmation_are_you_sure),
+                getString(R.string.confirmation_delete),
+                getString(R.string.delete), getString(R.string.cancel));
 
         dialog.setOnConfirmationDialogListener(new ConfirmationDialog.OnConfirmationDialogListener() {
             @Override
@@ -221,7 +224,25 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
     @OnClick(R.id.button_report)
     public void onButtonReportClick() {
-        Toast.makeText(getContext(), "TODO report", Toast.LENGTH_SHORT).show();
+        // Confirm dialog then call presenter
+        ConfirmationDialog dialog = ConfirmationDialog.newInstance(getString(R.string.confirmation_are_you_sure),
+                getString(R.string.confirmation_report),
+                getString(R.string.report), getString(R.string.cancel));
+
+        dialog.setOnConfirmationDialogListener(new ConfirmationDialog.OnConfirmationDialogListener() {
+            @Override
+            public void onClickPositive() {
+                mPresenter.onClickReport();
+                Toast.makeText(getContext(), getString(R.string.thank_for_feedback), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClickNegative() {
+                // ignore
+            }
+        });
+
+        dialog.show(getFragmentManager(), "dialog");
     }
 
     @OnClick(R.id.button_like)
@@ -246,8 +267,13 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
     }
 
     @Override
+    public void showDeleteSuccess() {
+        Toast.makeText(getContext(), getString(R.string.photo_deleted), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showDeleteError() {
-        AlertDialog dialog = AlertDialog.newInstance("Error deleting the file", "Sorry, we couldn't delete your file, please try again.");
+        AlertDialog dialog = AlertDialog.newInstance(getString(R.string.error_deleting), getString(R.string.error_deleting_description));
         dialog.setCancelable(false);
         dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
             @Override

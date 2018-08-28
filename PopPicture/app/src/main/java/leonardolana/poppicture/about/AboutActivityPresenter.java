@@ -1,12 +1,6 @@
-package leonardolana.poppicture.login;
+package leonardolana.poppicture.about;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
-import leonardolana.poppicture.R;
-import leonardolana.poppicture.common.BaseActivity;
 import leonardolana.poppicture.common.BasePresenter;
-import leonardolana.poppicture.login.authentication.LoginAuthenticationFragment;
 
 /**
  * Created by Leonardo Lana
@@ -26,21 +20,36 @@ import leonardolana.poppicture.login.authentication.LoginAuthenticationFragment;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public class AboutActivityPresenter extends BasePresenter {
 
-public class LoginActivity extends BaseActivity {
+    private AboutActivityView mView;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-
-        if(savedInstanceState == null) {
-            addFragment(new LoginAuthenticationFragment(), R.id.fragment_container, false);
-        }
+    public AboutActivityPresenter(AboutActivityView view) {
+        mView = view;
     }
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    public void onDestroy() {
+        mView = null;
+    }
+
+    public void onClickReview() {
+        //TODO tracking
+        mView.openMarket();
+    }
+
+    public void onClickPrivacyPolicy() {
+        //TODO tracking
+        mView.openPrivacyPolicy();
+    }
+
+    public void onClickTermsAndConditions() {
+        //TODO tracking
+        mView.openTermsAndConditions();
+    }
+
+    public void onClickGitHub() {
+        //TODO tracking
+        mView.openGitHub();
     }
 }

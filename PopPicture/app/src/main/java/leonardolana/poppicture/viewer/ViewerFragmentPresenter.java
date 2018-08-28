@@ -10,6 +10,7 @@ import leonardolana.poppicture.server.RequestResponse;
 import leonardolana.poppicture.server.ServerRequestAddLike;
 import leonardolana.poppicture.server.ServerRequestRemoveLike;
 import leonardolana.poppicture.server.ServerRequestRemovePicture;
+import leonardolana.poppicture.server.ServerRequestReport;
 
 /**
  * Created by Leonardo Lana
@@ -59,6 +60,7 @@ public class ViewerFragmentPresenter extends BasePresenter {
                     @Override
                     public void onRequestSuccess(String data) {
                         mView.hideLoading();
+                        mView.showDeleteSuccess();
                         mView.dismiss();
                     }
 
@@ -99,6 +101,20 @@ public class ViewerFragmentPresenter extends BasePresenter {
         }
     }
 
+    public void onClickReport() {
+        new ServerRequestReport(mPicture.getId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
+            @Override
+            public void onRequestSuccess(String data) {
+
+            }
+
+            @Override
+            public void onRequestError(RequestError error) {
+
+            }
+        });
+    }
+
     @Override
     public void onDestroy() {
         mView = null;
@@ -107,6 +123,5 @@ public class ViewerFragmentPresenter extends BasePresenter {
         mUserHelper = null;
         mCloudStorage = null;
     }
-
 
 }

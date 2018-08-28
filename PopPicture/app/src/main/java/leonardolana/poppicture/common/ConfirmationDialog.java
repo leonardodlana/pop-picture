@@ -72,6 +72,11 @@ public class ConfirmationDialog extends BaseDialogFragment {
         setCancelable(false);
     }
 
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

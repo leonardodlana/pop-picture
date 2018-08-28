@@ -32,4 +32,6 @@ public interface HomeFragmentView {
     void openFilePicker(String allowedMimeTypes);
 
     void openProfile();
+
+    void openAbout();
 }

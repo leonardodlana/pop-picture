@@ -12,7 +12,7 @@
         android:layout_marginEnd="@dimen/dialog_horizontal_margin"
         android:layout_marginStart="@dimen/dialog_horizontal_margin"
         android:layout_marginTop="@dimen/dialog_top_margin"
-        android:text="Title"
+        android:text="@string/place_holder_title"
         android:textColor="@color/dialog_title"
         android:textSize="@dimen/title"
         android:textStyle="bold" />
@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/dialog_horizontal_margin"
         android:layout_marginStart="@dimen/dialog_horizontal_margin"
         android:layout_marginTop="@dimen/dialog_top_margin"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id."
+        android:text="@string/place_holder_description"
         android:textColor="@color/dialog_description" />
 
     <leonardolana.poppicture.common.ButtonTextView
@@ -36,7 +36,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/dialog_button_right_margin"
         android:layout_marginTop="16dp"
-        android:text="disagree"
+        android:text="@string/disagree"
         android:textAllCaps="true"
         android:textColor="@color/negative_button" />
 
@@ -48,7 +48,7 @@
         android:layout_marginBottom="@dimen/dialog_bottom_margin"
         android:layout_marginEnd="@dimen/dialog_button_right_margin"
         android:layout_toStartOf="@+id/button_negative"
-        android:text="agree"
+        android:text="@string/agree"
         android:textAllCaps="true"
         android:textColor="@color/positive_button" />
 

@@ -42,4 +42,8 @@ public class LoadingDialog extends BaseDialogFragment {
         return inflater.inflate(R.layout.dialog_loading, container, false);
     }
 
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
+    }
 }

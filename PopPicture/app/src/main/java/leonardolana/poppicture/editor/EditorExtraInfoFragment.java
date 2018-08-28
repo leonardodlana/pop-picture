@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
 
 /**
@@ -46,7 +47,11 @@ public class EditorExtraInfoFragment extends BaseFragment implements EditorExtra
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new EditorExtraInfoFragmentPresenter(this);
-        init(mPresenter);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable

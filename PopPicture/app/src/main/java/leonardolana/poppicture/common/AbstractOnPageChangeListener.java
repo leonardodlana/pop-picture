@@ -19,14 +19,11 @@ import android.support.v4.view.ViewPager;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-/**
+ * <p>
  * This is a good way to wrap an interface so we only
  * have to implement the methods that we want. It's usually
  * good for big interfaces of android
  */
-
 public abstract class AbstractOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override

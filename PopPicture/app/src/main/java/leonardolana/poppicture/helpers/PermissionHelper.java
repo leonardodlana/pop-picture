@@ -52,6 +52,7 @@ public class PermissionHelper {
         return ContextCompat.checkSelfPermission(context, permission.getName()) == PackageManager.PERMISSION_GRANTED;
     }
 
+    //TODO in case of never ask me again, take the user to settings
     public static void requestPermission(Activity activity, @Nullable PermissionWatcher permissionWatcher, Permission... permissions) {
         if (permissions.length == 0) {
             throw new IllegalArgumentException("Permission must be >= 1");
@@ -65,12 +66,12 @@ public class PermissionHelper {
         ActivityCompat.requestPermissions(activity, stringPermissions, REQUEST_CODE);
 
         if (permissionWatcher != null) {
-            WATCHERS.add(new WeakReference<PermissionWatcher>(permissionWatcher));
+            WATCHERS.add(new WeakReference<>(permissionWatcher));
         }
     }
 
     public static void addPermissionWatcher(@NonNull PermissionWatcher permissionWatcher) {
-        WATCHERS.add(new WeakReference<PermissionWatcher>(permissionWatcher));
+        WATCHERS.add(new WeakReference<>(permissionWatcher));
     }
 
     public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

@@ -44,14 +44,11 @@ public class OnboardingFragmentPresenter extends BasePresenter {
         mView.dismiss();
     }
 
-    void onAgreeClick() {
+    void onClickAgree() {
         if (mView.checkPermission(Permission.LOCATION))
             dismiss();
         else
             mView.requestPermission(Permission.LOCATION);
-    }
-
-    void onDisagreeClick() {
     }
 
     void onPermissionGranted(Permission permission) {

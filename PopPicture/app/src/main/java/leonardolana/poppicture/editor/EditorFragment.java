@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseDialogFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.GenericFragmentPagerAdapter;
 import leonardolana.poppicture.common.LoadingDialog;
 import leonardolana.poppicture.common.Utils;
@@ -89,7 +90,6 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
         CloudStorage cloudStorage = new CloudStorageImpl();
         mPresenter = new EditorFragmentPresenter(this, userHelper, serverHelper, cloudStorage);
-        init(mPresenter);
 
         setFullScreen(true);
         setHasTitle(false);
@@ -108,6 +108,11 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
             //todo contract
             mPageAdapter = new GenericFragmentPagerAdapter(getChildFragmentManager());
         }
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable
@@ -131,9 +136,9 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
             @Override
             public void onPageSelected(int position) {
                 if (position == ITEM_EDITOR_PICTURE)
-                    mButtonNext.setText("next");
+                    mButtonNext.setText(R.string.next);
                 else
-                    mButtonNext.setText("share");
+                    mButtonNext.setText(R.string.share);
             }
 
             @Override
@@ -196,7 +201,7 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
 
     @Override
     public void showError() {
-        AlertDialog dialog = AlertDialog.newInstance("Error sharing the file", "Sorry, we couldn't share your file, please try again.");
+        AlertDialog dialog = AlertDialog.newInstance(getString(R.string.error_sharing), getString(R.string.error_sharing_description));
         dialog.setCancelable(false);
         dialog.setOnDismissListener(new AlertDialog.OnDismissListener() {
             @Override

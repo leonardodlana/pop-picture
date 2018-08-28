@@ -40,7 +40,8 @@ public class Picture {
         // Mock constructor
     }
 
-    public Picture(String userId, long pictureId, String filename, String title, String description, int likesCount, boolean likedByMe, double latitude, double longitude) {
+    public Picture(String userId, long pictureId, String filename, String title, String description,
+                   int likesCount, boolean likedByMe, double latitude, double longitude) {
         mUserId = userId;
         mPictureId = pictureId;
         mFileName = filename;
@@ -91,7 +92,6 @@ public class Picture {
     public double getLongitude() {
         return mLongitude;
     }
-
 
     public float getDistanceInKM() {
         return mDistanceInKM;

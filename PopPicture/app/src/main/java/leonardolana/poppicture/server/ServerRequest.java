@@ -96,6 +96,11 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
 
     @Override
     public final void onErrorResponse(VolleyError error) {
+        /*
+            If the user tries to make a request that requires authorization
+            and the user is unauthorized, we automatically send an authorization
+            request and then send the original request again.
+         */
         if(error instanceof AuthFailureError) {
             String firebaseId = mParams.optString(KEY_FIREBASE_ID);
             if (TextUtils.isEmpty(firebaseId))

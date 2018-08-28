@@ -9,7 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import leonardolana.poppicture.R;
+import leonardolana.poppicture.about.AboutActivity;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.editor.EditorFragment;
@@ -61,6 +66,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     private HomeFragmentPresenter mPresenter;
     private HomeFragmentPagerAdapter mPageAdapter;
 
+    @BindView(R.id.button_info)
+    AppCompatImageView mButtonInfo;
+
     @BindView(R.id.fragment_viewpager)
     ViewPager mViewPagerContainer;
 
@@ -80,9 +88,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
 
         mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper, serverHelper);
-        // It's important to call init with the view model,
-        // this way we don't need to handle lifecycle on each fragment
-        init(mPresenter);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
@@ -96,7 +106,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         if (savedInstanceState != null) {
             /*
@@ -122,8 +131,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
         super.onSaveInstanceState(outState);
     }
 
+    @OnClick(R.id.button_info)
+    public void onClickInfo() {
+        mPresenter.onClickInfo();
+    }
+
     @OnClick(R.id.add_media_fab)
-    public void onFabClick() {
+    public void onClickFab() {
         mPresenter.onClickFab();
     }
 
@@ -241,5 +255,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
         }
 
         onClickSection(HomeSection.PROFILE);
+    }
+
+    @Override
+    public void openAbout() {
+        Intent intent = new Intent(getContext(), AboutActivity.class);
+        startActivity(intent);
     }
 }

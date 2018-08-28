@@ -28,4 +28,6 @@ public interface ViewerFragmentView {
     void hideLoading();
 
     void showDeleteError();
+
+    void showDeleteSuccess();
 }

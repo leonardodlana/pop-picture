@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.picture.PictureRecyclerView;
 import leonardolana.poppicture.common.picture.PictureRecyclerViewAdapter;
 import leonardolana.poppicture.data.Picture;
@@ -77,11 +78,13 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
         LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
 
         CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext);
-        mAdapter = new PictureRecyclerViewAdapter(cacheHelper, userHelper);
+        mAdapter = new PictureRecyclerViewAdapter(cacheHelper);
         mPresenter = new HomeNearbyFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
-        // It's important to call init with the view model,
-        // this way we don't need to handle lifecycle on each fragment
-        init(mPresenter);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
@@ -130,7 +133,7 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
 
     @Override
     public void showLoadError() {
-
+        // TODO
     }
 
     @Override

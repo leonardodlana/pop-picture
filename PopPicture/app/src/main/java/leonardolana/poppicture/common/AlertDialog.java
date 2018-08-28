@@ -63,6 +63,11 @@ public class AlertDialog extends BaseDialogFragment {
     }
 
     @Override
+    protected BasePresenter getPresenter() {
+        return null;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTextViewTitle.setText(mTitle);

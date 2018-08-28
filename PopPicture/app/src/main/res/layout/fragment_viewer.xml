@@ -31,7 +31,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/button_close"
                 android:layout_toStartOf="@+id/button_delete"
-                android:text="..."
+                android:text=""
                 android:textColor="@color/normal_text"
                 android:textSize="@dimen/list_item_title" />
 
@@ -93,7 +93,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:background="@drawable/picture_description_background"
-            android:text="3 KM"
+            android:text=""
             android:textSize="@dimen/secondary_text"
             android:layout_alignBottom="@id/image_view"
             android:layout_alignEnd="@id/image_view"
@@ -109,7 +109,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Title"
+            android:text="@string/place_holder_title"
             android:gravity="center"
             android:textColor="@color/normal_text"
             android:textSize="@dimen/list_item_title" />
@@ -123,7 +123,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at porttitor mi. Quisque quis dui sed arcu vehicula eleifend non nec ante. Suspendisse ac tellus condimentum, interdum justo ut, malesuada mauris. Nulla a ullamcorper erat. Etiam id commodo mi, scelerisque gravida ante. Nulla vitae orci purus. Ut commodo viverra ex in pretium."
+            android:text="@string/place_holder_description"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/secondary_text" />
 

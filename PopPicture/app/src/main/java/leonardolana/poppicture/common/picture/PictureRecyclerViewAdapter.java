@@ -1,6 +1,8 @@
 package leonardolana.poppicture.common.picture;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
@@ -52,16 +54,12 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final int VIEW_TYPE_BIG = 2;
 
     private final CacheHelper mCacheHelper;
-    private final UserHelper mUserHelper;
-    private final Location mUserLocation;
     private final DecimalFormat mDecimalFormat;
     private final List<Pair<Integer, Picture>> mData = new ArrayList<>();
     private OnPictureClickListener mListener;
 
-    public PictureRecyclerViewAdapter(CacheHelper cacheHelper, UserHelper userHelper) {
+    public PictureRecyclerViewAdapter(CacheHelper cacheHelper) {
         mCacheHelper = cacheHelper;
-        mUserHelper = userHelper;
-        mUserLocation = mUserHelper.getLastKnownLocation();
         mDecimalFormat = new DecimalFormat("#.##");
     }
 
@@ -81,6 +79,7 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 layout = R.layout.picture_big_view;
                 break;
         }
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(layout, parent, false);
         return new PictureViewHolder(view);
@@ -91,14 +90,15 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         PictureViewHolder holder = (PictureViewHolder) h;
         final Picture picture = mData.get(position).second;
 
-        //todo create string
-        holder.mTextDistance.setText(mDecimalFormat.format(picture.getDistanceInKM()) + " KM");
+        holder.mTextDistance.setText(String.format(holder.itemView.getContext().getString(R.string.distance_with_km), mDecimalFormat.format(picture.getDistanceInKM())));
 
         holder.mTextLike.setText(String.valueOf(picture.getLikesCount()));
         holder.setImageLikeTint(picture.isLiked());
 
-        mCacheHelper.loadPicture(picture, true, holder.mImageView);
+        // Remove recycled reference
+        holder.mImageView.setImageBitmap(null);
         holder.mImageView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.md_grey_600));
+        mCacheHelper.loadPicture(picture, true, holder.mImageView);
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +132,7 @@ public class PictureRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         Random rnd = new Random();
         // todo build rules
         for(Picture picture : pictures) {
-            mData.add(new Pair<Integer, Picture>(rnd.nextInt(3), picture));
+            mData.add(new Pair<>(rnd.nextInt(3), picture));
         }
     }
 }

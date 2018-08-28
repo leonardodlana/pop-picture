@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseDialogFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.login.LoginActivity;
 
@@ -44,9 +45,11 @@ public class ProfileOnboardingDialogFragment extends BaseDialogFragment implemen
         setCancelable(false);
 
         mPresenter = new ProfileOnboardingDialogFragmentPresenter(this, PersistentHelperImpl.getInstance(getContext().getApplicationContext()));
-        // It's important to call init with the view model,
-        // this way we don't need to handle lifecycle on each fragment
-        init(mPresenter);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable
@@ -57,12 +60,12 @@ public class ProfileOnboardingDialogFragment extends BaseDialogFragment implemen
         return view;
     }
 
-    @OnClick(R.id.positive_button)
+    @OnClick(R.id.button_positive)
     public void onAgreeClick() {
         mPresenter.onSignInClick();
     }
 
-    @OnClick(R.id.negative_button)
+    @OnClick(R.id.button_negative)
     public void onDisagreeClick() {
         mPresenter.onDismissClick();
     }

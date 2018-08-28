@@ -1,6 +1,8 @@
 package leonardolana.poppicture.common;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +30,47 @@ import leonardolana.poppicture.helpers.PermissionHelper;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private BasePresenter mPresenter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = createPresenter();
+
+        if (mPresenter != null)
+            mPresenter.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPresenter != null)
+            mPresenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mPresenter != null)
+            mPresenter.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mPresenter != null)
+            mPresenter.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null)
+            mPresenter.onDestroy();
+        super.onDestroy();
+    }
+
+    protected abstract BasePresenter createPresenter();
 
     protected void addFragment(Fragment frag, int container, boolean addToBackStack) {
         final FragmentManager fm = getSupportFragmentManager();

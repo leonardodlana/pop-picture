@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 
 import leonardolana.poppicture.R;
 
@@ -43,14 +42,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
     private boolean mHasTitle = true;
     private LoadingDialog mLoadingDialog;
 
-    public void init(BasePresenter presenter) {
-        mPresenter = presenter;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLoadingDialog = new LoadingDialog();
+        mPresenter = getPresenter();
     }
 
     @NonNull
@@ -94,6 +90,8 @@ public abstract class BaseDialogFragment extends DialogFragment {
 
         super.onDestroy();
     }
+
+    protected abstract BasePresenter getPresenter();
 
     protected void setHasTitle(boolean hasTitle) {
         mHasTitle = hasTitle;

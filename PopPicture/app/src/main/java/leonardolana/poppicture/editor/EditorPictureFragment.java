@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.AlertDialog;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.editor.contract.EditorPictureContract;
 import leonardolana.poppicture.helpers.api.CloudStorage;
@@ -69,7 +70,11 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new EditorPictureFragmentPresenter(this);
-        init(mPresenter);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable

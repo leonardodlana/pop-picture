@@ -99,4 +99,8 @@ public class HomeFragmentPresenter extends BasePresenter {
         else
             mView.openProfile();
     }
+
+    public void onClickInfo() {
+        mView.openAbout();
+    }
 }

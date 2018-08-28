@@ -32,16 +32,14 @@ public class ProfileFragmentPresenter extends BasePresenter {
 
     private ProfileFragmentView mView;
     private UserHelper mUserHelper;
-    private PersistentHelper mPersistentHelper;
     private boolean mUserLoggedIn = false;
     private UserWatcher mUserWatcher;
 
-    public ProfileFragmentPresenter(ProfileFragmentView view, PersistentHelper persistentHelper, UserHelper userHelper) {
+    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper) {
         mView = view;
         mUserHelper = userHelper;
-        mPersistentHelper = persistentHelper;
         mUserLoggedIn = mUserHelper.isUserLoggedIn();
-        if(!mUserLoggedIn) {
+        if (!mUserLoggedIn) {
             // Register a watcher to get notified when the user
             // completed the authentication flow
             mUserWatcher = new UserWatcher() {
@@ -60,7 +58,7 @@ public class ProfileFragmentPresenter extends BasePresenter {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mView.setEditEnabled(mUserLoggedIn);
-        if(mUserLoggedIn) {
+        if (mUserLoggedIn) {
             mView.setTextName(mUserHelper.getName());
         }
     }
@@ -72,16 +70,12 @@ public class ProfileFragmentPresenter extends BasePresenter {
         mUserHelper = null;
     }
 
-    public void onUpdateClick() {
+    public void onClickUpdate() {
         if (mUserLoggedIn) {
-            // Call update
+            //TODO Call update
             mView.showUpdatedFeedback();
         } else {
             mView.launchAuthentication();
         }
-    }
-
-    public void onProfileOnboardingDismiss() {
-        PersistentSharedKeys.setNeedToShowProfileOnboarding(mPersistentHelper, false);
     }
 }

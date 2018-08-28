@@ -5,18 +5,18 @@
         android:id="@+id/action_nearby"
         android:enabled="true"
         android:icon="@drawable/ic_location"
-        android:title="Nearby"
+        android:title="@string/nearby"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_whatshot"
         android:enabled="true"
         android:icon="@drawable/ic_whatshot"
-        android:title="Hot"
+        android:title="@string/hot"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"
+        android:title="@string/profile"
         app:showAsAction="ifRoom" />
 </menu>

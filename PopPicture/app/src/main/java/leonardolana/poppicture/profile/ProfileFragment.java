@@ -17,12 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
+import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.login.LoginActivity;
-import leonardolana.poppicture.onboarding.OnboardingFragment;
 
 /**
  * Created by Leonardo Lana
@@ -46,6 +46,7 @@ import leonardolana.poppicture.onboarding.OnboardingFragment;
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
     private ProfileFragmentPresenter mPresenter;
+
     @BindView(R.id.image_profile)
     ImageView mImageViewProfile;
 
@@ -63,8 +64,12 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         super.onCreate(savedInstanceState);
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        mPresenter = new ProfileFragmentPresenter(this, persistentHelper, userHelper);
-        init(mPresenter);
+        mPresenter = new ProfileFragmentPresenter(this, userHelper);
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Nullable
@@ -77,7 +82,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @OnClick({R.id.button_profile_update, R.id.button_sign_in})
     public void onClickUpdate() {
-        mPresenter.onUpdateClick();
+        mPresenter.onClickUpdate();
     }
 
     // View methods

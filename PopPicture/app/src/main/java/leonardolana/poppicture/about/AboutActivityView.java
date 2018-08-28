@@ -1,8 +1,4 @@
-package leonardolana.poppicture.login.authentication;
-
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.List;
+package leonardolana.poppicture.about;
 
 /**
  * Created by Leonardo Lana
@@ -22,13 +18,12 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public interface AboutActivityView {
+    void openMarket();
 
-public interface LoginAuthenticationView {
+    void openPrivacyPolicy();
 
-    void startAuthenticationFlow(List<AuthUI.IdpConfig> providers);
+    void openTermsAndConditions();
 
-    void dismiss();
-
-    void showError();
-
+    void openGitHub();
 }
