@@ -15,7 +15,7 @@
         android:textSize="@dimen/title"
         android:textStyle="bold" />
 
-    <EditText
+    <android.support.v7.widget.AppCompatEditText
         android:id="@+id/edit_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:textSize="@dimen/list_item_title"
         android:tint="@color/md_grey_900" />
 
-    <EditText
+    <android.support.v7.widget.AppCompatEditText
         android:id="@+id/edit_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

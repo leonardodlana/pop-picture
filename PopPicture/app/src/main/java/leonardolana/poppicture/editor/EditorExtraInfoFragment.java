@@ -3,6 +3,9 @@ package leonardolana.poppicture.editor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatEditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.common.EditFieldError;
 import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
 
 /**
@@ -33,15 +37,15 @@ import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class EditorExtraInfoFragment extends BaseFragment implements EditorExtraInfoFragmentView,EditorExtraInfoContract {
+public class EditorExtraInfoFragment extends BaseFragment implements EditorExtraInfoFragmentView, EditorExtraInfoContract {
 
     private EditorExtraInfoFragmentPresenter mPresenter;
 
     @BindView(R.id.edit_title)
-    EditText mEditTitle;
+    AppCompatEditText mEditTitle;
 
     @BindView(R.id.edit_description)
-    EditText mEditDescription;
+    AppCompatEditText mEditDescription;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +66,65 @@ public class EditorExtraInfoFragment extends BaseFragment implements EditorExtra
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                areFieldsValid();
+            }
+        };
+
+        mEditTitle.addTextChangedListener(textWatcher);
+        mEditDescription.addTextChangedListener(textWatcher);
+        areFieldsValid();
+    }
+
+    /*
+        View methods
+     */
+
+    @Override
+    public void showFieldTitleError(EditFieldError error) {
+        switch (error) {
+            case EMPTY:
+                mEditTitle.setError(getString(R.string.error_string_empty));
+                break;
+            case NOT_ENOUGH:
+                mEditTitle.setError(String.format(getString(R.string.error_string_not_enough),
+                        mPresenter.getTitleMinimumSize()));
+                break;
+        }
+    }
+
+    @Override
+    public void showFieldDescriptionError(EditFieldError error) {
+        switch (error) {
+            case EMPTY:
+                mEditDescription.setError(getString(R.string.error_string_empty));
+                break;
+            case NOT_ENOUGH:
+                mEditDescription.setError(String.format(getString(R.string.error_string_not_enough),
+                        mPresenter.getDescriptionMinimumSize()));
+                break;
+        }
+    }
+
+    /*
+        Contract methods
+     */
 
     @Override
     public boolean areFieldsValid() {

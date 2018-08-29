@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -102,7 +103,7 @@ public class AboutActivity extends BaseActivity implements AboutActivityView {
         } catch (Exception e) {
             // Bad Uri or no browser detected
             Crashlytics.logException(e);
-            // TODO feedback
+            Toast.makeText(getApplicationContext(), R.string.error_browser_not_found, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

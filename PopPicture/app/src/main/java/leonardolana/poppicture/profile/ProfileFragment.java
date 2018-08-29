@@ -1,5 +1,6 @@
 package leonardolana.poppicture.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,10 +20,13 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.login.LoginActivity;
+import leonardolana.poppicture.server.RequestError;
 
 /**
  * Created by Leonardo Lana
@@ -62,9 +66,11 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
+        Context applicationContext = getContext().getApplicationContext();
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        mPresenter = new ProfileFragmentPresenter(this, userHelper);
+        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+        mPresenter = new ProfileFragmentPresenter(this, userHelper, serverHelper);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @OnClick({R.id.button_profile_update, R.id.button_sign_in})
     public void onClickUpdate() {
-        mPresenter.onClickUpdate();
+        mPresenter.onClickUpdate(mEditTextProfileName.getText().toString());
     }
 
     // View methods
@@ -102,8 +108,13 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     }
 
     @Override
-    public void showUpdatedFeedback() {
-        Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+    public void showUpdateFeedback() {
+        Toast.makeText(getContext(), R.string.updated, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showUpdateError(RequestError error) {
+        Toast.makeText(getContext(), R.string.error_update_profile, Toast.LENGTH_SHORT).show();
     }
 
     @Override

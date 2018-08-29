@@ -1,6 +1,4 @@
-package leonardolana.poppicture.editor;
-
-import leonardolana.poppicture.common.EditFieldError;
+package leonardolana.poppicture.common;
 
 /**
  * Created by Leonardo Lana
@@ -20,10 +18,8 @@ import leonardolana.poppicture.common.EditFieldError;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EditorExtraInfoFragmentView {
+public enum EditFieldError {
 
-    void showFieldTitleError(EditFieldError error);
-
-    void showFieldDescriptionError(EditFieldError error);
+    EMPTY, NOT_ENOUGH
 
 }

@@ -29,6 +29,7 @@ import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.LocationHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.PicturesLoaderHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.helpers.mock.PicturesLoaderHelperMock;
@@ -79,7 +80,7 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
 
-        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext);
+        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext, RunnableExecutorImpl.getInstance());
         mAdapter = new PictureRecyclerViewAdapter(cacheHelper);
         mPresenter = new HomeLikedFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
     }

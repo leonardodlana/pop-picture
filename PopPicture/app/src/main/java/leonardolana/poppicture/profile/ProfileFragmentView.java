@@ -1,5 +1,7 @@
 package leonardolana.poppicture.profile;
 
+import leonardolana.poppicture.server.RequestError;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -24,7 +26,10 @@ public interface ProfileFragmentView {
 
     void launchAuthentication();
 
-    void showUpdatedFeedback();
+    void showUpdateFeedback();
+
+    void showUpdateError(RequestError error);
 
     void setTextName(String name);
+
 }

@@ -7,7 +7,11 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.UserWatcher;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
+import leonardolana.poppicture.server.RequestError;
+import leonardolana.poppicture.server.RequestResponse;
+import leonardolana.poppicture.server.ServerRequestUpdateUser;
 
 /**
  * Created by Leonardo Lana
@@ -32,12 +36,14 @@ public class ProfileFragmentPresenter extends BasePresenter {
 
     private ProfileFragmentView mView;
     private UserHelper mUserHelper;
+    private ServerHelper mServerHelper;
     private boolean mUserLoggedIn = false;
     private UserWatcher mUserWatcher;
 
-    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper) {
+    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper, ServerHelper serverHelper) {
         mView = view;
         mUserHelper = userHelper;
+        mServerHelper = serverHelper;
         mUserLoggedIn = mUserHelper.isUserLoggedIn();
         if (!mUserLoggedIn) {
             // Register a watcher to get notified when the user
@@ -70,10 +76,19 @@ public class ProfileFragmentPresenter extends BasePresenter {
         mUserHelper = null;
     }
 
-    public void onClickUpdate() {
+    public void onClickUpdate(String name) {
         if (mUserLoggedIn) {
-            //TODO Call update
-            mView.showUpdatedFeedback();
+            new ServerRequestUpdateUser(name).execute(mServerHelper, mUserHelper, new RequestResponse() {
+                @Override
+                public void onRequestSuccess(String data) {
+                    mView.showUpdateFeedback();
+                }
+
+                @Override
+                public void onRequestError(RequestError error) {
+                    mView.showUpdateError(error);
+                }
+            });
         } else {
             mView.launchAuthentication();
         }

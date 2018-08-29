@@ -37,8 +37,12 @@
     <string name="error_deleting_description">Sorry, we couldn\'t delete your file, please try again.</string>
     <string name="error_sharing">Error sharing the file</string>
     <string name="error_sharing_description">Sorry, we couldn\'t share your file, please try again.</string>
+    <string name="error_browser_not_found">Sorry, we couldn\'t open your browser</string>
+    <string name="error_string_empty">This field is required!</string>
+    <string name="error_string_not_enough">This field should have at least %d characters</string>
+    <string name="error_update_profile">Unable to update profile. Please try again</string>
 
-    <string name="onboarding_presentation">PopPicture lets you see and share pictures near you or anywhere in the world</string>
+    <string name="onboarding_presentation">Pop Picture lets you see and share pictures near you or anywhere in the world</string>
     <string name="onboarding_location_and_terms">To be able to precisely show you nearby pictures we need to access your location. By clicking on Agree, you are accepting our <a href="https://poppicture-57876.firebaseapp.com/terms.html">terms</a> and <a href="https://poppicture-57876.firebaseapp.com/privacy-policy.html">privacy policy</a></string>
 
     <string name="cancel">Cancel</string>
@@ -56,6 +60,7 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="update">Update</string>
+    <string name="updated">Updated</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_required">Sign In Required</string>
     <string name="name">Name</string>

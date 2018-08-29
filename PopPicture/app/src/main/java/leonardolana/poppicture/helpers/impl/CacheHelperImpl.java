@@ -19,6 +19,7 @@ import leonardolana.poppicture.data.User;
 import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 
 /**
  * Created by Leonardo Lana
@@ -42,12 +43,12 @@ public class CacheHelperImpl extends CacheHelper {
 
     private static CacheHelper INSTANCE;
 
-    public static CacheHelper getInstance(Context context) {
+    public static CacheHelper getInstance(Context context, RunnableExecutor runnableExecutor) {
         if (context instanceof Activity)
             throw new UnsupportedOperationException("To avoid leaks, use only application context");
 
         if (INSTANCE == null)
-            INSTANCE = new CacheHelperImpl(context);
+            INSTANCE = new CacheHelperImpl(context, runnableExecutor);
 
         return INSTANCE;
     }
@@ -55,17 +56,12 @@ public class CacheHelperImpl extends CacheHelper {
     //TODO memory cache
     private final CloudStorage mCloudStorage;
     private final Context mContext;
-    private final HandlerThread mBackgroundThread;
-    private final Handler mBackgroundHandler;
-    private final Handler mMainThreadHandler;
+    private final RunnableExecutor mRunnableExecutor;
 
-    private CacheHelperImpl(Context context) {
+    private CacheHelperImpl(Context context, RunnableExecutor runnableExecutor) {
         mContext = context;
         mCloudStorage = new CloudStorageImpl();
-        mBackgroundThread = new HandlerThread("gallery_background_thread");
-        mBackgroundThread.start();
-        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
-        mMainThreadHandler = new Handler(Looper.getMainLooper());
+        mRunnableExecutor = runnableExecutor;
     }
 
     @Override
@@ -78,12 +74,11 @@ public class CacheHelperImpl extends CacheHelper {
             final File file = new File(mContext.getCacheDir().getAbsolutePath() + "/" + fullPath);
 
             if (file.exists()) {
-                //TODO better way to execute, queue probably
-                mBackgroundHandler.post(new Runnable() {
+                mRunnableExecutor.executeInBackground(new Runnable() {
                     @Override
                     public void run() {
                         final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        mMainThreadHandler.post(new Runnable() {
+                        mRunnableExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
                                 onLoadPicture.onLoad(bitmap);
@@ -98,11 +93,11 @@ public class CacheHelperImpl extends CacheHelper {
             mCloudStorage.download(new CloudStorage.OnDownloadListener() {
                 @Override
                 public void onCompletion() {
-                    mBackgroundHandler.post(new Runnable() {
+                    mRunnableExecutor.executeInBackground(new Runnable() {
                         @Override
                         public void run() {
                             final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                            mMainThreadHandler.post(new Runnable() {
+                            mRunnableExecutor.execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     onLoadPicture.onLoad(bitmap);
@@ -135,12 +130,11 @@ public class CacheHelperImpl extends CacheHelper {
             final File file = new File(mContext.getCacheDir().getAbsolutePath() + "/" + fullPath);
 
             if (file.exists()) {
-                //TODO better way to execute, queue probably
-                mBackgroundHandler.post(new Runnable() {
+                mRunnableExecutor.executeInBackground(new Runnable() {
                     @Override
                     public void run() {
                         final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        mMainThreadHandler.post(new Runnable() {
+                        mRunnableExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
                                 ImageView imageView = weakReference.get();
@@ -157,12 +151,11 @@ public class CacheHelperImpl extends CacheHelper {
             mCloudStorage.download(new CloudStorage.OnDownloadListener() {
                 @Override
                 public void onCompletion() {
-                    //TODO better way to execute, queue probably
-                    mBackgroundHandler.post(new Runnable() {
+                    mRunnableExecutor.executeInBackground(new Runnable() {
                         @Override
                         public void run() {
                             final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                            mMainThreadHandler.post(new Runnable() {
+                            mRunnableExecutor.execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     ImageView imageView = weakReference.get();
@@ -178,6 +171,7 @@ public class CacheHelperImpl extends CacheHelper {
                 public void onError() {
 
                 }
+                
             }, fullPath, file);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package leonardolana.poppicture.editor;
 
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.common.EditFieldError;
 
 /**
  * Created by Leonardo Lana
@@ -33,9 +34,52 @@ public class EditorExtraInfoFragmentPresenter extends BasePresenter {
         mView = null;
     }
 
+    // TODO maybe get this from elsewhere
+    public int getDescriptionMinimumSize() {
+        return 50;
+    }
+
+    // TODO maybe get this from elsewhere
+    public int getTitleMinimumSize() {
+        return 5;
+    }
+
     public boolean validateFields(String title, String description) {
-        //todo validation
-        return (title != null && title.length() > 0) &&
-                (description != null && description.length() > 0);
+        EditFieldError titleError = validateTitle(title);
+        EditFieldError descriptionError = validateDescription(description);
+
+        return titleError == null && descriptionError == null;
+    }
+
+    private EditFieldError validateTitle(String title) {
+        EditFieldError error = null;
+
+        if (title == null || title.length() == 0) {
+            error = EditFieldError.EMPTY;
+        } else if (title.length() < getTitleMinimumSize()) {
+            error = EditFieldError.NOT_ENOUGH;
+        }
+
+        if (error != null) {
+            mView.showFieldTitleError(error);
+        }
+
+        return error;
+    }
+
+    private EditFieldError validateDescription(String description) {
+        EditFieldError error = null;
+
+        if (description == null || description.length() == 0) {
+            error = EditFieldError.EMPTY;
+        } else if (description.length() < getDescriptionMinimumSize()) {
+            error = EditFieldError.NOT_ENOUGH;
+        }
+
+        if (error != null) {
+            mView.showFieldDescriptionError(error);
+        }
+
+        return error;
     }
 }

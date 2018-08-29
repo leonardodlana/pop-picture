@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,10 +27,12 @@ import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.editor.contract.EditorPictureContract;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
@@ -101,33 +104,49 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     }
 
     private void readFile() {
-        try {
-            //todo background, foreground is very bad
-            InputStream inputStream = getContext().getContentResolver().openInputStream(mFileURI);
-            // To avoid loading a huge bitmap to memory, we first get only the size and see if
-            // we have to reduce it before loading it. At this point is indifferent for the user.
-            // large images will have no benefit, will increase the change of a crash and
-            // will be very slow to render and apply effects before sharing.
+        final RunnableExecutor executor = RunnableExecutorImpl.getInstance();
+        executor.executeInBackground(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InputStream inputStream = getContext().getContentResolver().openInputStream(mFileURI);
+                    // To avoid loading a huge bitmap to memory, we first get only the size and see if
+                    // we have to reduce it before loading it. At this point is indifferent for the user.
+                    // large images will have no benefit, will increase the change of a crash and
+                    // will be very slow to render and apply effects before sharing.
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(inputStream, null, options);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(inputStream, null, options);
 
-            // Reset inputstream not supported
-            inputStream.close();
-            inputStream = getContext().getContentResolver().openInputStream(mFileURI);
+                    // Reset inputstream not supported
+                    inputStream.close();
+                    inputStream = getContext().getContentResolver().openInputStream(mFileURI);
 
-            int sampleSize = Utils.calculateSampleSize(mImageView.getMeasuredWidth(), mImageView.getMeasuredHeight(),
-                    options.outWidth, options.outHeight);
+                    int sampleSize = Utils.calculateSampleSize(mImageView.getMeasuredWidth(), mImageView.getMeasuredHeight(),
+                            options.outWidth, options.outHeight);
 
-            options.inJustDecodeBounds = false;
-            options.inSampleSize = sampleSize;
-            mSampleBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-            mImageView.setImageBitmap(mSampleBitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPresenter.onErrorLoadingFile();
-        }
+                    options.inJustDecodeBounds = false;
+                    options.inSampleSize = sampleSize;
+                    mSampleBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                    // Go back to UI thread to change view
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mImageView.setImageBitmap(mSampleBitmap);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPresenter.onErrorLoadingFile();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /*

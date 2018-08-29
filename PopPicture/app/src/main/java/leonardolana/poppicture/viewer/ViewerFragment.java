@@ -37,6 +37,7 @@ import leonardolana.poppicture.helpers.api.UsersDataHelper;
 import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.helpers.impl.UsersDataHelperImpl;
@@ -115,7 +116,7 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
 
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
         mUserHelper = UserHelperImpl.getInstance(persistentHelper);
-        mCacheHelper = CacheHelperImpl.getInstance(applicationContext);
+        mCacheHelper = CacheHelperImpl.getInstance(applicationContext, RunnableExecutorImpl.getInstance());
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
         mUsersDataHelper = UsersDataHelperImpl.getInstance(serverHelper, mUserHelper);
         CloudStorage cloudStorage = new CloudStorageImpl();

@@ -1,6 +1,9 @@
-package leonardolana.poppicture.editor;
+package leonardolana.poppicture.server;
 
-import leonardolana.poppicture.common.EditFieldError;
+import android.support.annotation.NonNull;
+
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.UserHelper;
 
 /**
  * Created by Leonardo Lana
@@ -20,10 +23,15 @@ import leonardolana.poppicture.common.EditFieldError;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EditorExtraInfoFragmentView {
+public class ServerRequestUpdateUser extends ServerRequest {
 
-    void showFieldTitleError(EditFieldError error);
+    public ServerRequestUpdateUser(String name) {
+        super(ServerConstants.URL, "UserData.update");
+        addParam(KEY_NAME, name);
+    }
 
-    void showFieldDescriptionError(EditFieldError error);
-
+    @Override
+    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+        super.execute(serverHelper, userHelper, callback);
+    }
 }

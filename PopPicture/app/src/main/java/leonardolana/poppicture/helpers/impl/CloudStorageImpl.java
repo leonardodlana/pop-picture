@@ -45,50 +45,52 @@ import leonardolana.poppicture.helpers.api.CloudStorage;
  */
 public class CloudStorageImpl implements CloudStorage {
 
+    @SafeVarargs
     @Override
-    public void upload(final OnUploadListener onUploadListener, Pair<String, InputStream>[] filesToUpload) {
-        if(filesToUpload == null || filesToUpload.length == 0)
+    public final void upload(@NonNull final OnUploadListener onUploadListener, Pair<String, InputStream>... filesToUpload) {
+        if (filesToUpload == null || filesToUpload.length == 0)
             throw new InvalidParameterException("filesToUpload must be > 0");
 
+        // Used as queue
         final Set<String> hashSet = new HashSet<>();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef;
 
-        for(final Pair<String, InputStream> fileToUpload : filesToUpload) {
+        for (final Pair<String, InputStream> fileToUpload : filesToUpload) {
             hashSet.add(fileToUpload.first);
             storageRef = storage.getReference().child(fileToUpload.first);
             storageRef.putStream(fileToUpload.second).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if(!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
                         onUploadListener.onError();
                         return;
                     }
                     hashSet.remove(fileToUpload.first);
 
                     // Queue is done
-                    if(hashSet.size() == 0) {
+                    if (hashSet.size() == 0) {
                         onUploadListener.onCompletion();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //todo
+                    onUploadListener.onError();
                 }
             });
         }
     }
 
     @Override
-    public void download(final OnDownloadListener onDownloadListener, String path, File file) {
+    public void download(@NonNull final OnDownloadListener onDownloadListener, String path, File file) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference(path);
         storageRef.getMetadata().addOnCompleteListener(new OnCompleteListener<StorageMetadata>() {
             @Override
             public void onComplete(@NonNull Task<StorageMetadata> task) {
-                Log.e("","");
+                Log.e("", "");
             }
         });
 
@@ -106,36 +108,37 @@ public class CloudStorageImpl implements CloudStorage {
     }
 
     @Override
-    public void delete(final OnDeleteListener onDeleteListener, String... paths) {
-        if(paths == null || paths.length == 0)
+    public void delete(@NonNull final OnDeleteListener onDeleteListener, String... paths) {
+        if (paths == null || paths.length == 0)
             throw new InvalidParameterException("files to delete must be > 0");
 
+        // Used as queue
         final Set<String> hashSet = new HashSet<>();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef;
 
-        for(final String path : paths) {
+        for (final String path : paths) {
             hashSet.add(path);
             storageRef = storage.getReference(path);
             storageRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
                         onDeleteListener.onError();
                         return;
                     }
                     hashSet.remove(path);
 
                     // Queue is done
-                    if(hashSet.size() == 0) {
+                    if (hashSet.size() == 0) {
                         onDeleteListener.onCompletion();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //todo
+                    onDeleteListener.onError();
                 }
             });
         }

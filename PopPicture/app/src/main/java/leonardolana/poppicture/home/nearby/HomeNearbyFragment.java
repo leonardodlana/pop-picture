@@ -29,6 +29,7 @@ import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.LocationHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.PicturesLoaderHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 import leonardolana.poppicture.viewer.ViewerFragment;
@@ -77,7 +78,7 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
 
-        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext);
+        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext, RunnableExecutorImpl.getInstance());
         mAdapter = new PictureRecyclerViewAdapter(cacheHelper);
         mPresenter = new HomeNearbyFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
     }

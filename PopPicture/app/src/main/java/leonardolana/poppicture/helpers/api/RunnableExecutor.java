@@ -1,6 +1,4 @@
-package leonardolana.poppicture.editor;
-
-import leonardolana.poppicture.common.EditFieldError;
+package leonardolana.poppicture.helpers.api;
 
 /**
  * Created by Leonardo Lana
@@ -20,10 +18,10 @@ import leonardolana.poppicture.common.EditFieldError;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface EditorExtraInfoFragmentView {
+public interface RunnableExecutor {
 
-    void showFieldTitleError(EditFieldError error);
+    public void executeInBackground(Runnable runnable);
 
-    void showFieldDescriptionError(EditFieldError error);
+    public void execute(Runnable runnable);
 
 }

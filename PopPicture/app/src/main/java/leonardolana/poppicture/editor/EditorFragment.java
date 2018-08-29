@@ -180,8 +180,6 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            } else {
-                //todo feedback
             }
         }
         //        EditorExtraInfoFragment fragment = EditorExtraInfoFragment.newInstance(mFileURI);
