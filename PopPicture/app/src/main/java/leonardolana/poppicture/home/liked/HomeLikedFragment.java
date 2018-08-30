@@ -23,6 +23,7 @@ import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.LocationHelper;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
@@ -79,10 +80,11 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         LocationHelper locationHelper = new LocationHelperImpl(applicationContext, userHelper);
+        RunnableExecutor runnableExecutor = RunnableExecutorImpl.getInstance();
 
-        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext, RunnableExecutorImpl.getInstance());
+        CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext, runnableExecutor);
         mAdapter = new PictureRecyclerViewAdapter(cacheHelper);
-        mPresenter = new HomeLikedFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(serverHelper, userHelper));
+        mPresenter = new HomeLikedFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(runnableExecutor, serverHelper, userHelper));
     }
 
     @Override
@@ -130,11 +132,12 @@ public class HomeLikedFragment extends BaseFragment implements HomeLikedFragment
     public void onLoad(List<Picture> pictures) {
         mAdapter.setData(pictures);
         mSwipeRefreshLayout.setRefreshing(false);
+        hideLoading();
     }
 
     @Override
     public void showLoadError() {
-        // TODO
+        // TODO empty view or error
     }
 
     @Override

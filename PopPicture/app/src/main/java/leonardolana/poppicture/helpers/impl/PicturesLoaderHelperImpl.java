@@ -5,6 +5,7 @@ import java.util.List;
 import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.api.PictureLoader;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
@@ -31,17 +32,19 @@ import leonardolana.poppicture.server.ServerRequestNearbyPictures;
  */
 public class PicturesLoaderHelperImpl implements PictureLoader {
 
+    private final RunnableExecutor mRunnableExecutor;
     private final ServerHelper mServerHelper;
     private final UserHelper mUserHelper;
 
-    public PicturesLoaderHelperImpl(ServerHelper serverHelper, UserHelper userHelper) {
+    public PicturesLoaderHelperImpl(RunnableExecutor runnableExecutor, ServerHelper serverHelper, UserHelper userHelper) {
+        mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mUserHelper = userHelper;
     }
 
     @Override
     public void loadNearbyPictures(Location location, final OnPicturesLoadListener listener) {
-        new ServerRequestNearbyPictures(location).execute(mServerHelper, mUserHelper, new ServerRequestNearbyPictures.ServerRequestNearbyPicturesResponse() {
+        new ServerRequestNearbyPictures(location).execute(mRunnableExecutor, mServerHelper, mUserHelper, new ServerRequestNearbyPictures.ServerRequestNearbyPicturesResponse() {
             @Override
             public void onSuccess(List<Picture> pictureList) {
                 listener.onLoad(pictureList);
@@ -61,7 +64,7 @@ public class PicturesLoaderHelperImpl implements PictureLoader {
 
     @Override
     public void loadFromLikedPictures(Location location, final OnPicturesLoadListener listener) {
-        new ServerRequestLikedPictures(location).execute(mServerHelper, mUserHelper, new ServerRequestLikedPictures.ServerRequestLikedPicturesResponse() {
+        new ServerRequestLikedPictures(location).execute(mRunnableExecutor, mServerHelper, mUserHelper, new ServerRequestLikedPictures.ServerRequestLikedPicturesResponse() {
             @Override
             public void onSuccess(List<Picture> pictureList) {
                 listener.onLoad(pictureList);

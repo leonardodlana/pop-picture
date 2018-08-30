@@ -16,8 +16,10 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
@@ -51,7 +53,8 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
         super.onCreate(savedInstanceState);
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        mPresenter = new LoginAuthenticationPresenter(this, userHelper, ServerHelperImpl.getInstance(getContext().getApplicationContext()));
+        RunnableExecutor runnableExecutor = RunnableExecutorImpl.getInstance();
+        mPresenter = new LoginAuthenticationPresenter(this, runnableExecutor, userHelper, ServerHelperImpl.getInstance(getContext().getApplicationContext()));
     }
 
     @Override

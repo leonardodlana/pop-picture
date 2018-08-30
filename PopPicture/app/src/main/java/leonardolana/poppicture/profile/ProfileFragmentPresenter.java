@@ -7,6 +7,7 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.UserWatcher;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
@@ -35,12 +36,14 @@ import leonardolana.poppicture.server.ServerRequestUpdateUser;
 public class ProfileFragmentPresenter extends BasePresenter {
 
     private ProfileFragmentView mView;
+    private RunnableExecutor mRunnableExecutor;
     private UserHelper mUserHelper;
     private ServerHelper mServerHelper;
     private boolean mUserLoggedIn = false;
     private UserWatcher mUserWatcher;
 
-    public ProfileFragmentPresenter(ProfileFragmentView view, UserHelper userHelper, ServerHelper serverHelper) {
+    public ProfileFragmentPresenter(ProfileFragmentView view, RunnableExecutor runnableExecutor,
+                                    UserHelper userHelper, ServerHelper serverHelper) {
         mView = view;
         mUserHelper = userHelper;
         mServerHelper = serverHelper;
@@ -78,7 +81,7 @@ public class ProfileFragmentPresenter extends BasePresenter {
 
     public void onClickUpdate(String name) {
         if (mUserLoggedIn) {
-            new ServerRequestUpdateUser(name).execute(mServerHelper, mUserHelper, new RequestResponse() {
+            new ServerRequestUpdateUser(name).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
                 @Override
                 public void onRequestSuccess(String data) {
                     mView.showUpdateFeedback();

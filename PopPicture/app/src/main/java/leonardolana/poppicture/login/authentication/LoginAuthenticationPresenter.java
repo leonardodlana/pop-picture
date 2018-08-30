@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
@@ -41,12 +42,14 @@ import static android.app.Activity.RESULT_OK;
  */
 public class LoginAuthenticationPresenter extends BasePresenter {
 
+    private RunnableExecutor mRunnableExecutor;
     private ServerHelper mServerHelper;
     private UserHelper mUserHelper;
     private LoginAuthenticationView mView;
 
-    public LoginAuthenticationPresenter(LoginAuthenticationView view, UserHelper userHelper, ServerHelper serverHelper) {
+    public LoginAuthenticationPresenter(LoginAuthenticationView view, RunnableExecutor runnableExecutor, UserHelper userHelper, ServerHelper serverHelper) {
         mView = view;
+        mRunnableExecutor = runnableExecutor;
         mUserHelper = userHelper;
         mServerHelper = serverHelper;
     }
@@ -77,7 +80,7 @@ public class LoginAuthenticationPresenter extends BasePresenter {
             new ServerRequestRegister(user.getUid(),
                     user.getEmail(),
                     user.getDisplayName())
-                    .execute(mServerHelper, mUserHelper, new ServerRequestRegister.ServerRequestRegisterResponse() {
+                    .execute(mRunnableExecutor, mServerHelper, mUserHelper, new ServerRequestRegister.ServerRequestRegisterResponse() {
                         @Override
                         public void onSuccess(String publicId) {
                             mUserHelper.setName(user.getDisplayName());

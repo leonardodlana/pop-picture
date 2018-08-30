@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
@@ -45,9 +46,9 @@ public class ServerRequestRegister extends ServerRequest implements RequestRespo
         addParam(KEY_NAME, name);
     }
 
-    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull ServerRequestRegisterResponse callback) {
+    public void execute(@NonNull RunnableExecutor runnableExecutor, @NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull ServerRequestRegisterResponse callback) {
         mCallback = callback;
-        super.execute(serverHelper, userHelper, this);
+        super.execute(runnableExecutor, serverHelper, userHelper, this);
     }
 
     @Override

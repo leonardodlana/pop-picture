@@ -85,9 +85,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
         PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
-        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
 
-        mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper, serverHelper);
+        mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper);
     }
 
     @Override

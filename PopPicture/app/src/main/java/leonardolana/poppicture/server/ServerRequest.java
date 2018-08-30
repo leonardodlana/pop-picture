@@ -14,8 +14,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieManager;
+import java.net.HttpCookie;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
+import leonardolana.poppicture.common.Execute;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
@@ -57,6 +63,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
 
     private JSONObject mParams = new JSONObject();
     private final String mURL;
+    private RunnableExecutor mRunnableExecutor;
     private UserHelper mUserHelper;
     private ServerHelper mServerHelper;
     private RequestResponse mCallback;
@@ -74,7 +81,8 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
         }
     }
 
-    protected void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+    protected void execute(@NonNull RunnableExecutor runnableExecutor, @NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+        mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mUserHelper = userHelper;
         mCallback = callback;
@@ -82,6 +90,30 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
     }
 
     private void sendRequest() {
+        // Some requests return extra information if we have a session
+        // When any request is going to be done and the user is logged in
+        // we force an authentication before sending the original request.
+        // By doing so, we are getting extra information
+        if(!(this instanceof ServerRequestAuthorize) && mUserHelper.isUserLoggedIn()) {
+            CookieManager cookieManager = (CookieManager) CookieManager.getDefault();
+            List<HttpCookie> httpCookies = cookieManager.getCookieStore().get(URI.create(mURL));
+            if(httpCookies == null || httpCookies.size() == 0) {
+                new ServerRequestAuthorize(mUserHelper.getFirebaseId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
+                    @Override
+                    public void onRequestSuccess(String data) {
+                        mServerHelper.execute(ServerRequest.this);
+                    }
+
+                    @Override
+                    public void onRequestError(RequestError error) {
+                        mServerHelper.execute(ServerRequest.this);
+                    }
+                });
+
+                return;
+            }
+        }
+
         mServerHelper.execute(this);
     }
 
@@ -90,7 +122,27 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
     }
 
     @Override
-    public void onResponse(String response) {
+    public void onResponse(final String response) {
+        // Check if onRequestSuccess from callback is annotated to run
+        // in background
+        Execute execute = null;
+        try {
+            execute = mCallback.getClass().getMethod("onRequestSuccess", String.class).getAnnotation(Execute.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        if(execute != null && execute.executeInBackground()) {
+            mRunnableExecutor.executeInBackground(new Runnable() {
+                @Override
+                public void run() {
+                    mCallback.onRequestSuccess(response);
+                }
+            });
+
+            return;
+        }
+
         mCallback.onRequestSuccess(response);
     }
 
@@ -106,7 +158,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
             if (TextUtils.isEmpty(firebaseId))
                 firebaseId = mUserHelper.getFirebaseId();
 
-            new ServerRequestAuthorize(firebaseId).execute(mServerHelper, mUserHelper, new RequestResponse() {
+            new ServerRequestAuthorize(firebaseId).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
                 @Override
                 public void onRequestSuccess(String data) {
                     sendRequest();
@@ -124,7 +176,7 @@ public abstract class ServerRequest implements Response.Listener<String>, Respon
     }
 
     protected int getTimeout() {
-        return 30000;
+        return 5000;
     }
 
     protected boolean shouldUseCacheIfAvailable() {

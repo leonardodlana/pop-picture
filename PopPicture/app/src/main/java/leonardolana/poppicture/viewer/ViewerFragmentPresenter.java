@@ -3,6 +3,7 @@ package leonardolana.poppicture.viewer;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.Picture;
 import leonardolana.poppicture.helpers.api.CloudStorage;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
@@ -34,14 +35,16 @@ public class ViewerFragmentPresenter extends BasePresenter {
 
     private ViewerFragmentView mView;
     private Picture mPicture;
+    private RunnableExecutor mRunnableExecutor;
     private ServerHelper mServerHelper;
     private UserHelper mUserHelper;
     private CloudStorage mCloudStorage;
 
-    public ViewerFragmentPresenter(ViewerFragmentView view, Picture picture, ServerHelper serverHelper,
+    public ViewerFragmentPresenter(ViewerFragmentView view, Picture picture, RunnableExecutor runnableExecutor, ServerHelper serverHelper,
                                    UserHelper userHelper, CloudStorage cloudStorage) {
         mView = view;
         mPicture = picture;
+        mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mUserHelper = userHelper;
         mCloudStorage = cloudStorage;
@@ -56,7 +59,7 @@ public class ViewerFragmentPresenter extends BasePresenter {
         mCloudStorage.delete(new CloudStorage.OnDeleteListener() {
             @Override
             public void onCompletion() {
-                new ServerRequestRemovePicture(mPicture.getId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
+                new ServerRequestRemovePicture(mPicture.getId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
                     @Override
                     public void onRequestSuccess(String data) {
                         mView.hideLoading();
@@ -95,14 +98,14 @@ public class ViewerFragmentPresenter extends BasePresenter {
         };
 
         if(mPicture.isLiked()) {
-            new ServerRequestRemoveLike(mPicture.getId()).execute(mServerHelper, mUserHelper, requestResponse);
+            new ServerRequestRemoveLike(mPicture.getId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, requestResponse);
         } else {
-            new ServerRequestAddLike(mPicture.getId()).execute(mServerHelper, mUserHelper, requestResponse);
+            new ServerRequestAddLike(mPicture.getId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, requestResponse);
         }
     }
 
     public void onClickReport() {
-        new ServerRequestReport(mPicture.getId()).execute(mServerHelper, mUserHelper, new RequestResponse() {
+        new ServerRequestReport(mPicture.getId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
             @Override
             public void onRequestSuccess(String data) {
 

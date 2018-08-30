@@ -8,6 +8,7 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.helpers.api.CloudStorage;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
@@ -36,12 +37,16 @@ public class EditorFragmentPresenter extends BasePresenter {
 
     private EditorFragmentView mView;
     private UserHelper mUserHelper;
+    private RunnableExecutor mRunnableExecutor;
     private ServerHelper mServerHelper;
     private CloudStorage mCloudStorage;
 
-    public EditorFragmentPresenter(EditorFragmentView view, UserHelper userHelper, ServerHelper serverHelper, CloudStorage cloudStorage) {
+    public EditorFragmentPresenter(EditorFragmentView view, UserHelper userHelper,
+                                   RunnableExecutor runnableExecutor, ServerHelper serverHelper,
+                                   CloudStorage cloudStorage) {
         mView = view;
         mUserHelper = userHelper;
+        mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mCloudStorage = cloudStorage;
     }
@@ -55,7 +60,8 @@ public class EditorFragmentPresenter extends BasePresenter {
         mView.dismiss();
     }
 
-    public void onClickShare(InputStream originalInputStream, InputStream thumbnailInputStream, final String title, final String description) {
+    public void onClickShare(InputStream originalInputStream, InputStream thumbnailInputStream,
+                             final String title, final String description) {
         mView.showLoading();
         final String randomName = Utils.generateSHA256(Utils.randomName() + System.currentTimeMillis());
         String path = mUserHelper.getPublicId() + "/" + randomName + ".jpg";
@@ -71,20 +77,21 @@ public class EditorFragmentPresenter extends BasePresenter {
             public void onCompletion() {
                 Location location = mUserHelper.getLastKnownLocation();
                 new ServerRequestAddPicture(randomName, title, description,
-                        location.getLatitude(), location.getLongitude()).execute(mServerHelper, mUserHelper, new RequestResponse() {
-                    @Override
-                    public void onRequestSuccess(String data) {
-                        mView.showSuccess();
-                        mView.dismiss();
-                        mView.hideLoading();
-                    }
+                        location.getLatitude(), location.getLongitude()).execute(mRunnableExecutor,
+                        mServerHelper, mUserHelper, new RequestResponse() {
+                            @Override
+                            public void onRequestSuccess(String data) {
+                                mView.showSuccess();
+                                mView.dismiss();
+                                mView.hideLoading();
+                            }
 
-                    @Override
-                    public void onRequestError(RequestError error) {
-                        mView.hideLoading();
-                        mView.showError();
-                    }
-                });
+                            @Override
+                            public void onRequestError(RequestError error) {
+                                mView.hideLoading();
+                                mView.showError();
+                            }
+                        });
             }
 
             @Override

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import leonardolana.poppicture.data.User;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.api.UsersDataHelper;
@@ -36,18 +37,20 @@ public class UsersDataHelperImpl implements UsersDataHelper {
 
     private static UsersDataHelperImpl INSTANCE;
 
-    public static UsersDataHelperImpl getInstance(ServerHelper serverHelper, UserHelper userHelper) {
+    public static UsersDataHelperImpl getInstance(RunnableExecutor runnableExecutor, ServerHelper serverHelper, UserHelper userHelper) {
         if (INSTANCE == null)
-            INSTANCE = new UsersDataHelperImpl(serverHelper, userHelper);
+            INSTANCE = new UsersDataHelperImpl(runnableExecutor, serverHelper, userHelper);
 
         return INSTANCE;
     }
 
     private Map<String, User> mUsersData = new HashMap<>();
+    private RunnableExecutor mRunnableExecutor;
     private ServerHelper mServerHelper;
     private UserHelper mUserHelper;
 
-    private UsersDataHelperImpl(ServerHelper serverHelper, UserHelper userHelper) {
+    private UsersDataHelperImpl(RunnableExecutor runnableExecutor, ServerHelper serverHelper, UserHelper userHelper) {
+        mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mUserHelper = userHelper;
     }
@@ -59,7 +62,7 @@ public class UsersDataHelperImpl implements UsersDataHelper {
             return;
         }
 
-        new ServerRequestGetUser(publicId).execute(mServerHelper, mUserHelper, new ServerRequestGetUser.ServerRequestGerUserResponse() {
+        new ServerRequestGetUser(publicId).execute(mRunnableExecutor, mServerHelper, mUserHelper, new ServerRequestGetUser.ServerRequestGerUserResponse() {
             @Override
             public void onSuccess(String publicId, String userName, String profilePictureName) {
                 User user = new User(publicId, userName, profilePictureName);

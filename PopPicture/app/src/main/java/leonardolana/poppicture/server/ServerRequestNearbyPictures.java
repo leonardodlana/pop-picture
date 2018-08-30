@@ -1,14 +1,18 @@
 package leonardolana.poppicture.server;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardolana.poppicture.common.Execute;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.data.Location;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
@@ -34,11 +38,13 @@ public class ServerRequestNearbyPictures extends ServerRequest implements Reques
 
     public interface ServerRequestNearbyPicturesResponse {
         void onSuccess(List<Picture> pictureList);
+
         void onError(RequestError e);
     }
 
     private ServerRequestNearbyPicturesResponse mCallback;
     private Location mLocation;
+    private RunnableExecutor mRunnableExecutor;
 
     public ServerRequestNearbyPictures(Location location) {
         super(ServerConstants.URL, "Picture.findNearby");
@@ -47,9 +53,10 @@ public class ServerRequestNearbyPictures extends ServerRequest implements Reques
         addParam(KEY_LONGITUDE, location.getLongitude());
     }
 
-    public void execute(ServerHelper serverHelper, UserHelper userHelper, ServerRequestNearbyPicturesResponse callback) {
+    public void execute(@NonNull RunnableExecutor runnableExecutor, @NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull ServerRequestNearbyPicturesResponse callback) {
         mCallback = callback;
-        super.execute(serverHelper, userHelper, this);
+        mRunnableExecutor = runnableExecutor;
+        super.execute(runnableExecutor, serverHelper, userHelper, this);
     }
 
     // Avoid overload on refreshes
@@ -58,10 +65,11 @@ public class ServerRequestNearbyPictures extends ServerRequest implements Reques
         return true;
     }
 
+    @Execute(executeInBackground = true)
     @Override
     public void onRequestSuccess(String data) {
         try {
-            List<Picture> pictureList = new ArrayList<>();
+            final List<Picture> pictureList = new ArrayList<>();
             JSONArray jsonArray = new JSONArray(data);
             JSONObject jsonObject;
             Picture picture;
@@ -70,7 +78,6 @@ public class ServerRequestNearbyPictures extends ServerRequest implements Reques
                 jsonObject = jsonArray.getJSONObject(i);
                 picture = Picture.fromJSON(jsonObject);
                 if (picture != null) {
-                    //TODO in background, sqrt is heavy work
                     distanceInKM = Utils.distanceBetweenCoordinatesInKm(
                             mLocation.getLatitude(), mLocation.getLongitude(),
                             picture.getLatitude(), picture.getLongitude());
@@ -79,12 +86,25 @@ public class ServerRequestNearbyPictures extends ServerRequest implements Reques
                 }
             }
 
-            if (mCallback != null)
-                mCallback.onSuccess(pictureList);
+            if (mCallback != null) {
+                // Execute callback on ui thread
+                mRunnableExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallback.onSuccess(pictureList);
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            if (mCallback != null)
-                mCallback.onError(RequestError.JSON_PARSE_ERROR);
+            if (mCallback != null) {
+                mRunnableExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallback.onError(RequestError.JSON_PARSE_ERROR);
+                    }
+                });
+            }
         }
     }
 

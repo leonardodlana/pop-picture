@@ -41,6 +41,10 @@
             android:name="io.fabric.ApiKey"
             android:value="216fb6ac726ef95ff57c2927812fb85fd9fc2f20"
             />
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="label" />
     </application>
 
 </manifest>

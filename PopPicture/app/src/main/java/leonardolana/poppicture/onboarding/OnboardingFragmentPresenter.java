@@ -56,6 +56,6 @@ public class OnboardingFragmentPresenter extends BasePresenter {
     }
 
     void onPermissionDenied(Permission permission) {
-        //TODO explain
+        //TODO explain permission requirement
     }
 }

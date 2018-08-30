@@ -31,6 +31,7 @@ import leonardolana.poppicture.data.User;
 import leonardolana.poppicture.helpers.api.CacheHelper;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.api.UsersDataHelper;
@@ -118,10 +119,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         mUserHelper = UserHelperImpl.getInstance(persistentHelper);
         mCacheHelper = CacheHelperImpl.getInstance(applicationContext, RunnableExecutorImpl.getInstance());
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
-        mUsersDataHelper = UsersDataHelperImpl.getInstance(serverHelper, mUserHelper);
+        RunnableExecutor runnableExecutor = RunnableExecutorImpl.getInstance();
+        mUsersDataHelper = UsersDataHelperImpl.getInstance(runnableExecutor, serverHelper, mUserHelper);
         CloudStorage cloudStorage = new CloudStorageImpl();
 
-        mPresenter = new ViewerFragmentPresenter(this, mPicture, serverHelper, mUserHelper, cloudStorage);
+        mPresenter = new ViewerFragmentPresenter(this, mPicture, runnableExecutor, serverHelper, mUserHelper, cloudStorage);
         mDecimalFormat = new DecimalFormat("#.##");
     }
 

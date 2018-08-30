@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
@@ -40,10 +41,10 @@ public class ServerRequestGetUser extends ServerRequest implements RequestRespon
         addParam(KEY_USER_PUBLIC_ID, publicId);
     }
 
-    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper,
-                           @NonNull ServerRequestGerUserResponse callback) {
+    public void execute(@NonNull RunnableExecutor runnableExecutor, @NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper,
+                        @NonNull ServerRequestGerUserResponse callback) {
         mCallback = callback;
-        super.execute(serverHelper, userHelper, this);
+        super.execute(runnableExecutor, serverHelper, userHelper, this);
     }
 
     @Override

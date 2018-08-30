@@ -32,10 +32,12 @@ import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
 import leonardolana.poppicture.editor.contract.EditorPictureContract;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
@@ -89,7 +91,9 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
         CloudStorage cloudStorage = new CloudStorageImpl();
-        mPresenter = new EditorFragmentPresenter(this, userHelper, serverHelper, cloudStorage);
+        RunnableExecutor runnableExecutor = RunnableExecutorImpl.getInstance();
+
+        mPresenter = new EditorFragmentPresenter(this, userHelper, runnableExecutor, serverHelper, cloudStorage);
 
         setFullScreen(true);
         setHasTitle(false);

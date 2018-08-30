@@ -2,6 +2,7 @@ package leonardolana.poppicture.server;
 
 import android.support.annotation.NonNull;
 
+import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 
@@ -31,7 +32,7 @@ public class ServerRequestRemoveLike extends ServerRequest {
     }
 
     @Override
-    public void execute(@NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
-        super.execute(serverHelper, userHelper, callback);
+    public void execute(@NonNull RunnableExecutor runnableExecutor, @NonNull ServerHelper serverHelper, @NonNull UserHelper userHelper, @NonNull RequestResponse callback) {
+        super.execute(runnableExecutor, serverHelper, userHelper, callback);
     }
 }

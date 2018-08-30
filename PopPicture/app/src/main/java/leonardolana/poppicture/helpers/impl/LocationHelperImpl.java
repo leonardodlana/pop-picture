@@ -74,8 +74,9 @@ public class LocationHelperImpl implements LocationHelper, PermissionWatcher {
         }
 
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(300000);
-        locationRequest.setFastestInterval(60000);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setNumUpdates(3);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         mLocationCallback = new LocationCallback() {
