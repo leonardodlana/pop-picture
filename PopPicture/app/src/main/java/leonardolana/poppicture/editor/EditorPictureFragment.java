@@ -8,12 +8,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,11 +37,13 @@ import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.editor.contract.EditorPictureContract;
 import leonardolana.poppicture.helpers.api.CloudStorage;
+import leonardolana.poppicture.helpers.api.ImageLabelHelper;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
+import leonardolana.poppicture.helpers.impl.ImageLabelHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
@@ -74,6 +78,7 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     private Uri mFileURI;
     private EditorPictureFragmentPresenter mPresenter;
     private Bitmap mSampleBitmap;
+    private ImageLabelHelper mImageLabelHelper;
 
     @BindView(R.id.image_view)
     ImageView mImageView;
@@ -82,6 +87,7 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new EditorPictureFragmentPresenter(this);
+        mImageLabelHelper = new ImageLabelHelperImpl();
     }
 
     @Override
@@ -138,20 +144,20 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
                     options.inJustDecodeBounds = false;
                     options.inSampleSize = sampleSize;
                     mSampleBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mSampleBitmap);
-
-                    FirebaseVisionLabelDetector detector = FirebaseVision.getInstance()
-                            .getVisionLabelDetector();
-
-                    detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionLabel>>() {
+                    mImageLabelHelper.isImageOfMatureContent(mSampleBitmap, new ImageLabelHelper.IsMatureContentListener() {
                         @Override
-                        public void onSuccess(List<FirebaseVisionLabel> firebaseVisionLabels) {
-                            Log.e("","");
+                        public void onSuccess(final ImageLabelHelper.MatureContent matureContent) {
+                            executor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "Mature content? " + (matureContent != ImageLabelHelper.MatureContent.NONE), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
+
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("","");
+                        public void onError() {
+
                         }
                     });
                     // Go back to UI thread to change view
