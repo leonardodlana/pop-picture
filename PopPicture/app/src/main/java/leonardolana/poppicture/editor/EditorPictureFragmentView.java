@@ -1,5 +1,7 @@
 package leonardolana.poppicture.editor;
 
+import leonardolana.poppicture.helpers.api.ImageLabelHelper;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -22,4 +24,5 @@ public interface EditorPictureFragmentView {
 
     void showLoadingErrorDialogAndDismiss();
 
+    void showMatureContentWarning(ImageLabelHelper.MatureContent matureContent);
 }

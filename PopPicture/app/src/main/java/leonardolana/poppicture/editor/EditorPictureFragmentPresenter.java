@@ -1,18 +1,7 @@
 package leonardolana.poppicture.editor;
 
-import android.util.Pair;
-
-import java.io.InputStream;
-
 import leonardolana.poppicture.common.BasePresenter;
-import leonardolana.poppicture.common.Utils;
-import leonardolana.poppicture.data.Location;
-import leonardolana.poppicture.helpers.api.CloudStorage;
-import leonardolana.poppicture.helpers.api.ServerHelper;
-import leonardolana.poppicture.helpers.api.UserHelper;
-import leonardolana.poppicture.server.RequestError;
-import leonardolana.poppicture.server.RequestResponse;
-import leonardolana.poppicture.server.ServerRequestAddPicture;
+import leonardolana.poppicture.helpers.api.ImageLabelHelper;
 
 /**
  * Created by Leonardo Lana
@@ -50,4 +39,11 @@ public class EditorPictureFragmentPresenter extends BasePresenter {
         mView.showLoadingErrorDialogAndDismiss();
     }
 
+    public void onMatureContentResponse(ImageLabelHelper.MatureContent matureContent) {
+        if(matureContent != ImageLabelHelper.MatureContent.NONE) {
+            mView.showMatureContentWarning(matureContent);
+        }
+
+        // todo tracking
+    }
 }

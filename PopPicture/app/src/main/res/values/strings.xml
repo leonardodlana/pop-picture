@@ -69,6 +69,8 @@
     <string name="hot">Hot</string>
     <string name="profile">Profile</string>
     <string name="share">Share</string>
+    <string name="learn_more">Learn More</string>
+    <string name="sensitive_content">Sensitive Content</string>
 
     <string name="sign_in_explanation">To be able to share pictures you need to sign in</string>
     <string name="social_publish">We won\'t publish anything on your behalf</string>
@@ -84,4 +86,6 @@
     <string name="place_holder_title">Title</string>
     <string name="place_holder_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id.</string>
 
+    <string name="sensitive_content_snackbar">Beware! The picture you selected might contain sensitive content.</string>
+    <string name="sensitive_content_explanation">We might have detected sensitive content on your picture, if true, is likely that the picture will get reports from another user and will be removed. If you\'re sure that there\'s no sensitive content, please ignore this message.</string>
 </resources>
