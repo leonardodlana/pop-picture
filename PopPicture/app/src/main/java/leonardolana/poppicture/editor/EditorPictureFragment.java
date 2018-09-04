@@ -42,12 +42,14 @@ import leonardolana.poppicture.helpers.api.ImageLabelHelper;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
 import leonardolana.poppicture.helpers.impl.ImageLabelHelperImpl;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.TrackingHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
 /**
@@ -87,7 +89,11 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorPictureFragmentPresenter(this);
+
+        Context applicationContext = getContext().getApplicationContext();
+        TrackingHelper trackingHelper = TrackingHelperImpl.getInstance(applicationContext);
+
+        mPresenter = new EditorPictureFragmentPresenter(this, trackingHelper);
         mImageLabelHelper = new ImageLabelHelperImpl();
     }
 
@@ -152,7 +158,7 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
                             executor.execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mPresenter.onMatureContentResponse(ImageLabelHelper.MatureContent.NUDITY);
+                                    mPresenter.onMatureContentResponse(matureContent);
                                 }
                             });
                         }
@@ -196,7 +202,10 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
 
     @Override
     public void showMatureContentWarning(ImageLabelHelper.MatureContent matureContent) {
-        Snackbar.make(getView(), R.string.sensitive_content_snackbar, Snackbar.LENGTH_INDEFINITE)
+        if(isDetached() || getView() == null || getContext() == null)
+            return;
+
+        Snackbar snackbar = Snackbar.make(getView(), R.string.sensitive_content_snackbar, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.learn_more, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -206,6 +215,10 @@ public class EditorPictureFragment extends BaseFragment implements EditorPicture
                         dialog.show(getFragmentManager(), "dialog");
                     }
                 });
+
+        snackbar.getView().setBackgroundColor(getContext().getResources().getColor(R.color.md_red_500));
+        snackbar.setActionTextColor(getContext().getResources().getColor(R.color.md_deep_purple_800));
+        snackbar.show();
     }
 
     /*

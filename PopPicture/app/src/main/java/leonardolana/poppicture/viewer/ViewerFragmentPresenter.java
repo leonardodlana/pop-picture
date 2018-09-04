@@ -1,10 +1,15 @@
 package leonardolana.poppicture.viewer;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.Picture;
+import leonardolana.poppicture.data.TrackingEvent;
 import leonardolana.poppicture.helpers.api.CloudStorage;
 import leonardolana.poppicture.helpers.api.RunnableExecutor;
 import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.server.RequestError;
 import leonardolana.poppicture.server.RequestResponse;
@@ -39,15 +44,23 @@ public class ViewerFragmentPresenter extends BasePresenter {
     private ServerHelper mServerHelper;
     private UserHelper mUserHelper;
     private CloudStorage mCloudStorage;
+    private TrackingHelper mTrackingHelper;
 
     public ViewerFragmentPresenter(ViewerFragmentView view, Picture picture, RunnableExecutor runnableExecutor, ServerHelper serverHelper,
-                                   UserHelper userHelper, CloudStorage cloudStorage) {
+                                   UserHelper userHelper, CloudStorage cloudStorage, TrackingHelper trackingHelper) {
         mView = view;
         mPicture = picture;
         mRunnableExecutor = runnableExecutor;
         mServerHelper = serverHelper;
         mUserHelper = userHelper;
         mCloudStorage = cloudStorage;
+        mTrackingHelper = trackingHelper;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mTrackingHelper.log(TrackingEvent.VIEWER_OPEN);
     }
 
     public void onCloseClick() {
@@ -84,6 +97,7 @@ public class ViewerFragmentPresenter extends BasePresenter {
     }
 
     public void onLikeClick() {
+        mTrackingHelper.log(TrackingEvent.VIEWER_CLICK_LIKE);
         RequestResponse requestResponse = new RequestResponse() {
             @Override
             public void onRequestSuccess(String data) {
@@ -105,6 +119,7 @@ public class ViewerFragmentPresenter extends BasePresenter {
     }
 
     public void onClickReport() {
+        mTrackingHelper.log(TrackingEvent.VIEWER_CLICK_REPORT);
         new ServerRequestReport(mPicture.getId()).execute(mRunnableExecutor, mServerHelper, mUserHelper, new RequestResponse() {
             @Override
             public void onRequestSuccess(String data) {

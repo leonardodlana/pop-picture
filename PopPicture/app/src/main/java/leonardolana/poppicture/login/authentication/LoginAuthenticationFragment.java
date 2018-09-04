@@ -1,5 +1,6 @@
 package leonardolana.poppicture.login.authentication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +18,13 @@ import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
 import leonardolana.poppicture.helpers.api.RunnableExecutor;
+import leonardolana.poppicture.helpers.api.ServerHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
+import leonardolana.poppicture.helpers.impl.TrackingHelperImpl;
 import leonardolana.poppicture.helpers.impl.UserHelperImpl;
 
 /**
@@ -51,10 +55,17 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(getContext().getApplicationContext());
+
+        Context applicationContext = getContext().getApplicationContext();
+
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
         RunnableExecutor runnableExecutor = RunnableExecutorImpl.getInstance();
-        mPresenter = new LoginAuthenticationPresenter(this, runnableExecutor, userHelper, ServerHelperImpl.getInstance(getContext().getApplicationContext()));
+        ServerHelper serverHelper = ServerHelperImpl.getInstance(applicationContext);
+        TrackingHelper trackingHelper = TrackingHelperImpl.getInstance(applicationContext);
+
+        mPresenter = new LoginAuthenticationPresenter(this, runnableExecutor, userHelper,
+                serverHelper, trackingHelper);
     }
 
     @Override
@@ -86,8 +97,7 @@ public class LoginAuthenticationFragment extends BaseFragment implements LoginAu
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .setLogo(R.drawable.ic_launcher_background)
-                        .setTheme(R.style.AppTheme)
+                        .setLogo(R.drawable.icon)
                         .build(),
                 RC_SIGN_IN);
     }

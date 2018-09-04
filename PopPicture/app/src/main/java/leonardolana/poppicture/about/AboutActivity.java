@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseActivity;
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.helpers.impl.TrackingHelperImpl;
 
 /**
  * Created by Leonardo Lana
@@ -63,7 +64,7 @@ public class AboutActivity extends BaseActivity implements AboutActivityView {
 
     @Override
     protected BasePresenter createPresenter() {
-        mPresenter = new AboutActivityPresenter(this);
+        mPresenter = new AboutActivityPresenter(this, TrackingHelperImpl.getInstance(getApplicationContext()));
         return mPresenter;
     }
 

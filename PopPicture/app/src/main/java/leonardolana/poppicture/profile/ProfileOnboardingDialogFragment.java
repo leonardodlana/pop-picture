@@ -1,5 +1,6 @@
 package leonardolana.poppicture.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,10 @@ import butterknife.OnClick;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
+import leonardolana.poppicture.helpers.impl.TrackingHelperImpl;
 import leonardolana.poppicture.login.LoginActivity;
 
 /**
@@ -44,7 +48,11 @@ public class ProfileOnboardingDialogFragment extends BaseDialogFragment implemen
         setHasTitle(false);
         setCancelable(false);
 
-        mPresenter = new ProfileOnboardingDialogFragmentPresenter(this, PersistentHelperImpl.getInstance(getContext().getApplicationContext()));
+        Context applicationContext = getContext().getApplicationContext();
+        PersistentHelper persistentHelper = PersistentHelperImpl.getInstance(applicationContext);
+        TrackingHelper trackingHelper = TrackingHelperImpl.getInstance(applicationContext);
+
+        mPresenter = new ProfileOnboardingDialogFragmentPresenter(this, persistentHelper, trackingHelper);
     }
 
     @Override

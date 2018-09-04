@@ -48,6 +48,14 @@ public class ImageLabelHelperImpl implements ImageLabelHelper {
         detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionLabel>>() {
             @Override
             public void onSuccess(List<FirebaseVisionLabel> firebaseVisionLabels) {
+
+                /*
+                    Usually firebase returns flesh > .5 when there's probable nudity
+                    so, we use swimwear label to discard in case of beach pictures for instance
+
+                    It's not a 100% method to detect nudity, but it helps.
+                 */
+
                 float fleshConfidence = 0;
                 float swimwearConfidence = 0;
 

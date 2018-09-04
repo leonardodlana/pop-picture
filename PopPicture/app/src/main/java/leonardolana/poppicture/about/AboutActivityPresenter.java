@@ -1,6 +1,8 @@
 package leonardolana.poppicture.about;
 
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.data.TrackingEvent;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 
 /**
  * Created by Leonardo Lana
@@ -23,33 +25,40 @@ import leonardolana.poppicture.common.BasePresenter;
 public class AboutActivityPresenter extends BasePresenter {
 
     private AboutActivityView mView;
+    private TrackingHelper mTrackingHelper;
 
-    public AboutActivityPresenter(AboutActivityView view) {
+    public AboutActivityPresenter(AboutActivityView view, TrackingHelper trackingHelper) {
         mView = view;
+        mTrackingHelper = trackingHelper;
     }
 
     @Override
     public void onDestroy() {
         mView = null;
+        mTrackingHelper = null;
     }
 
+    /*
+        View methods
+     */
+
     public void onClickReview() {
-        //TODO tracking
+        mTrackingHelper.log(TrackingEvent.ABOUT_CLICK_REVIEW, null);
         mView.openMarket();
     }
 
     public void onClickPrivacyPolicy() {
-        //TODO tracking
+        mTrackingHelper.log(TrackingEvent.ABOUT_CLICK_PRIVACY_POLICY, null);
         mView.openPrivacyPolicy();
     }
 
     public void onClickTermsAndConditions() {
-        //TODO tracking
+        mTrackingHelper.log(TrackingEvent.ABOUT_CLICK_TERMS_AND_CONDITIONS, null);
         mView.openTermsAndConditions();
     }
 
     public void onClickGitHub() {
-        //TODO tracking
+        mTrackingHelper.log(TrackingEvent.ABOUT_CLICK_GITHUB, null);
         mView.openGitHub();
     }
 }

@@ -86,6 +86,6 @@
     <string name="place_holder_title">Title</string>
     <string name="place_holder_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id.</string>
 
-    <string name="sensitive_content_snackbar">Beware! The picture you selected might contain sensitive content.</string>
-    <string name="sensitive_content_explanation">We might have detected sensitive content on your picture, if true, is likely that the picture will get reports from another user and will be removed. If you\'re sure that there\'s no sensitive content, please ignore this message.</string>
+    <string name="sensitive_content_snackbar">Warning! You might have selected sensitive content</string>
+    <string name="sensitive_content_explanation">We might have detected sensitive content on your picture, if true, it\'s likely that the picture will get reports from another user and will be removed. If you\'re sure that there\'s no sensitive content, please ignore this message.</string>
 </resources>

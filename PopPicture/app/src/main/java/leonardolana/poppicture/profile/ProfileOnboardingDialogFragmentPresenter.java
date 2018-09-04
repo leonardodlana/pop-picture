@@ -2,7 +2,9 @@ package leonardolana.poppicture.profile;
 
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.data.PersistentSharedKeys;
+import leonardolana.poppicture.data.TrackingEvent;
 import leonardolana.poppicture.helpers.api.PersistentHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 
 /**
  * Created by Leonardo Lana
@@ -24,28 +26,33 @@ import leonardolana.poppicture.helpers.api.PersistentHelper;
  */
 public class ProfileOnboardingDialogFragmentPresenter extends BasePresenter {
 
-    private PersistentHelper mPersistentHelper;
     private ProfileOnboardingDialogFragmentView mView;
+    private PersistentHelper mPersistentHelper;
+    private TrackingHelper mTrackingHelper;
 
-    public ProfileOnboardingDialogFragmentPresenter(ProfileOnboardingDialogFragmentView view, PersistentHelper persistentHelper) {
+    public ProfileOnboardingDialogFragmentPresenter(ProfileOnboardingDialogFragmentView view,
+                                                    PersistentHelper persistentHelper,
+                                                    TrackingHelper trackingHelper) {
         mView = view;
         mPersistentHelper = persistentHelper;
+        mTrackingHelper = trackingHelper;
     }
 
     @Override
     public void onDestroy() {
         mView = null;
         mPersistentHelper = null;
+        mTrackingHelper = null;
     }
 
     public void onSignInClick() {
-        // todo tracking
+        mTrackingHelper.log(TrackingEvent.PROFILE_ONBOARDING_CLICK_SIGN_IN);
         mView.launchAuthentication();
         disableOnboarding();
     }
 
     public void onDismissClick() {
-        // todo tracking
+        mTrackingHelper.log(TrackingEvent.PROFILE_ONBOARDING_CLICK_DISMISS);
         mView.dismiss();
         disableOnboarding();
     }

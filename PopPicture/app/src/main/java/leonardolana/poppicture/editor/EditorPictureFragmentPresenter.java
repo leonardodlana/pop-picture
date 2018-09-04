@@ -1,7 +1,11 @@
 package leonardolana.poppicture.editor;
 
+import android.os.Bundle;
+
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.data.TrackingEvent;
 import leonardolana.poppicture.helpers.api.ImageLabelHelper;
+import leonardolana.poppicture.helpers.api.TrackingHelper;
 
 /**
  * Created by Leonardo Lana
@@ -24,15 +28,17 @@ import leonardolana.poppicture.helpers.api.ImageLabelHelper;
 public class EditorPictureFragmentPresenter extends BasePresenter {
 
     private EditorPictureFragmentView mView;
+    private TrackingHelper mTrackingHelper;
 
-    public EditorPictureFragmentPresenter(EditorPictureFragmentView view) {
+    public EditorPictureFragmentPresenter(EditorPictureFragmentView view, TrackingHelper trackingHelper) {
         mView = view;
-
+        mTrackingHelper = trackingHelper;
     }
 
     @Override
     public void onDestroy() {
         mView = null;
+        mTrackingHelper = null;
     }
 
     void onErrorLoadingFile() {
@@ -44,6 +50,8 @@ public class EditorPictureFragmentPresenter extends BasePresenter {
             mView.showMatureContentWarning(matureContent);
         }
 
-        // todo tracking
+        Bundle params = new Bundle();
+        params.putString(TrackingHelper.PARAM_CONTENT, matureContent.name());
+        mTrackingHelper.log(TrackingEvent.EDITOR_MATURE_CONTENT, params);
     }
 }
