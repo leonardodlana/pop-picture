@@ -93,7 +93,7 @@ public class HomeNearbyFragmentPresenter extends BasePresenter {
         Collections.sort(pictures, new Comparator<Picture>() {
             @Override
             public int compare(Picture p1, Picture p2) {
-                return Float.compare(p2.getDistanceInKM(), p1.getDistanceInKM());
+                return Float.compare(p1.getDistanceInKM(), p2.getDistanceInKM());
             }
         });
     }
