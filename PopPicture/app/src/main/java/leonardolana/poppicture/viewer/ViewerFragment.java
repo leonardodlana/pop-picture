@@ -38,6 +38,8 @@ import leonardolana.poppicture.helpers.api.UserHelper;
 import leonardolana.poppicture.helpers.api.UsersDataHelper;
 import leonardolana.poppicture.helpers.impl.CacheHelperImpl;
 import leonardolana.poppicture.helpers.impl.CloudStorageImpl;
+import leonardolana.poppicture.helpers.impl.ImageHelper;
+import leonardolana.poppicture.helpers.impl.MapHelper;
 import leonardolana.poppicture.helpers.impl.PersistentHelperImpl;
 import leonardolana.poppicture.helpers.impl.RunnableExecutorImpl;
 import leonardolana.poppicture.helpers.impl.ServerHelperImpl;
@@ -202,6 +204,11 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
         });
     }
 
+    @OnClick(R.id.button_map)
+    public void onMapClick() {
+        mPresenter.onMapClick();
+    }
+
     @OnClick(R.id.button_close)
     public void onButtonCloseClick() {
         mPresenter.onCloseClick();
@@ -289,5 +296,10 @@ public class ViewerFragment extends BaseDialogFragment implements ViewerFragment
             }
         });
         dialog.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void openMap(double latitude, double longitude) {
+        MapHelper.openMap(getContext(), latitude, longitude);
     }
 }

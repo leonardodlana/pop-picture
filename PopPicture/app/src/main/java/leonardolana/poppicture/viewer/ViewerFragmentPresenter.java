@@ -133,6 +133,10 @@ public class ViewerFragmentPresenter extends BasePresenter {
         });
     }
 
+    public void onMapClick() {
+        mView.openMap(mPicture.getLatitude(), mPicture.getLongitude());
+    }
+
     @Override
     public void onDestroy() {
         mView = null;

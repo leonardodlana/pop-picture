@@ -1,4 +1,10 @@
-package leonardolana.poppicture.viewer;
+package leonardolana.poppicture.helpers.impl;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
+import java.util.Locale;
 
 /**
  * Created by Leonardo Lana
@@ -18,18 +24,12 @@ package leonardolana.poppicture.viewer;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface ViewerFragmentView {
-    void dismiss();
+public class MapHelper {
 
-    void refreshLike();
+    public static void openMap(Context context, double latitude, double longitude) {
+        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        context.startActivity(intent);
+    }
 
-    void showLoading();
-
-    void hideLoading();
-
-    void showDeleteError();
-
-    void showDeleteSuccess();
-
-    void openMap(double latitude, double longitude);
 }

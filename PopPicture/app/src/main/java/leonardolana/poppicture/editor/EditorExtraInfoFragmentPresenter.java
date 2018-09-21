@@ -36,7 +36,7 @@ public class EditorExtraInfoFragmentPresenter extends BasePresenter {
 
     // TODO maybe get this from elsewhere
     public int getDescriptionMinimumSize() {
-        return 30;
+        return 10;
     }
 
     // TODO maybe get this from elsewhere
