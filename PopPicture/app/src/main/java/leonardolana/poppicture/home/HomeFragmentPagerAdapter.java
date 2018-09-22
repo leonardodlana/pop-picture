@@ -34,20 +34,14 @@ import leonardolana.poppicture.data.HomeSection;
 
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private static final String KEY_SAVE_FRAGMENT = "home_fragment_save_fragment_";
-    private static final String KEY_SAVED_FRAGMENTS_COUNT = "home_fragment_saved_fragments_count";
-
     private Fragment mFragmentReferences[];
-    private final FragmentManager mFragmentManager;
 
     public HomeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        mFragmentManager = fm;
     }
 
     public HomeFragmentPagerAdapter(FragmentManager fm, HomeSection[] homeSections) {
         super(fm);
-        mFragmentManager = fm;
 
         List<Fragment> fragments = new ArrayList<>();
 
@@ -86,24 +80,4 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
         return mFragmentReferences != null ? mFragmentReferences.length : 0;
     }
 
-    protected void saveFragments(Bundle outState) {
-        outState.putInt(KEY_SAVED_FRAGMENTS_COUNT, mFragmentReferences.length);
-        for (int i = 0; i < mFragmentReferences.length; i++) {
-            if (mFragmentReferences[i] != null)
-                mFragmentManager.putFragment(outState, KEY_SAVE_FRAGMENT + i, mFragmentReferences[i]);
-        }
-    }
-
-    protected void restoreFragments(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            int count = savedInstanceState.getInt(KEY_SAVED_FRAGMENTS_COUNT, 0);
-            mFragmentReferences = new Fragment[count];
-            Fragment frag;
-            int i = 0;
-            while ((frag = mFragmentManager.getFragment(savedInstanceState, KEY_SAVE_FRAGMENT + i)) != null) {
-                mFragmentReferences[i] = frag;
-                i++;
-            }
-        }
-    }
 }

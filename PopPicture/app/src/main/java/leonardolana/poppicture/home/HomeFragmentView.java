@@ -34,4 +34,8 @@ public interface HomeFragmentView {
     void openProfile();
 
     void openAbout();
+
+    void hideFab();
+
+    void showFab();
 }

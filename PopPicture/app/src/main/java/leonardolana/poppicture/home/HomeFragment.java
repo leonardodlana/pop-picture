@@ -27,6 +27,7 @@ import leonardolana.poppicture.R;
 import leonardolana.poppicture.about.AboutActivity;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.common.PicturesChangeBroadcast;
 import leonardolana.poppicture.data.HomeSection;
 import leonardolana.poppicture.data.PersistentSharedKeys;
 import leonardolana.poppicture.editor.EditorFragment;
@@ -65,6 +66,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
     private HomeFragmentPresenter mPresenter;
     private HomeFragmentPagerAdapter mPageAdapter;
+    private PicturesChangeBroadcast mOnPicturesChangeBroadcast;
+    private TranslateAnimation mFabTranslationAnimation;
 
     @BindView(R.id.button_info)
     AppCompatImageView mButtonInfo;
@@ -87,6 +90,12 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
         UserHelper userHelper = UserHelperImpl.getInstance(persistentHelper);
 
         mPresenter = new HomeFragmentPresenter(this, persistentHelper, userHelper);
+        mOnPicturesChangeBroadcast = new PicturesChangeBroadcast() {
+            @Override
+            protected void onPicturesScrolled(int dx, int dy) {
+                mPresenter.onPicturesScrolled(dx, dy);
+            }
+        };
     }
 
     @Override
@@ -106,13 +115,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState != null) {
-            /*
-                If the instance is saved, we can restore the fragments
-             */
-            mPageAdapter = new HomeFragmentPagerAdapter(getFragmentManager());
-            mPageAdapter.restoreFragments(savedInstanceState);
-        }
+        mOnPicturesChangeBroadcast.register(getContext());
 
         mViewPagerContainer.setOffscreenPageLimit(3);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -125,9 +128,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        mPageAdapter.saveFragments(outState);
-        super.onSaveInstanceState(outState);
+    public void onDestroyView() {
+        mOnPicturesChangeBroadcast.unRegister(getContext());
+        super.onDestroyView();
     }
 
     @OnClick(R.id.button_info)
@@ -155,10 +158,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     }
 
     private void setFabVisibility(final boolean visible) {
-        if(visible && mAddMediaFab.getVisibility() == View.VISIBLE)
+        if(mFabTranslationAnimation != null)
             return;
 
-        if(!visible && mAddMediaFab.getVisibility() == View.GONE)
+        if (visible && mAddMediaFab.getVisibility() == View.VISIBLE)
+            return;
+
+        if (!visible && mAddMediaFab.getVisibility() == View.GONE)
             return;
 
         float fromY, toY;
@@ -167,7 +173,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
         int translationY = (mAddMediaFab.getBottom() - mAddMediaFab.getTop()) + bottomMargin;
 
-        if(!visible) {
+        if (!visible) {
             fromY = 0;
             toY = translationY;
         } else {
@@ -175,13 +181,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
             toY = 0;
         }
 
-        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, fromY, toY);
-        translateAnimation.setDuration(400);
-        translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+        mFabTranslationAnimation = new TranslateAnimation(0, 0, fromY, toY);
+        mFabTranslationAnimation.setDuration(400);
+        mFabTranslationAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        mFabTranslationAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                if(visible) {
+                if (visible) {
                     mAddMediaFab.setVisibility(View.VISIBLE);
                     mAddMediaFab.setClickable(true);
                 }
@@ -189,10 +195,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(!visible) {
+                if (!visible) {
                     mAddMediaFab.setVisibility(View.GONE);
                     mAddMediaFab.setClickable(false);
                 }
+                mFabTranslationAnimation = null;
             }
 
             @Override
@@ -200,7 +207,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
             }
         });
-        mAddMediaFab.startAnimation(translateAnimation);
+        mAddMediaFab.startAnimation(mFabTranslationAnimation);
     }
 
     // >>>>>>> View methods
@@ -222,7 +229,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     public void onClickSection(HomeSection homeSection) {
         int itemPosition = mPageAdapter.getItemPosition(homeSection);
 
-        if(mViewPagerContainer.getCurrentItem() != itemPosition) {
+        if (mViewPagerContainer.getCurrentItem() != itemPosition) {
             mViewPagerContainer.setCurrentItem(itemPosition, true);
             // We could add the android id to the HomeSection item, but, by doing so, the homesection
             // would know android classes, which is not the desired outcome
@@ -248,7 +255,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
     @Override
     public void openProfile() {
-        if(PersistentSharedKeys.needToShowProfileOnboarding(PersistentHelperImpl.getInstance(getContext().getApplicationContext()))) {
+        if (PersistentSharedKeys.needToShowProfileOnboarding(PersistentHelperImpl.getInstance(getContext().getApplicationContext()))) {
             ProfileOnboardingDialogFragment onboardingFragment = new ProfileOnboardingDialogFragment();
             onboardingFragment.show(getFragmentManager(), "dialog");
         }
@@ -260,5 +267,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
     public void openAbout() {
         Intent intent = new Intent(getContext(), AboutActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showFab() {
+        setFabVisibility(true);
+    }
+
+    @Override
+    public void hideFab() {
+        setFabVisibility(false);
     }
 }

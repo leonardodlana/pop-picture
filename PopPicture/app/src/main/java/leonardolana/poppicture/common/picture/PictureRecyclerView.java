@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Leonardo Lana
  * Github: https://github.com/leonardodlana
@@ -26,10 +29,15 @@ import android.util.AttributeSet;
  */
 public class PictureRecyclerView extends RecyclerView {
 
+    public interface OnScrollListener {
+        void onScrolled(int dx, int dy);
+    }
+
     private static final int DEFAULT_SPAN_COUNT = 2;
     private static final int DEFAULT_ORIENTATION = StaggeredGridLayoutManager.VERTICAL;
 
     private StaggeredGridLayoutManager mLayoutManager;
+    private List<OnScrollListener> mOnScrollListeners = new ArrayList<>();
 
     public PictureRecyclerView(Context context) {
         super(context);
@@ -52,8 +60,23 @@ public class PictureRecyclerView extends RecyclerView {
         setLayoutManager(mLayoutManager);
     }
 
+    @Override
+    public void onScrolled(int dx, int dy) {
+        super.onScrolled(dx, dy);
+        for(OnScrollListener onScrolledListener : mOnScrollListeners) {
+            onScrolledListener.onScrolled(dx, dy);
+        }
+    }
+
     public void setColumnCount(int count) {
         mLayoutManager.setSpanCount(count);
     }
 
+    public void addOnScrollListener(OnScrollListener onScrollListener) {
+        mOnScrollListeners.add(onScrollListener);
+    }
+
+    public void removeOnScrollListener(OnScrollListener onScrollListener) {
+        mOnScrollListeners.remove(onScrollListener);
+    }
 }

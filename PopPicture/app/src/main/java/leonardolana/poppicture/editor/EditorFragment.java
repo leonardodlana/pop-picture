@@ -27,6 +27,7 @@ import leonardolana.poppicture.common.BaseDialogFragment;
 import leonardolana.poppicture.common.BasePresenter;
 import leonardolana.poppicture.common.GenericFragmentPagerAdapter;
 import leonardolana.poppicture.common.LoadingDialog;
+import leonardolana.poppicture.common.PicturesChangeBroadcast;
 import leonardolana.poppicture.common.Utils;
 import leonardolana.poppicture.editor.contract.EditorExtraInfoContract;
 import leonardolana.poppicture.editor.contract.EditorPictureContract;
@@ -198,6 +199,7 @@ public class EditorFragment extends BaseDialogFragment implements EditorFragment
 
     @Override
     public void showSuccess() {
+        PicturesChangeBroadcast.sendItemAdded(getContext());
 //        dismiss();
     }
 

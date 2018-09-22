@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import leonardolana.poppicture.R;
 import leonardolana.poppicture.common.BaseFragment;
 import leonardolana.poppicture.common.BasePresenter;
+import leonardolana.poppicture.common.PicturesChangeBroadcast;
 import leonardolana.poppicture.common.picture.PictureRecyclerView;
 import leonardolana.poppicture.common.picture.PictureRecyclerViewAdapter;
 import leonardolana.poppicture.data.Picture;
@@ -54,10 +55,11 @@ import leonardolana.poppicture.viewer.ViewerFragment;
  * limitations under the License.
  */
 
-public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragmentView {
+public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragmentView, PictureRecyclerView.OnScrollListener {
 
     private HomeNearbyFragmentPresenter mPresenter;
     private PictureRecyclerViewAdapter mAdapter;
+    private PicturesChangeBroadcast mPicturesChangeBroadcast;
 
     @BindView(R.id.loading)
     ProgressBar mProgressBarLoading;
@@ -83,6 +85,14 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
         CacheHelper cacheHelper = CacheHelperImpl.getInstance(applicationContext, runnableExecutor);
         mAdapter = new PictureRecyclerViewAdapter(cacheHelper);
         mPresenter = new HomeNearbyFragmentPresenter(this, userHelper, locationHelper, new PicturesLoaderHelperImpl(runnableExecutor, serverHelper, userHelper));
+
+        mPicturesChangeBroadcast = new PicturesChangeBroadcast() {
+            @Override
+            protected void onPictureAdded() {
+                mPresenter.refresh();
+            }
+        };
+        mPicturesChangeBroadcast.register(applicationContext);
     }
 
     @Override
@@ -101,6 +111,7 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPicturesRecyclerView.addOnScrollListener(this);
         mPicturesRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnPictureClickListener(new PictureRecyclerViewAdapter.OnPictureClickListener() {
             @Override
@@ -114,6 +125,18 @@ public class HomeNearbyFragment extends BaseFragment implements HomeNearbyFragme
                 mPresenter.refresh();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPicturesRecyclerView.removeOnScrollListener(this);
+        mPicturesChangeBroadcast.unRegister(getContext());
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onScrolled(int dx, int dy) {
+        PicturesChangeBroadcast.sendItemsScrolled(getContext(), dx, dy);
     }
 
     // View methods
