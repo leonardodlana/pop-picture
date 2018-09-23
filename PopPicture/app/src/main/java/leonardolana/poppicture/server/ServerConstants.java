@@ -21,7 +21,7 @@ package leonardolana.poppicture.server;
 public class ServerConstants {
 
 //    public static final String URL = "http://192.168.2.37:8080/pop_picture/cmd"; //DEV
-    public static final String URL = "https://54.207.112.120:8443/pop_picture/cmd"; //PROD
+    public static final String URL = "http://54.207.112.120/pop_picture/cmd"; //PROD
     public static final String BASE_URL = "54.207.112.120";
 
 }

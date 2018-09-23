@@ -40,7 +40,6 @@ public class HomeFragmentPresenter extends BasePresenter {
     private HomeFragmentView mView;
     private PersistentHelper mPersistentHelper;
     private UserHelper mUserHelper;
-    private int mScrollSinceLastAction = 0;
 
     public HomeFragmentPresenter(HomeFragmentView view, PersistentHelper persistentHelper,
                                  UserHelper userHelper) {
@@ -91,13 +90,9 @@ public class HomeFragmentPresenter extends BasePresenter {
     }
 
     public void onPicturesScrolled(int dx, int dy) {
-        mScrollSinceLastAction += dy;
-
         if(dy >= FAB_SCROLL_THRESHOLD) {
-            mScrollSinceLastAction = 0;
             mView.hideFab();
         } else if(dy <= -FAB_SCROLL_THRESHOLD) {
-            mScrollSinceLastAction = 0;
             mView.showFab();
         }
     }
