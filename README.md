@@ -2,6 +2,8 @@
 
 Pop Picture is a gallery application that allows users to see pictures that were taken around them, users can also see those pictures ordered by distance or number of likes.
 
+[Google Play](https://play.google.com/store/apps/details?id=leonardolana.poppicture)
+
 ![Pop Picture Main Screen](https://poppicture-57876.firebaseapp.com/pop_picture/home-nearby.jpg)
 
 In the image above we can see our main screen, which is the tab where pictures are ordered by distance to the user. The app is very straight forward, the first time the user opens, we just ask for location permition so we can show exactly what's around.
