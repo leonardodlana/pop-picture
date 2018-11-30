@@ -35,3 +35,13 @@ The viewer screen is designed to have 100% focus on the picture.
 
 ![Pop Picture View](https://poppicture-57876.firebaseapp.com/pop_picture/viewer.jpg)
 ![Pop Picture View Bottom](https://poppicture-57876.firebaseapp.com/pop_picture/viewer-bottom.jpg)
+
+### Future
+
+Please, feel free to write any suggestions.
+
+#### Planned for 1.1.0
+
+- Custom file picker: Instead of only letting the users choose from their gallery, users should also be able to take pictures.
+- Reduce image size: On most cases, it's not necessary to upload the original picture (4MB for example), a full hd picture is enough for mobile, it's possible to reduce from 4mb to at least 300kb, that would save cloud storage and user's data.
+- Choose picture's location: Allow users to select the location where the picture was taken, instead of only use the current location.
