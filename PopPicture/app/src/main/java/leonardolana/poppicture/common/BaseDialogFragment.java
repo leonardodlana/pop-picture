@@ -58,11 +58,12 @@ public abstract class BaseDialogFragment extends DialogFragment {
         } else
             dialog = new AppCompatDialog(getActivity(), 0);
 
+        if(!mHasTitle)
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         if (mIsFullScreen) {
             dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
         }
-        if(!mHasTitle)
-            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
     }

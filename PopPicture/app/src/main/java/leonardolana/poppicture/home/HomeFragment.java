@@ -227,6 +227,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView {
 
     @Override
     public void onClickSection(HomeSection homeSection) {
+        if(mPageAdapter == null)
+            return;
+
         int itemPosition = mPageAdapter.getItemPosition(homeSection);
 
         if (mViewPagerContainer.getCurrentItem() != itemPosition) {

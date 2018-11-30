@@ -159,7 +159,7 @@ public class UserHelperImpl implements UserHelper {
     }
 
     @Override
-    public void onUserLoggedIn() {
+    public synchronized void onUserLoggedIn() {
         UserWatcher userWatcher;
 
         for (WeakReference<UserWatcher> userWatcherReference : mUserWatchers) {
@@ -170,12 +170,12 @@ public class UserHelperImpl implements UserHelper {
     }
 
     @Override
-    public void addWatcher(UserWatcher userWatcher) {
+    public synchronized void addWatcher(UserWatcher userWatcher) {
         mUserWatchers.add(new WeakReference<>(userWatcher));
     }
 
     @Override
-    public void removeWatcher(UserWatcher toRemove) {
+    public synchronized void removeWatcher(UserWatcher toRemove) {
         UserWatcher userWatcher;
 
         for(int i=0;i<mUserWatchers.size();i++) {
