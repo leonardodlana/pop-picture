@@ -45,3 +45,7 @@ Please, feel free to write any suggestions.
 - Custom file picker: Instead of only letting the users choose from their gallery, users should also be able to take pictures.
 - Reduce image size: On most cases, it's not necessary to upload the original picture (4MB for example), a full hd picture is enough for mobile, it's possible to reduce from 4mb to at least 300kb, that would save cloud storage and user's data.
 - Choose picture's location: Allow users to select the location where the picture was taken, instead of only use the current location.
+
+##### Backlog
+
+- Effects and filters
