@@ -28,7 +28,8 @@ import android.text.TextUtils;
 
 public enum Permission {
     LOCATION(Manifest.permission.ACCESS_FINE_LOCATION),
-    CAMERA(Manifest.permission.CAMERA);
+    CAMERA(Manifest.permission.CAMERA),
+    READ_STORAGE(Manifest.permission.READ_EXTERNAL_STORAGE);
 
     private final String mName;
 
